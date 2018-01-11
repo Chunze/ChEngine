@@ -1,2 +1,5 @@
 *.VS
 *.db
+*.opendb
+*.idb
+*.tlog
