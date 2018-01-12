@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Shader.h"
+#include "Texture.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ public:
 	unsigned int EBO;				// element buffer ID
 
 	Shader* simpleShader;
+	Texture* simpleTexture;
 
 	bool bVertexShaderCompiled = false;
 	bool bFragShaderCompiled = false;

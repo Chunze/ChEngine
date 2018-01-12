@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include "../stb_image.h"
+
 Renderer::Renderer()
 {
 	Initialize();
@@ -17,6 +19,8 @@ void Renderer::Initialize()
 
 	simpleShader = new Shader("vertexShader.glsl", "FragmentShader.glsl");
 	simpleShader->Use();
+
+	simpleTexture = new Texture("Textures/container.jpg");
 }
 
 void Renderer::InitVertexArray(bool bBindThisVAO)
@@ -42,10 +46,13 @@ void Renderer::InitVertexBuffer(float* vertices, int size)
 
 	// specify how OpenGL should interpret the vertex buffer data
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 }
 
 void Renderer::InitElementBuffer(unsigned int* indices)
@@ -64,19 +71,20 @@ void Renderer::InitElementBuffer(unsigned int* indices)
 
 float* Renderer::GetVertexData(int &size)
 {
-// 	static float vertices[] = {
-// 		0.5f,  0.5f, 0.0f,  // top right
-// 		0.5f, -0.5f, 0.0f,  // bottom right
-// 		-0.5f, -0.5f, 0.0f,  // bottom left
-// 		-0.5f,  0.5f, 0.0f   // top left 
-// 	};
-
 	static float vertices[] = {
-		// positions         // colors
-		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+		// positions          // colors           // texture coords
+		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
+
+// 	static float vertices[] = {
+// 		// positions         // colors
+// 		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+// 		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+// 		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+// 	};
 
 	size = sizeof(vertices);
 
@@ -85,16 +93,15 @@ float* Renderer::GetVertexData(int &size)
 
 void Renderer::Draw()
 {
-	float timeValue = glfwGetTime();
-	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+// 	float timeValue = glfwGetTime();
+// 	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+// 
+// 	// Setting the uniform variable declared in shader code
+// 	simpleShader->SetUniformFloat("greenValue", greenValue);
 
-	// Setting the uniform variable declared in shader code
-	simpleShader->SetUniformFloat("greenValue", greenValue);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-
-// 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-// 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+// 	glBindVertexArray(VAO);
+//	glDrawArrays(GL_TRIANGLES, 0, 3);
 }

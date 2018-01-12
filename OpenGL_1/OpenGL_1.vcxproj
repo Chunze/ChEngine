@@ -20,17 +20,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
+    <ClCompile Include="..\stb_image.cpp" />
     <ClCompile Include="General\Renderer.cpp" />
     <ClCompile Include="General\FileManager.cpp" />
     <ClCompile Include="General\main.cpp" />
     <ClCompile Include="General\Shader.cpp" />
     <ClCompile Include="General\ShaderManager.cpp" />
+    <ClCompile Include="General\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\stb_image.h" />
     <ClInclude Include="General\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />
     <ClInclude Include="General\Shader.h" />
     <ClInclude Include="General\ShaderManager.h" />
+    <ClInclude Include="General\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />
