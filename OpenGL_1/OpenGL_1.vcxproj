@@ -20,11 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
-    <ClCompile Include="General\DrawStuff.cpp" />
+    <ClCompile Include="General\Renderer.cpp" />
+    <ClCompile Include="General\FileManager.cpp" />
     <ClCompile Include="General\main.cpp" />
+    <ClCompile Include="General\Shader.cpp" />
+    <ClCompile Include="General\ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="General\DrawStuff.h" />
+    <ClInclude Include="General\Renderer.h" />
+    <ClInclude Include="General\FileManager.h" />
+    <ClInclude Include="General\Shader.h" />
+    <ClInclude Include="General\ShaderManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />

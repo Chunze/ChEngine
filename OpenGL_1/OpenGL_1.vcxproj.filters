@@ -2,10 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
-    <ClCompile Include="General\DrawStuff.cpp">
+    <ClCompile Include="General\main.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="General\main.cpp">
+    <ClCompile Include="General\FileManager.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\Renderer.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\ShaderManager.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\Shader.cpp">
       <Filter>General</Filter>
     </ClCompile>
   </ItemGroup>
@@ -14,7 +23,16 @@
     <None Include="FragmentShader.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="General\DrawStuff.h">
+    <ClInclude Include="General\FileManager.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Renderer.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\ShaderManager.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Shader.h">
       <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>

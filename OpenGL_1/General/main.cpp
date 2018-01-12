@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "DrawStuff.h"
+#include "Renderer.h"
 
 void InitGLFW(int MajorVersion, int MinorVersion, int Profile) {
 
@@ -65,7 +65,7 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// get ready to draw
-	DrawStuff* Draw = new DrawStuff();
+	Renderer* renderer = new Renderer();
 
 	// start the render loop
 	while (!glfwWindowShouldClose(window))
@@ -77,7 +77,7 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		Draw->DrawTriangle();
+		renderer->Draw();
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
