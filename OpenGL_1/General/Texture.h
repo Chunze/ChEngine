@@ -6,7 +6,11 @@
 class Texture
 {
 public:
-	Texture(const char* TexturePath);
+	Texture(const char* TexturePath, bool bHasTransparency = false, bool bFlipVertical = false);
+
+	void Bind();
+
+	unsigned char* LoadImage(const char* TexturePath, bool bFlipVertical);
 
 	int width, height, nrChannels;
 

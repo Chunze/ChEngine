@@ -15,12 +15,19 @@ void Renderer::Initialize()
 	float* vertices = GetVertexData(size);
 	InitVertexBuffer(vertices, size);
 	InitElementBuffer(NULL);
-	//InitShader("vertexShader.glsl", "FragmentShader.glsl");
 
 	simpleShader = new Shader("vertexShader.glsl", "FragmentShader.glsl");
 	simpleShader->Use();
 
-	simpleTexture = new Texture("Textures/container.jpg");
+	
+	texture_0 = new Texture("Textures/container.jpg");
+
+	glActiveTexture(GL_TEXTURE1);
+	texture_1 = new Texture("Textures/awesomeface.png", true, true);
+
+	// setting texture unit
+	simpleShader->SetUniformInt("texture1", 0);
+	simpleShader->SetUniformInt("texture2", 1);
 }
 
 void Renderer::InitVertexArray(bool bBindThisVAO)

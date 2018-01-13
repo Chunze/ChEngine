@@ -32,7 +32,8 @@ public:
 	unsigned int EBO;				// element buffer ID
 
 	Shader* simpleShader;
-	Texture* simpleTexture;
+	Texture* texture_0;
+	Texture* texture_1;
 
 	bool bVertexShaderCompiled = false;
 	bool bFragShaderCompiled = false;
