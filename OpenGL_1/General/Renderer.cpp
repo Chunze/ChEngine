@@ -1,6 +1,12 @@
 #include "Renderer.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "../stb_image.h"
+
+using namespace glm;
 
 Renderer::Renderer()
 {
@@ -100,11 +106,11 @@ float* Renderer::GetVertexData(int &size)
 
 void Renderer::Draw()
 {
-// 	float timeValue = glfwGetTime();
-// 	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-// 
-// 	// Setting the uniform variable declared in shader code
-// 	simpleShader->SetUniformFloat("greenValue", greenValue);
+	mat4 trans;
+	trans = rotate(trans, (float)glfwGetTime(), vec3(0.0f, 0.0f, 1.0f));
+	trans = scale(trans, vec3(0.5f, 0.5f, 0.5f));
+
+	simpleShader->SetUniformMatrix4("transform", false, value_ptr(trans));
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -85,3 +85,8 @@ void Shader::SetUniformFloat(const std::string &name, float value) const
 {
 	glUniform1f(glGetUniformLocation(shaderProgramID, name.c_str()), value);
 }
+
+void Shader::SetUniformMatrix4(const std::string &name, bool bNeedTranspose, float *value) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, bNeedTranspose, value);
+}
