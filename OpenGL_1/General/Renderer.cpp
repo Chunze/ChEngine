@@ -1,6 +1,5 @@
 #include "Renderer.h"
 
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -17,9 +16,8 @@ void Renderer::Initialize()
 {
 	InitVertexArray(true);
 
-	int size;
-	float* vertices = GetVertexData(size);
-	InitVertexBuffer(vertices, size);
+	float* vertices = GetVertexData(vertextBufferSize);
+	InitVertexBuffer(vertices, vertextBufferSize);
 	InitElementBuffer(NULL);
 
 	simpleShader = new Shader("vertexShader.glsl", "FragmentShader.glsl");
@@ -34,6 +32,8 @@ void Renderer::Initialize()
 	// setting texture unit
 	simpleShader->SetUniformInt("texture1", 0);
 	simpleShader->SetUniformInt("texture2", 1);
+
+	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
 }
 
 void Renderer::InitVertexArray(bool bBindThisVAO)
@@ -59,13 +59,15 @@ void Renderer::InitVertexBuffer(float* vertices, int size)
 
 	// specify how OpenGL should interpret the vertex buffer data
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	vertexInfoSize = 5;
+
+// 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+// 	glEnableVertexAttribArray(2);
 }
 
 void Renderer::InitElementBuffer(unsigned int* indices)
@@ -85,36 +87,106 @@ void Renderer::InitElementBuffer(unsigned int* indices)
 float* Renderer::GetVertexData(int &size)
 {
 	static float vertices[] = {
-		// positions          // colors           // texture coords
-		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-	};
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-// 	static float vertices[] = {
-// 		// positions         // colors
-// 		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-// 		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-// 		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-// 	};
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
 
 	size = sizeof(vertices);
 
 	return vertices;
 }
 
+void Renderer::CalculateTransforms()
+{
+	/*		Model		*/
+	mat4 model;
+	model = rotate(model, (float)glfwGetTime() * radians(50.0f), vec3(0.5f, 1.0f, 0.0f));
+	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
+
+	/*		camera		*/
+	mat4 view;
+	view = translate(view, vec3(0.0f, 0.0f, -3.0f));
+	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
+
+	/*		NDC			*/
+	mat4 projection;
+	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
+}
+
 void Renderer::Draw()
 {
-	mat4 trans;
-	trans = rotate(trans, (float)glfwGetTime(), vec3(0.0f, 0.0f, 1.0f));
-	trans = scale(trans, vec3(0.5f, 0.5f, 0.5f));
+	CalculateTransforms();
 
-	simpleShader->SetUniformMatrix4("transform", false, value_ptr(trans));
+
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 // 	glBindVertexArray(VAO);
-//	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
+	for (unsigned int i = 0; i < 10; i++)
+	{
+		glm::mat4 model;
+		model = glm::translate(model, cubePositions[i]);
+		float angle = 20.0f * i;
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
+
+		glDrawArrays(GL_TRIANGLES, 0, num_vertex);
+	}
+
+	
 }

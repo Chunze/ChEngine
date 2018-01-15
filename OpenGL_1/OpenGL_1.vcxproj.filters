@@ -21,6 +21,9 @@
     <ClCompile Include="General\Texture.cpp">
       <Filter>General</Filter>
     </ClCompile>
+    <ClCompile Include="General\Camera.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -41,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="..\stb_image.h" />
     <ClInclude Include="General\Texture.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Camera.h">
       <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>

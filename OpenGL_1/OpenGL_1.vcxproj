@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
     <ClCompile Include="..\stb_image.cpp" />
+    <ClCompile Include="General\Camera.cpp" />
     <ClCompile Include="General\Renderer.cpp" />
     <ClCompile Include="General\FileManager.cpp" />
     <ClCompile Include="General\main.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="General\Camera.h" />
     <ClInclude Include="General\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />
     <ClInclude Include="General\Shader.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <iostream>
 #include <string>
@@ -25,6 +26,8 @@ public:
 
 	float* GetVertexData(int &size);
 
+	void CalculateTransforms();
+
 	void Draw();
 
 	unsigned int VBO;				// vertex buffer ID
@@ -37,6 +40,13 @@ public:
 
 	bool bVertexShaderCompiled = false;
 	bool bFragShaderCompiled = false;
+
+	int vertextBufferSize;
+	int vertexInfoSize;
+
+	int num_vertex;
+
+	glm::vec3 cubePositions[10];
 
 	~Renderer()
 	{
