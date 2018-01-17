@@ -34,6 +34,8 @@ void Renderer::Initialize()
 	simpleShader->SetUniformInt("texture2", 1);
 
 	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
+
+	mainCamera = new Camera();
 }
 
 void Renderer::InitVertexArray(bool bBindThisVAO)
@@ -138,26 +140,50 @@ float* Renderer::GetVertexData(int &size)
 void Renderer::CalculateTransforms()
 {
 	/*		Model		*/
-	mat4 model;
-	model = rotate(model, (float)glfwGetTime() * radians(50.0f), vec3(0.5f, 1.0f, 0.0f));
+	glm::mat4 model;
+	model = rotate(model, (float)glfwGetTime() * radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 
 	/*		camera		*/
-	mat4 view;
-	view = translate(view, vec3(0.0f, 0.0f, -3.0f));
+	glm::mat4 view;
+	view = mainCamera->m_view;
 	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
 
 	/*		NDC			*/
-	mat4 projection;
+	glm::mat4 projection;
 	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
 }
 
+void Renderer::FlyCameraForward(float value)
+{
+	mainCamera->FlyCameraForward(value);
+}
+
+void Renderer::FlyCameraRight(float value)
+{
+	mainCamera->FlyCameraRight(value);
+}
+
+void Renderer::Update()
+{
+	glEnable(GL_DEPTH_TEST);
+
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	mainCamera->Update();
+
+	Draw();
+
+	// check and call events and swap the buffers
+
+}
+
 void Renderer::Draw()
 {
+	
 	CalculateTransforms();
-
-
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

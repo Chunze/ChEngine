@@ -1,6 +1,9 @@
 #include <iostream>
 
+#include "main.h"
 #include "Renderer.h"
+#include "Game.h"
+#include "GameContext.h"
 
 void InitGLFW(int MajorVersion, int MinorVersion, int Profile) {
 
@@ -64,27 +67,17 @@ int main()
 	// add callback function for resizing the window
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	// create game context
+	GameContext* gameContext = new GameContext(window);
+
+	// create game instance
+	Game* game = new Game(gameContext);
+
 	// get ready to draw
 	Renderer* renderer = new Renderer();
+	gameContext->renderer = renderer;
 
-	// start the render loop
-	while (!glfwWindowShouldClose(window))
-	{
-		// input
-		processInput(window);
-
-		// enable depth testing
-		glEnable(GL_DEPTH_TEST);
-
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		renderer->Draw();
-
-		// check and call events and swap the buffers
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
+	game->GameLoop();
 
 	// clean up memory
 	glfwTerminate();

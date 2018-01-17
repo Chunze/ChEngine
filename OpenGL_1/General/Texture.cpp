@@ -1,8 +1,10 @@
+#include <iostream>
+#include <../stb_image.h>
+#include <glad/glad.h>
+
 #include "Texture.h"
 
-#include "../stb_image.h"
 
-#include <iostream>
 
 Texture::Texture(const char* TexturePath, bool bHasTransparency, bool bFlipVertical)
 {

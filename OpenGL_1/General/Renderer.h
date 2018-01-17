@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RENDERER_H
+#define RENDERER_H
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -8,6 +10,7 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -28,6 +31,12 @@ public:
 
 	void CalculateTransforms();
 
+	void FlyCameraForward(float value);
+
+	void FlyCameraRight(float value);
+
+	void Update();
+
 	void Draw();
 
 	unsigned int VBO;				// vertex buffer ID
@@ -37,6 +46,8 @@ public:
 	Shader* simpleShader;
 	Texture* texture_0;
 	Texture* texture_1;
+
+	Camera* mainCamera;
 
 	bool bVertexShaderCompiled = false;
 	bool bFragShaderCompiled = false;
@@ -53,3 +64,5 @@ public:
 
 	}
 };
+
+#endif

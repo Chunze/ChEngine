@@ -4,18 +4,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-using namespace glm;
-
 class Camera
 {
 public:
 	Camera();
 
-	vec3 m_startPosition;
+	glm::vec3 m_position;
 
-	vec3 m_startRightDir;
-	vec3 m_startLookatDir;
-	vec3 m_startUpDir;
+	glm::vec3 m_right;
+	glm::vec3 m_forward;
+	glm::vec3 m_up;
 
-	mat4 m_view;
+	glm::mat4 m_view;
+
+	float flySpeed = 1.0f;
+
+	void FlyCameraForward(float value);
+
+	void FlyCameraRight(float value);
+
+	void Update();
 };

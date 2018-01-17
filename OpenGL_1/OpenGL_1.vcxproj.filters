@@ -24,6 +24,12 @@
     <ClCompile Include="General\Camera.cpp">
       <Filter>General</Filter>
     </ClCompile>
+    <ClCompile Include="General\Game.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\GameContext.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -47,6 +53,15 @@
       <Filter>General</Filter>
     </ClInclude>
     <ClInclude Include="General\Camera.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Game.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\main.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\GameContext.h">
       <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>
