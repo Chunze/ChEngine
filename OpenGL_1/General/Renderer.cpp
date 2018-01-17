@@ -35,7 +35,7 @@ void Renderer::Initialize()
 
 	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
 
-	SetupDrawDebug();
+	InitDrawDebug();
 
 	mainCamera = new Camera();
 }
@@ -62,10 +62,8 @@ void Renderer::InitVertexBuffer(float* vertices, int size)
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
 	// specify how OpenGL should interpret the vertex buffer data
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 
-	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
 	vertexInfoSize = 5;
@@ -187,13 +185,11 @@ void Renderer::Update()
 
 	mainCamera->Update();
 
-	//SetupDraw();
 	Draw();
-	//CleanupDraw();
+	CleanupDraw();
 
-	//SetupDrawDebug();
 	DrawDebug();
-	//CleanupDebugDraw();
+	CleanupDebugDraw();
 }
 
 void Renderer::Draw()
@@ -221,17 +217,13 @@ void Renderer::Draw()
 	model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	
-
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
 	simpleShader->Use();
 
 	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
-}
-
-void Renderer::SetupDraw()
-{
-
 }
 
 void Renderer::CleanupDraw()
@@ -240,7 +232,7 @@ void Renderer::CleanupDraw()
 	glDisableVertexAttribArray(1);
 }
 
-void Renderer::SetupDrawDebug()
+void Renderer::InitDrawDebug()
 {
 	glGenBuffers(1, &DebugVertextBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
@@ -260,10 +252,7 @@ void Renderer::SetupDrawDebug()
 	glGenVertexArrays(1, &DebugVertextArray);
 	glBindVertexArray(DebugVertextArray);
 
-	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-
-	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 }
 
@@ -275,6 +264,8 @@ void Renderer::CleanupDebugDraw()
 
 void Renderer::DrawDebug()
 {
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
 	glBindVertexArray(DebugVertextArray);
 	debugShader->Use();

@@ -22,20 +22,38 @@ Camera::Camera()
 
 void Camera::FlyCameraForward(float value)
 {
-	m_position += flySpeed * value * m_forward;
+	//m_position += flySpeed * value * m_forward;
+
+	m_flyDirection.z = -value;		// positive z is pointing out of the screen
 }
 
 void Camera::FlyCameraRight(float value)
 {
-	m_position += flySpeed * value * m_right;
+	//m_position += flySpeed * value * m_right;
+	m_flyDirection.x = value;
 }
 
 void Camera::FlyCameraUp(float value)
 {
-	m_position += flySpeed * value * m_up;
+	//m_position += flySpeed * value * m_up;
+	m_flyDirection.y = value;
+}
+
+/* This function ensures that the camera is flying in constant speed */
+void Camera::Fly()
+{
+	if (m_flyDirection == glm::vec3(0.0f, 0.0f, 0.0f))
+	{
+		return;
+	}
+
+	m_position += flySpeed * glm::normalize(m_flyDirection);
 }
 
 void Camera::Update()
 {
+	Fly();
 	m_view = lookAt(m_position, m_position + m_forward, m_up);
+
+	m_flyDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 }

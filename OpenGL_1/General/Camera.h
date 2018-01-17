@@ -15,6 +15,8 @@ public:
 	glm::vec3 m_forward;
 	glm::vec3 m_up;
 
+	glm::vec3 m_flyDirection;
+
 	glm::mat4 m_view;
 
 	float flySpeed = 1.0f;
@@ -24,6 +26,8 @@ public:
 	void FlyCameraRight(float value);
 
 	void FlyCameraUp(float value);
+
+	void Fly();
 
 	void Update();
 };

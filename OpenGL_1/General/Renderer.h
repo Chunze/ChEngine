@@ -39,11 +39,9 @@ public:
 
 	void Draw();
 
-	void SetupDraw();
-
 	void CleanupDraw();
 
-	void SetupDrawDebug();
+	void InitDrawDebug();
 
 	void CleanupDebugDraw();
 
