@@ -52,6 +52,14 @@ void Game::processInput(GLFWwindow* contextWindow)
 	{
 		m_gameContext->renderer->FlyCameraRight(1.0f);
 	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		m_gameContext->renderer->FlyCameraUp(-1.0f);
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		m_gameContext->renderer->FlyCameraUp(1.0f);
+	}
 	if (glfwGetKey(contextWindow, GLFW_KEY_F4) == GLFW_PRESS)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

@@ -30,6 +30,11 @@ void Camera::FlyCameraRight(float value)
 	m_position += flySpeed * value * m_right;
 }
 
+void Camera::FlyCameraUp(float value)
+{
+	m_position += flySpeed * value * m_up;
+}
+
 void Camera::Update()
 {
 	m_view = lookAt(m_position, m_position + m_forward, m_up);

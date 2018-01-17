@@ -73,20 +73,34 @@ void Shader::Use()
 	glUseProgram(shaderProgramID);
 }
 
-void Shader::SetUniformBool(const std::string &name, bool value) const
+void Shader::CheckCurrentProgram()
 {
+	GLint currentProgramID;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgramID);
+	if (shaderProgramID != currentProgramID)
+	{
+		Use();
+	}
+}
+
+void Shader::SetUniformBool(const std::string &name, bool value)
+{
+	CheckCurrentProgram();
 	glUniform1i(glGetUniformLocation(shaderProgramID, name.c_str()), (int)value);
 }
-void Shader::SetUniformInt(const std::string &name, int value) const
+void Shader::SetUniformInt(const std::string &name, int value)
 {
+	CheckCurrentProgram();
 	glUniform1i(glGetUniformLocation(shaderProgramID, name.c_str()), value);
 }
-void Shader::SetUniformFloat(const std::string &name, float value) const
+void Shader::SetUniformFloat(const std::string &name, float value)
 {
+	CheckCurrentProgram();
 	glUniform1f(glGetUniformLocation(shaderProgramID, name.c_str()), value);
 }
 
-void Shader::SetUniformMatrix4(const std::string &name, bool bNeedTranspose, float *value) const
+void Shader::SetUniformMatrix4(const std::string &name, bool bNeedTranspose, float* value)
 {
+	CheckCurrentProgram();
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, bNeedTranspose, value);
 }

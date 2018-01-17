@@ -32,18 +32,31 @@ public:
 	void CalculateTransforms();
 
 	void FlyCameraForward(float value);
-
 	void FlyCameraRight(float value);
+	void FlyCameraUp(float value);
 
 	void Update();
 
 	void Draw();
 
+	void SetupDraw();
+
+	void CleanupDraw();
+
+	void SetupDrawDebug();
+
+	void CleanupDebugDraw();
+
+	void DrawDebug();
+
 	unsigned int VBO;				// vertex buffer ID
 	unsigned int VAO;				// vertex array ID
 	unsigned int EBO;				// element buffer ID
+	unsigned int DebugVertextBuffer;
+	unsigned int DebugVertextArray;
 
 	Shader* simpleShader;
+	Shader* debugShader;
 	Texture* texture_0;
 	Texture* texture_1;
 

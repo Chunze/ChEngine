@@ -35,6 +35,8 @@ void Renderer::Initialize()
 
 	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
 
+	SetupDrawDebug();
+
 	mainCamera = new Camera();
 }
 
@@ -141,18 +143,22 @@ void Renderer::CalculateTransforms()
 {
 	/*		Model		*/
 	glm::mat4 model;
-	model = rotate(model, (float)glfwGetTime() * radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 
 	/*		camera		*/
 	glm::mat4 view;
 	view = mainCamera->m_view;
-	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
 
 	/*		NDC			*/
 	glm::mat4 projection;
 	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+
+	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
+	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
 	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
+
+	debugShader->SetUniformMatrix4("model", false, value_ptr(model));
+	debugShader->SetUniformMatrix4("view", false, value_ptr(view));
+	debugShader->SetUniformMatrix4("projection", false, value_ptr(projection));
 }
 
 void Renderer::FlyCameraForward(float value)
@@ -165,8 +171,15 @@ void Renderer::FlyCameraRight(float value)
 	mainCamera->FlyCameraRight(value);
 }
 
+void Renderer::FlyCameraUp(float value)
+{
+	mainCamera->FlyCameraUp(value);
+}
+
 void Renderer::Update()
 {
+	CalculateTransforms();
+
 	glEnable(GL_DEPTH_TEST);
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -174,21 +187,19 @@ void Renderer::Update()
 
 	mainCamera->Update();
 
+	//SetupDraw();
 	Draw();
+	//CleanupDraw();
 
-	// check and call events and swap the buffers
-
+	//SetupDrawDebug();
+	DrawDebug();
+	//CleanupDebugDraw();
 }
 
 void Renderer::Draw()
 {
-	
-	CalculateTransforms();
-
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-// 	glBindVertexArray(VAO);
 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
@@ -203,16 +214,70 @@ void Renderer::Draw()
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	for (unsigned int i = 0; i < 10; i++)
-	{
-		glm::mat4 model;
-		model = glm::translate(model, cubePositions[i]);
-		float angle = 20.0f * i;
-		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-		simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 
-		glDrawArrays(GL_TRIANGLES, 0, num_vertex);
-	}
-
+	glm::mat4 model;
+	model = glm::translate(model, cubePositions[3]);
+	float angle = 20.0f * 3;
+	model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindVertexArray(VAO);
+	simpleShader->Use();
+
+	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
+}
+
+void Renderer::SetupDraw()
+{
+
+}
+
+void Renderer::CleanupDraw()
+{
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}
+
+void Renderer::SetupDrawDebug()
+{
+	glGenBuffers(1, &DebugVertextBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
+	glLineWidth(3.0f);
+	float axisLineVertices[] = {
+		0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		5.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 5.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 1.0f,
+	};
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);
+	debugShader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
+	
+	glGenVertexArrays(1, &DebugVertextArray);
+	glBindVertexArray(DebugVertextArray);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+}
+
+void Renderer::CleanupDebugDraw()
+{
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}
+
+void Renderer::DrawDebug()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
+	glBindVertexArray(DebugVertextArray);
+	debugShader->Use();
+
+	glDrawArrays(GL_LINES, 0, 6);
 }

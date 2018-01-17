@@ -44,6 +44,8 @@
     <ClInclude Include="General\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DebugDrawShader.frag" />
+    <None Include="DebugDrawShader.vert" />
     <None Include="FragmentShader.glsl" />
     <None Include="VertexShader.glsl" />
   </ItemGroup>

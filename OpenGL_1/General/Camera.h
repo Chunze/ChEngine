@@ -23,5 +23,7 @@ public:
 
 	void FlyCameraRight(float value);
 
+	void FlyCameraUp(float value);
+
 	void Update();
 };
