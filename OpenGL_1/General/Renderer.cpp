@@ -174,7 +174,7 @@ void Renderer::FlyCameraUp(float value)
 	mainCamera->FlyCameraUp(value);
 }
 
-void Renderer::Update()
+void Renderer::Update(float deltaTime)
 {
 	CalculateTransforms();
 
@@ -183,7 +183,7 @@ void Renderer::Update()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	mainCamera->Update();
+	mainCamera->Update(deltaTime);
 
 	Draw();
 	CleanupDraw();

@@ -19,7 +19,10 @@ public:
 
 	glm::mat4 m_view;
 
-	float flySpeed = 1.0f;
+	float flySpeed = 4.0f;
+
+	float pitch;
+	float yaw;
 
 	void FlyCameraForward(float value);
 
@@ -27,7 +30,9 @@ public:
 
 	void FlyCameraUp(float value);
 
-	void Fly();
+	void Fly(float deltaTime);
 
-	void Update();
+	void Rotate(float deltaPitch, float deltaYaw);
+
+	void Update(float deltaTime);
 };

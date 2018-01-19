@@ -6,8 +6,6 @@
 class Game
 {
 public:
-	Game();
-
 	Game(GameContext* gameContext);
 
 	void GameLoop();
@@ -15,6 +13,10 @@ public:
 	void processInput(GLFWwindow* contextWindow);
 
 	GameContext* m_gameContext;
+
+	float deltaTime = 0.0f;
+	float lastFrameTime = 0.0f;
+
 };
 
 #endif
