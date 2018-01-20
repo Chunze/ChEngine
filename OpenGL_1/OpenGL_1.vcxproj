@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
     <ClCompile Include="..\stb_image.cpp" />
+    <ClCompile Include="cs520\Jello.cpp" />
     <ClCompile Include="General\Camera.cpp" />
     <ClCompile Include="General\Game.cpp" />
     <ClCompile Include="General\GameContext.cpp" />
@@ -30,9 +31,11 @@
     <ClCompile Include="General\Shader.cpp" />
     <ClCompile Include="General\ShaderManager.cpp" />
     <ClCompile Include="General\Texture.cpp" />
+    <ClCompile Include="Physics\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="cs520\Jello.h" />
     <ClInclude Include="General\Camera.h" />
     <ClInclude Include="General\Game.h" />
     <ClInclude Include="General\GameContext.h" />
@@ -42,6 +45,8 @@
     <ClInclude Include="General\Shader.h" />
     <ClInclude Include="General\ShaderManager.h" />
     <ClInclude Include="General\Texture.h" />
+    <ClInclude Include="Physics\Particle.h" />
+    <ClInclude Include="Physics\PhyxConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DebugDrawShader.frag" />
@@ -100,7 +105,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)OpenGL_1\General;$(SolutionDir)OpenGL_1\cs520;$(SolutionDir)OpenGL_1\Physics;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

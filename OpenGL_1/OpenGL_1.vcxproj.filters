@@ -30,6 +30,12 @@
     <ClCompile Include="General\GameContext.cpp">
       <Filter>General</Filter>
     </ClCompile>
+    <ClCompile Include="cs520\Jello.cpp">
+      <Filter>cs520</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Particle.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -66,10 +72,25 @@
     <ClInclude Include="General\GameContext.h">
       <Filter>General</Filter>
     </ClInclude>
+    <ClInclude Include="cs520\Jello.h">
+      <Filter>cs520</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Particle.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhyxConstants.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
       <UniqueIdentifier>{9e44ebe8-2591-485c-bf58-9aa63caa7575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs520">
+      <UniqueIdentifier>{cf3de7ab-1364-4184-ab2e-e582f2529fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{190338e8-b9a2-43ae-8580-a4cfcd68a407}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

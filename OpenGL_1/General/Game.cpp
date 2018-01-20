@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Renderer.h"
+#include "Jello.h"
 
 GameContext* gameContext;
 float mouselastX = 400, mouselastY = 300;
@@ -38,6 +39,7 @@ void Game::GameLoop()
 {
 	GLFWwindow* contextWindow = m_gameContext->m_contextWindow;
 	gameContext = m_gameContext;
+	Jello* jello = new Jello();
 
 	while (!glfwWindowShouldClose(contextWindow))
 	{
