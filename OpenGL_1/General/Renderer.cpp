@@ -20,18 +20,7 @@ void Renderer::Initialize()
 	InitVertexBuffer(vertices, vertextBufferSize);
 	InitElementBuffer(NULL);
 
-	simpleShader = new Shader("vertexShader.glsl", "FragmentShader.glsl");
-	simpleShader->Use();
-
-	
-	texture_0 = new Texture("Textures/container.jpg");
-
-	glActiveTexture(GL_TEXTURE1);
-	texture_1 = new Texture("Textures/awesomeface.png", true, true);
-
-	// setting texture unit
-	simpleShader->SetUniformInt("texture1", 0);
-	simpleShader->SetUniformInt("texture2", 1);
+	InitShaders();
 
 	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
 
@@ -84,6 +73,42 @@ void Renderer::InitElementBuffer(unsigned int* indices)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_), indices_, GL_STATIC_DRAW);
 
+}
+
+void Renderer::InitLighting()
+{
+	unsigned int lightVAO;
+	glGenVertexArrays(1, &lightVAO);
+	glBindVertexArray(lightVAO);
+	// we only need to bind to the VBO, the container's VBO's data already contains the correct data.
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	// set the vertex attributes (only position data for our lamp)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+}
+
+void Renderer::InitShaders()
+{
+	/*
+	simpleShader = new Shader("vertexShader.glsl", "FragmentShader.glsl");
+	simpleShader->Use();
+
+	texture_0 = new Texture("Textures/container.jpg");
+
+	glActiveTexture(GL_TEXTURE1);
+	texture_1 = new Texture("Textures/awesomeface.png", true, true);
+
+	// setting texture unit
+	simpleShader->SetUniformInt("texture1", 0);
+	simpleShader->SetUniformInt("texture2", 1);
+	*/
+
+	simpleShader = new Shader("vertexShader.glsl", "LightingShader.frag");
+	simpleShader->Use();
+	simpleShader->SetUniformVector("objectColor", value_ptr(vec3(1.0f, 0.5f, 0.31f)));
+	simpleShader->SetUniformVector("lightColor", value_ptr((vec3(1.0f))));
+
+	lampShader = new Shader("vertexShader.glsl", "LampShader.frag");
 }
 
 float* Renderer::GetVertexData(int &size)
@@ -150,9 +175,14 @@ void Renderer::CalculateTransforms()
 	glm::mat4 projection;
 	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
+	// TODO: keep track on shaders that are in use, then update them
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
 	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
+
+	lampShader->SetUniformMatrix4("model", false, value_ptr(model));
+	lampShader->SetUniformMatrix4("view", false, value_ptr(view));
+	lampShader->SetUniformMatrix4("projection", false, value_ptr(projection));
 
 	debugShader->SetUniformMatrix4("model", false, value_ptr(model));
 	debugShader->SetUniformMatrix4("view", false, value_ptr(view));
@@ -199,8 +229,8 @@ void Renderer::Draw()
 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(4.0f,  1.0f, 4.0f),
+		glm::vec3(0.0f, 6.0f, 0.0f),
 		glm::vec3(-3.8f, -2.0f, -12.3f),
 		glm::vec3(2.4f, -0.4f, -3.5f),
 		glm::vec3(-1.7f,  3.0f, -7.5f),
@@ -212,17 +242,24 @@ void Renderer::Draw()
 
 
 	glm::mat4 model;
-	model = glm::translate(model, cubePositions[3]);
-	float angle = 20.0f * 3;
-	model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+	model = glm::translate(model, cubePositions[1]);
+	model = glm::scale(model, glm::vec3(2.0f));
+	//float angle = 20.0f * 3;
+	//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	
+	// TODO: keep track of how many attributes, and clean up accordingly 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
 	simpleShader->Use();
+	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
 
+	model = glm::mat4();
+	model = glm::translate(model, cubePositions[2]);
+	lampShader->Use();
+	lampShader->SetUniformMatrix4("model", false, value_ptr(model));
 	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
 }
 

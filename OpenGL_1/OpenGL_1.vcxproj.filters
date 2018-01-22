@@ -42,6 +42,8 @@
     <None Include="FragmentShader.glsl" />
     <None Include="DebugDrawShader.frag" />
     <None Include="DebugDrawShader.vert" />
+    <None Include="LightingShader.frag" />
+    <None Include="LampShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\FileManager.h">

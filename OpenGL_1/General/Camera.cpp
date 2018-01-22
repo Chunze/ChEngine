@@ -6,11 +6,11 @@
 Camera::Camera()
 {
 	// start position
-	m_position = glm::vec3(10.0f, 10.0f, 10.0f);
+	m_position = glm::vec3(12.0f, 5.0f, -10.0f);
 
 	// Look at vector
 	glm::vec3 LookatPt = glm::vec3(0.0f, 0.0f, 0.0f);		// looking at the origin
-	m_forward = normalize(LookatPt - m_position);
+	m_forward = glm::vec3(-0.6f, -0.2f, 0.8f);
 
 	// up vector
 	m_up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -32,19 +32,19 @@ void Camera::FlyCameraForward(float value)
 {
 	//m_position += flySpeed * value * m_forward;
 
-	m_flyDirection.z = -value;		// positive z is pointing out of the screen
+	m_flyDirection += value * m_forward;		// positive z is pointing out of the screen
 }
 
 void Camera::FlyCameraRight(float value)
 {
 	//m_position += flySpeed * value * m_right;
-	m_flyDirection.x = value;
+	m_flyDirection += value * m_right;
 }
 
 void Camera::FlyCameraUp(float value)
 {
 	//m_position += flySpeed * value * m_up;
-	m_flyDirection.y = value;
+	m_flyDirection += value * m_up;
 }
 
 /* This function ensures that the camera is flying in constant speed */
@@ -72,7 +72,12 @@ void Camera::Rotate(float deltaPitch, float deltaYaw)
 	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
 	front.y = sin(glm::radians(pitch));
 	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+
 	m_forward = glm::normalize(front);
+	m_right = glm::cross(m_forward, m_up);
+
+	//std::cout << "front = " << "(" << m_forward.x << "," << m_forward.y << "," << m_forward.z << ")" << std::endl;
+
 	//m_right = glm::normalize(glm::cross(m_forward, glm::vec3(0.0f, 1.0f, 0.0f)));
 
 	// up vector

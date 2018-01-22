@@ -99,6 +99,12 @@ void Shader::SetUniformFloat(const std::string &name, float value)
 	glUniform1f(glGetUniformLocation(shaderProgramID, name.c_str()), value);
 }
 
+void Shader::SetUniformVector(const std::string &name, const float* value)
+{
+	CheckCurrentProgram();
+	glUniform3fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, value);
+}
+
 void Shader::SetUniformMatrix4(const std::string &name, bool bNeedTranspose, float* value)
 {
 	CheckCurrentProgram();

@@ -19,7 +19,7 @@ public:
 
 	glm::mat4 m_view;
 
-	float flySpeed = 4.0f;
+	float flySpeed = 6.0f;
 
 	float pitch;
 	float yaw;

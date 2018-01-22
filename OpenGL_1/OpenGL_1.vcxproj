@@ -52,6 +52,8 @@
     <None Include="DebugDrawShader.frag" />
     <None Include="DebugDrawShader.vert" />
     <None Include="FragmentShader.glsl" />
+    <None Include="LampShader.frag" />
+    <None Include="LightingShader.frag" />
     <None Include="VertexShader.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

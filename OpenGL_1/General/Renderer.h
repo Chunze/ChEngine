@@ -27,6 +27,10 @@ public:
 
 	void InitElementBuffer(unsigned int* indices);
 
+	void InitLighting();
+
+	void InitShaders();
+
 	float* GetVertexData(int &size);
 
 	void CalculateTransforms();
@@ -38,21 +42,19 @@ public:
 	void Update(float deltaTime);
 
 	void Draw();
-
 	void CleanupDraw();
-
 	void InitDrawDebug();
-
 	void CleanupDebugDraw();
-
 	void DrawDebug();
 
 	unsigned int VBO;				// vertex buffer ID
 	unsigned int VAO;				// vertex array ID
 	unsigned int EBO;				// element buffer ID
+	unsigned int LightVAO;
 	unsigned int DebugVertextBuffer;
 	unsigned int DebugVertextArray;
 
+	Shader* lampShader;
 	Shader* simpleShader;
 	Shader* debugShader;
 	Texture* texture_0;
