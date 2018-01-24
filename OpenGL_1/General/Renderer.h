@@ -70,6 +70,8 @@ public:
 
 	int num_vertex;
 
+	glm::vec3 m_lightPosition;
+
 	glm::vec3 cubePositions[10];
 
 	~Renderer()
