@@ -4,7 +4,7 @@
 class Texture
 {
 public:
-	Texture(const char* TexturePath, bool bHasTransparency = false, bool bFlipVertical = false);
+	Texture(const char* TexturePath, bool bFlipVertical = false);
 
 	void Bind();
 

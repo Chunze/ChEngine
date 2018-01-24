@@ -105,6 +105,18 @@ void Shader::SetUniformVector(const std::string &name, const float* value)
 	glUniform3fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, value);
 }
 
+void Shader::SetUniformVector(const std::string &name, const float x, const float y, const float z)
+{
+	float vector[]{ x, y, z };
+	SetUniformVector(name, vector);
+}
+
+void Shader::SetUniformVector(const std::string &name, const float xyz)
+{
+	float vector[]{ xyz, xyz, xyz };
+	SetUniformVector(name, vector);
+}
+
 void Shader::SetUniformMatrix4(const std::string &name, bool bNeedTranspose, float* value)
 {
 	CheckCurrentProgram();

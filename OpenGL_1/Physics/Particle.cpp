@@ -18,5 +18,5 @@ Particle::Particle(float mass, glm::vec3 position, glm::vec3 volecity)
 
 Particle::Particle()
 {
-
+	Particle(1.0f, glm::vec3(0.0f), glm::vec3(0.0f));
 }

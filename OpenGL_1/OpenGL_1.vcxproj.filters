@@ -36,6 +36,7 @@
     <ClCompile Include="Physics\Particle.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="General\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -83,6 +84,7 @@
     <ClInclude Include="Physics\PhyxConstants.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="General\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
