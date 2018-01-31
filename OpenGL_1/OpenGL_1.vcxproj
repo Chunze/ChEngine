@@ -32,7 +32,10 @@
     <ClCompile Include="General\Shader.cpp" />
     <ClCompile Include="General\ShaderManager.cpp" />
     <ClCompile Include="General\Texture.cpp" />
+    <ClCompile Include="Physics\ForceGenerators\BasicSprintFG.cpp" />
     <ClCompile Include="Physics\Particle.cpp" />
+    <ClCompile Include="Physics\ParticleForceRegistry.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
@@ -40,6 +43,7 @@
     <ClInclude Include="General\Camera.h" />
     <ClInclude Include="General\Game.h" />
     <ClInclude Include="General\GameContext.h" />
+    <ClInclude Include="General\glm.h" />
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="General\Renderer.h" />
@@ -47,7 +51,11 @@
     <ClInclude Include="General\Shader.h" />
     <ClInclude Include="General\ShaderManager.h" />
     <ClInclude Include="General\Texture.h" />
+    <ClInclude Include="Physics\ForceGenerator.h" />
+    <ClInclude Include="Physics\ForceGenerators\BasicSprintFG.h" />
     <ClInclude Include="Physics\Particle.h" />
+    <ClInclude Include="Physics\ParticleForceRegistry.h" />
+    <ClInclude Include="Physics\PhysicsManager.h" />
     <ClInclude Include="Physics\PhyxConstants.h" />
   </ItemGroup>
   <ItemGroup>

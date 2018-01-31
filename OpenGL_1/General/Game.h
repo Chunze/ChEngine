@@ -8,6 +8,8 @@ class Game
 public:
 	Game(GameContext* gameContext);
 
+	void InitGame();
+
 	void GameLoop();
 
 	void processInput(GLFWwindow* contextWindow);

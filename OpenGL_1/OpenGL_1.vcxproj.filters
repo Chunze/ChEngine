@@ -37,6 +37,15 @@
       <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="General\Mesh.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\ParticleForceRegistry.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\ForceGenerators\BasicSprintFG.cpp">
+      <Filter>Physics\ForceGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -85,6 +94,21 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="General\Mesh.h" />
+    <ClInclude Include="Physics\PhysicsManager.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ParticleForceRegistry.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ForceGenerator.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ForceGenerators\BasicSprintFG.h">
+      <Filter>Physics\ForceGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="General\glm.h">
+      <Filter>General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -95,6 +119,9 @@
     </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{190338e8-b9a2-43ae-8580-a4cfcd68a407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\ForceGenerators">
+      <UniqueIdentifier>{b0ba428e-a28b-4b9f-82c5-93e4e5e49768}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

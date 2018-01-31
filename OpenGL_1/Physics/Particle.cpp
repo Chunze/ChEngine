@@ -20,3 +20,8 @@ Particle::Particle()
 {
 	Particle(1.0f, glm::vec3(0.0f), glm::vec3(0.0f));
 }
+
+void Particle::addForce(const glm::vec3 &force)
+{
+	forceAccum += force;
+}

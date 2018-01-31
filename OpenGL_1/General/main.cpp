@@ -73,10 +73,6 @@ int main()
 	// create game instance
 	Game* game = new Game(gameContext);
 
-	// get ready to draw
-	Renderer* renderer = new Renderer();
-	gameContext->renderer = renderer;
-
 	game->GameLoop();
 
 	// clean up memory
