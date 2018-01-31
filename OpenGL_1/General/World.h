@@ -5,9 +5,9 @@
 class World
 {
 public:
-	World() {}
 
-
+	virtual void LoadWorld(const char* fileName) = 0;
+	virtual void Update(float Delta) = 0;
 };
 
 #endif

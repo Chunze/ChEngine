@@ -46,6 +46,18 @@
     <ClCompile Include="Physics\ForceGenerators\BasicSprintFG.cpp">
       <Filter>Physics\ForceGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="General\World.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\SceneNode.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\JelloWorld.cpp">
+      <Filter>cs520</Filter>
+    </ClCompile>
+    <ClCompile Include="General\GameObject.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -107,6 +119,18 @@
       <Filter>Physics\ForceGenerators</Filter>
     </ClInclude>
     <ClInclude Include="General\glm.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\World.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\SceneNode.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\JelloWorld.h">
+      <Filter>cs520</Filter>
+    </ClInclude>
+    <ClInclude Include="General\GameObject.h">
       <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>

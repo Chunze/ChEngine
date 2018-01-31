@@ -7,6 +7,7 @@
 // components and managers for the game
 #include "Renderer.h"
 #include "PhysicsManager.h"
+#include "JelloWorld.h"
 
 GameContext* gameContext;
 float mouselastX = 400, mouselastY = 300;
@@ -50,7 +51,11 @@ void Game::InitGame()
 		PhysicsManager* physicsManager = new PhysicsManager();
 		m_gameContext->m_physicsManager = physicsManager;
 	}
-
+	{
+		World* world = new JelloWorld();
+		world->LoadWorld("cs520/jello.w");
+		m_gameContext->m_world = world;
+	}
 }
 
 void Game::GameLoop()
