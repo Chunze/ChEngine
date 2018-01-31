@@ -35,7 +35,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 }
 
 Game::Game(GameContext* gameContext)
-	: m_gameContext(gameContext)
+	: BaseClass(*gameContext)
 {
 	InitGame();
 }
@@ -44,25 +44,24 @@ void Game::InitGame()
 {
 	// creating components and managers for the game
 	{
-		Renderer* renderer = new Renderer();
-		m_gameContext->m_renderer = renderer;
+		Renderer* renderer = new Renderer(m_gameContext);
+		m_gameContext.m_renderer = renderer;
 	}
 	{
 		PhysicsManager* physicsManager = new PhysicsManager();
-		m_gameContext->m_physicsManager = physicsManager;
+		m_gameContext.m_physicsManager = physicsManager;
 	}
 	{
-		World* world = new JelloWorld();
+		World* world = new JelloWorld(m_gameContext);
 		world->LoadWorld("cs520/jello.w");
-		m_gameContext->m_world = world;
+		m_gameContext.m_world = world;
 	}
 }
 
 void Game::GameLoop()
 {
-	GLFWwindow* contextWindow = m_gameContext->m_contextWindow;
-	gameContext = m_gameContext;
-	Jello* jello = new Jello();
+	GLFWwindow* contextWindow = m_gameContext.m_contextWindow;
+	gameContext = &m_gameContext;
 
 	while (!glfwWindowShouldClose(contextWindow))
 	{
@@ -74,7 +73,7 @@ void Game::GameLoop()
 		processInput(contextWindow);
 
 		// render update
-		m_gameContext->m_renderer->Update(deltaTime);
+		m_gameContext.m_renderer->Update(deltaTime);
 
 		//std::cout << "Frame: " << deltaTime << endl;
 		
@@ -96,27 +95,27 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 		if (glfwGetKey(contextWindow, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			m_gameContext->m_renderer->FlyCameraForward(1.0f);
+			m_gameContext.m_renderer->FlyCameraForward(1.0f);
 		}
 		if (glfwGetKey(contextWindow, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			m_gameContext->m_renderer->FlyCameraRight(-1.0f);
+			m_gameContext.m_renderer->FlyCameraRight(-1.0f);
 		}
 		if (glfwGetKey(contextWindow, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			m_gameContext->m_renderer->FlyCameraForward(-1.0f);
+			m_gameContext.m_renderer->FlyCameraForward(-1.0f);
 		}
 		if (glfwGetKey(contextWindow, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			m_gameContext->m_renderer->FlyCameraRight(1.0f);
+			m_gameContext.m_renderer->FlyCameraRight(1.0f);
 		}
 		if (glfwGetKey(contextWindow, GLFW_KEY_Q) == GLFW_PRESS)
 		{
-			m_gameContext->m_renderer->FlyCameraUp(-1.0f);
+			m_gameContext.m_renderer->FlyCameraUp(-1.0f);
 		}
 		if (glfwGetKey(contextWindow, GLFW_KEY_E) == GLFW_PRESS)
 		{
-			m_gameContext->m_renderer->FlyCameraUp(1.0f);
+			m_gameContext.m_renderer->FlyCameraUp(1.0f);
 		}
 	}
 

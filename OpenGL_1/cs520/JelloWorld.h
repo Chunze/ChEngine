@@ -5,7 +5,7 @@
 class JelloWorld : public World
 {
 public:
-	JelloWorld();
+	JelloWorld(GameContext gameContext);
 
 	class Jello* m_jello;
 

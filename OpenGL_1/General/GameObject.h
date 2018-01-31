@@ -1,11 +1,11 @@
 #pragma once
 #include "World.h"
+#include "BaseClass.h"
 
-class GameObject
+class GameObject : BaseClass
 {
 public:
-	GameObject() {}
-	GameObject(World* world);
+	GameObject(GameContext gameContext, World* world);
 	World* m_world;
 
 	virtual void DrawObject(int Mode) = 0;

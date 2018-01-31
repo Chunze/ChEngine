@@ -58,6 +58,9 @@
     <ClCompile Include="General\GameObject.cpp">
       <Filter>General</Filter>
     </ClCompile>
+    <ClCompile Include="General\DrawList.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -131,6 +134,12 @@
       <Filter>cs520</Filter>
     </ClInclude>
     <ClInclude Include="General\GameObject.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\DrawList.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\BaseClass.h">
       <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,8 @@
 
 using namespace glm;
 
-Renderer::Renderer()
+Renderer::Renderer(GameContext gameContext)
+	: BaseClass(gameContext)
 {
 	Initialize();
 }

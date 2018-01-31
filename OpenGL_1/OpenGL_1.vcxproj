@@ -24,6 +24,7 @@
     <ClCompile Include="cs520\Jello.cpp" />
     <ClCompile Include="cs520\JelloWorld.cpp" />
     <ClCompile Include="General\Camera.cpp" />
+    <ClCompile Include="General\DrawList.cpp" />
     <ClCompile Include="General\Game.cpp" />
     <ClCompile Include="General\GameContext.cpp" />
     <ClCompile Include="General\GameObject.cpp" />
@@ -45,7 +46,9 @@
     <ClInclude Include="..\stb_image.h" />
     <ClInclude Include="cs520\Jello.h" />
     <ClInclude Include="cs520\JelloWorld.h" />
+    <ClInclude Include="General\BaseClass.h" />
     <ClInclude Include="General\Camera.h" />
+    <ClInclude Include="General\DrawList.h" />
     <ClInclude Include="General\Game.h" />
     <ClInclude Include="General\GameContext.h" />
     <ClInclude Include="General\GameObject.h" />

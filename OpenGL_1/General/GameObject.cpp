@@ -1,7 +1,8 @@
 #include "GameObject.h"
 
-GameObject::GameObject(World* world)
-	:m_world(world)
+GameObject::GameObject(GameContext gameContext, World* world)
+	: BaseClass(gameContext),
+	m_world(world)
 {
 
 }

@@ -29,13 +29,8 @@
 		resultVector..push_back(m_particle[ip][jp][kp].m_position.z); \
 	}\
 
-Jello::Jello()
-{
-
-}
-
-Jello::Jello(World* world, glm::vec3 position, float size)
-	: GameObject(world),
+Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float size)
+	: GameObject(gameContext, world),
 	  m_position(position),
 	  m_size(size)
 {

@@ -8,9 +8,8 @@
 class Jello : public GameObject
 {
 public:
-	Jello();
 
-	Jello(World* world, glm::vec3 position, float size = 7.0f);
+	Jello(GameContext gameContext, World* world, glm::vec3 position = glm::vec3(0.0f), float size = 7.0f);
 
 	glm::vec3 m_position;
 	float m_size;

@@ -8,16 +8,17 @@
 #include <iostream>
 #include <string>
 
+#include "BaseClass.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
 
 using namespace std;
 
-class Renderer
+class Renderer : public BaseClass
 {
 public:
-	Renderer();
+	Renderer(GameContext gameContext);
 
 	void Initialize();
 
