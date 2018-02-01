@@ -22,7 +22,7 @@ public:
 	float m_kCollision; // Hook's elasticity coefficient for collision springs
 	float m_dCollision; // Damping coefficient collision springs
 
-	virtual void DrawObject(int Mode);
+	virtual void CreateDrawListElement(int Mode);
 
 protected:
 	

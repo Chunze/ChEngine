@@ -49,9 +49,16 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 	}
 }
 
-void Jello::DrawObject(int Mode)
+void Jello::CreateDrawListElement(int Mode)
 {
+	std::vector<float> vertices = GetVertices();
+	DrawListElement e;
 
+	e.drawingPrimitive = DrawingPrimitives::TRIANGLE_STRIP;
+	e.vertexBuffer = &vertices[0];
+	e.VBsize = vertices.size();
+
+	AddElementToDrawList(e);
 }
 
 std::vector<float> Jello::GetVertices()
@@ -168,13 +175,6 @@ std::vector<float> Jello::GetVertices()
 
 			for (i = 0; i <= 7; i++)
 			{
-// 				glNormal3f(normal[i][j].x / counter[i][j], normal[i][j].y / counter[i][j],
-// 					normal[i][j].z / counter[i][j]);
-// 				glVertex3f(NODE(face, i, j).x, NODE(face, i, j).y, NODE(face, i, j).z);
-// 				glNormal3f(normal[i][j - 1].x / counter[i][j - 1], normal[i][j - 1].y / counter[i][j - 1],
-// 					normal[i][j - 1].z / counter[i][j - 1]);
-// 				glVertex3f(NODE(face, i, j - 1).x, NODE(face, i, j - 1).y, NODE(face, i, j - 1).z);
-
 				/* shader input layout:
 					layout(location = 0) in vec3 position;
 					layout(location = 0) in vec3 normal;

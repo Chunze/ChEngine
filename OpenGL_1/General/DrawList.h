@@ -23,7 +23,7 @@ struct DrawListElement
 
 	float* vertexBuffer;
 	size_t VBsize;
-
+	// TODO: add vector for attribute pointer info
 };
 
 class DrawList : public BaseClass

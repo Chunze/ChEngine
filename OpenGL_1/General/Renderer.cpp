@@ -5,6 +5,8 @@
 
 #include "../stb_image.h"
 
+#include "DrawList.h"
+
 using namespace glm;
 
 Renderer::Renderer(GameContext gameContext)
@@ -199,7 +201,7 @@ void Renderer::CalculateTransforms()
 	glm::mat4 projection;
 	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
-	// TODO: keep track on shaders that are in use, then update them
+	// TODO: update the transform in c++ instead of in shader
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
 	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
@@ -249,6 +251,17 @@ void Renderer::Update(float deltaTime)
 
 void Renderer::Draw()
 {
+	DrawList drawList = *m_gameContext.GetDrawList();
+
+	if (drawList.IsHaveNewData())
+	{
+		for (auto drawCall : drawList.elements)
+		{
+			// TODO: draw element in draw list
+		}
+	}
+
+
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
