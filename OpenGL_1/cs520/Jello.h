@@ -22,9 +22,12 @@ public:
 	float m_kCollision; // Hook's elasticity coefficient for collision springs
 	float m_dCollision; // Damping coefficient collision springs
 
-	virtual void CreateDrawListElement(int Mode);
+	virtual void CreateAndAddDrawListElement(int Mode);
+	virtual void Update(float Delta);
 
 protected:
-	
+	DrawListElement e;
+	bool drawListElementValid = false;
 	std::vector<float> GetVertices();
+	int m_drawListIndex = -1;
 };

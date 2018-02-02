@@ -47,18 +47,37 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 			}
 		}
 	}
+
+	// init shader
+	shader = new Shader("vertexShader.glsl", "LightingShader.frag");
 }
 
-void Jello::CreateDrawListElement(int Mode)
+void Jello::CreateAndAddDrawListElement(int Mode)
 {
 	std::vector<float> vertices = GetVertices();
-	DrawListElement e;
-
-	e.drawingPrimitive = DrawingPrimitives::TRIANGLE_STRIP;
 	e.vertexBuffer = &vertices[0];
 	e.VBsize = vertices.size();
 
-	AddElementToDrawList(e);
+	if (drawListElementValid)
+	{
+		return;
+	}
+
+	e.shader = *shader;
+	e.drawingPrimitive = DrawingPrimitives::TRIANGLE_STRIP;
+	e.attributeSizes.push_back(3);
+	e.attributeSizes.push_back(3);
+	e.vertextInfoSize = 6;
+	m_drawListIndex = m_gameContext.GetDrawList()->Add(e, m_drawListIndex);
+	//m_drawListIndex = AddElementToDrawList(e, m_drawListIndex);
+
+	drawListElementValid = true;
+}
+
+void Jello::Update(float Delta)
+{
+	// add to drawlist
+	CreateAndAddDrawListElement(0);
 }
 
 std::vector<float> Jello::GetVertices()

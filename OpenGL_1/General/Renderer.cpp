@@ -233,7 +233,7 @@ void Renderer::FlyCameraUp(float value)
 
 void Renderer::Update(float deltaTime)
 {
-	CalculateTransforms();
+	//CalculateTransforms();
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -251,15 +251,18 @@ void Renderer::Update(float deltaTime)
 
 void Renderer::Draw()
 {
+	/*		camera		*/
+	glm::mat4 view;
+	view = mainCamera->m_view;
+
+	/*		NDC			*/
+	glm::mat4 projection;
+	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+
+
 	DrawList drawList = *m_gameContext.GetDrawList();
 
-	if (drawList.IsHaveNewData())
-	{
-		for (auto drawCall : drawList.elements)
-		{
-			// TODO: draw element in draw list
-		}
-	}
+
 
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -281,25 +284,36 @@ void Renderer::Draw()
 
 	glm::mat4 model;
 	model = glm::translate(model, cubePositions[1]);
-	model = glm::scale(model, glm::vec3(2.0f));
-	//float angle = 20.0f * 3;
-	//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
+
+	// draw drawlist
+	for (auto drawCall : drawList.m_elements)
+	{
+		// TODO: draw element in draw list
+		drawCall.BindBuffers();
+		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
+		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
+		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
+
+		glDrawArrays(GL_TRIANGLES, 0, drawCall.numOfVertices);
+	}
+
+	//simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	
 	// TODO: keep track of how many attributes, and clean up accordingly 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBindVertexArray(VAO);
-	simpleShader->Use();
-	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
-
-	model = glm::mat4();
-	model = glm::translate(model, cubePositions[2]);
-	lampShader->Use();
-	lampShader->SetUniformMatrix4("model", false, value_ptr(model));
-	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
+// 	glEnableVertexAttribArray(0);
+// 	glEnableVertexAttribArray(1);
+// 	glEnableVertexAttribArray(2);
+// 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+// 	glBindVertexArray(VAO);
+// 	simpleShader->Use();
+// 	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
+// 
+// 	model = glm::mat4();
+// 	model = glm::translate(model, cubePositions[2]);
+// 	lampShader->Use();
+// 	lampShader->SetUniformMatrix4("model", false, value_ptr(model));
+// 	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
 }
 
 void Renderer::CleanupDraw()

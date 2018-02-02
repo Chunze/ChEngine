@@ -44,6 +44,10 @@ void Game::InitGame()
 {
 	// creating components and managers for the game
 	{
+		DrawList* drawList = new DrawList(m_gameContext);
+		m_gameContext.m_drawList = drawList;
+	}
+	{
 		Renderer* renderer = new Renderer(m_gameContext);
 		m_gameContext.m_renderer = renderer;
 	}
@@ -72,8 +76,8 @@ void Game::GameLoop()
 		// input
 		processInput(contextWindow);
 
-		// render update
-		m_gameContext.m_renderer->Update(deltaTime);
+		Update(deltaTime);
+		
 
 		//std::cout << "Frame: " << deltaTime << endl;
 		
@@ -137,4 +141,12 @@ void Game::processInput(GLFWwindow* contextWindow)
 	}
 }
 
+void Game::Update(float Delta)
+{
+	// world update
+	m_gameContext.GetWorld()->Update(Delta);
+
+	// render update
+	m_gameContext.m_renderer->Update(deltaTime);
+}
 

@@ -3,7 +3,7 @@
 #pragma once
 #include "BaseClass.h"
 
-class World : BaseClass
+class World : public BaseClass
 {
 public:
 	World(GameContext gameContext)

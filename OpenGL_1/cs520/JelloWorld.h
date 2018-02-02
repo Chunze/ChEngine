@@ -19,6 +19,7 @@ public:
 
 	int viewingMode;
 
+	void InitWorld();
 	virtual void LoadWorld(const char* fileName);
 	virtual void Update(float Delta);
 };

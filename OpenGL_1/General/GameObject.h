@@ -2,17 +2,22 @@
 #include "World.h"
 #include "BaseClass.h"
 #include "DrawList.h"
+#include "Shader.h"
 
-class GameObject : BaseClass
+class GameObject : public BaseClass
 {
 public:
 	GameObject(GameContext gameContext, World* world);
 	World* m_world;
 
-	virtual void CreateDrawListElement(int Mode) = 0;
+	virtual void CreateAndAddDrawListElement(int Mode) = 0;
+
+	virtual void Update(float Delta) {}
 
 	World* GetWorld() { return m_world; }
 
 protected:
-	inline void AddElementToDrawList(DrawListElement e) { m_gameContext.GetDrawList()->Add(e); }
+	Shader* shader;
+
+	inline int AddElementToDrawList(DrawListElement e, int index) { return m_gameContext.GetDrawList()->Add(e, index); }
 };

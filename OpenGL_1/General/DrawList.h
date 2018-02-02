@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "BaseClass.h"
+#include "Shader.h"
+
 
 enum class DrawingPrimitives
 {
@@ -24,6 +26,17 @@ struct DrawListElement
 	float* vertexBuffer;
 	size_t VBsize;
 	// TODO: add vector for attribute pointer info
+
+	size_t vertextInfoSize;
+	size_t numOfVertices;
+	std::vector<int> attributeSizes;
+
+	Shader shader;
+	// buffers
+	unsigned int vertexBufferObject;
+	unsigned int vertexArrayObject;
+
+	void BindBuffers();
 };
 
 class DrawList : public BaseClass
@@ -31,9 +44,9 @@ class DrawList : public BaseClass
 public:
 	DrawList(GameContext gameContext);
 
-	std::vector<DrawListElement> elements;
+	std::vector<DrawListElement> m_elements;
 
-	void Add(DrawListElement elementToAdd);
+	int Add(DrawListElement elementToAdd, int index);
 	void Clear();
 	bool IsHaveNewData() { return bHasNewData; };
 

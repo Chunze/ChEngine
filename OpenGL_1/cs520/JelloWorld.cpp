@@ -8,7 +8,12 @@
 JelloWorld::JelloWorld(GameContext gameContext)
 	: World(gameContext)
 {
-	m_jello = new Jello(gameContext, this, glm::vec3(0.0f, 3.0f, 5.0));
+	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 3.0f, 5.0));
+}
+
+void JelloWorld::InitWorld()
+{
+	
 }
 
 void JelloWorld::LoadWorld(const char* fileName)
@@ -86,6 +91,6 @@ void JelloWorld::LoadWorld(const char* fileName)
 
 void JelloWorld::Update(float Delta)
 {
-	
+	m_jello->Update(Delta);
 }
 
