@@ -73,6 +73,8 @@
     <None Include="DebugDrawShader.frag" />
     <None Include="DebugDrawShader.vert" />
     <None Include="FragmentShader.glsl" />
+    <None Include="JelloFS.frag" />
+    <None Include="JelloVS.vert" />
     <None Include="LampShader.frag" />
     <None Include="LightingShader.frag" />
     <None Include="VertexShader.glsl" />

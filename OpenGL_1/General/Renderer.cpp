@@ -2,6 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 #include "../stb_image.h"
 
@@ -288,14 +289,24 @@ void Renderer::Draw()
 	// draw drawlist
 	for (auto drawCall : drawList.m_elements)
 	{
-		// TODO: draw element in draw list
-		drawCall.BindBuffers();
+		drawCall.GetRenderReady();
 		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
+		drawCall.shader.SetUniformVector("material.specular", 0.5f, 0.5f, 0.5f);
+		drawCall.shader.SetUniformFloat("material.shininess", 32.0f);
+		//simpleShader->SetUniformVector("lightColor", 1.0f);
+		drawCall.shader.SetUniformVector("light.ambient", 0.2f, 0.2f, 0.2f);
+		drawCall.shader.SetUniformVector("light.diffuse", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
+		drawCall.shader.SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
+		drawCall.shader.SetUniformVector("light.position", value_ptr(m_lightPosition));
 
-		glDrawArrays(GL_TRIANGLES, 0, drawCall.numOfVertices);
+
+		
+
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, drawCall.numOfVertices);
+		drawCall.DisableAttributePointer();
 	}
 
 	//simpleShader->SetUniformMatrix4("model", false, value_ptr(model));

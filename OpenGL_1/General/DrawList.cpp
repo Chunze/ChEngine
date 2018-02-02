@@ -27,12 +27,19 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
 
 
+		int attributeByteSize = 0;
+		for (int attributeSize : elementToAdd.attributeSizes)
+		{
+			attributeByteSize += attributeSize;
+		}
+
+		attributeByteSize *= sizeof(float);
 		size_t index = 0;
 		int offset = 0;
 		for (int attributeSize : elementToAdd.attributeSizes)
 		{
 			int attribute = elementToAdd.attributeSizes[index];
-			int attributeByteSize = attribute * sizeof(float);
+			
 			glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, attributeByteSize, (void*)offset);
 			offset += attributeByteSize;
 			++index;
@@ -57,9 +64,23 @@ void DrawList::Clear()
 	m_elements.clear();
 }
 
-void DrawListElement::BindBuffers()
+void DrawListElement::GetRenderReady()
 {
+	// enable attribute pointers
+	for (int i = 0; i < attributeSizes.size(); i++)
+	{
+		glEnableVertexAttribArray(i);
+	}
+	// bind buffers
 	glBindVertexArray(vertexArrayObject);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
 	shader.Use();
+}
+
+void DrawListElement::DisableAttributePointer()
+{
+	for (int i = 0; i < attributeSizes.size(); i++)
+	{
+		glDisableVertexAttribArray(i);
+	}
 }

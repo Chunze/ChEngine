@@ -1,9 +1,9 @@
-
+#include <iostream>
 #include "Jello.h"
 #include "JelloWorld.h"
 
 #define point glm::vec3
-#define pDIFFERENCE(src1,src2,dest) dest = src1 + src2;
+#define pDIFFERENCE(src1,src2,dest) dest = src1 - src2;
 #define CROSSPRODUCTp(vector1,vector2,dest) dest = glm::cross(vector1, vector2);
 #define MULTIPLY(src1,src2,dest) dest = src1 * src2;
 #define pNORMALIZE(vector) vector = glm::normalize(vector);
@@ -49,14 +49,14 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 	}
 
 	// init shader
-	shader = new Shader("vertexShader.glsl", "LightingShader.frag");
+	shader = new Shader("JelloVS.vert", "JelloFS.frag");
 }
 
 void Jello::CreateAndAddDrawListElement(int Mode)
 {
 	std::vector<float> vertices = GetVertices();
 	e.vertexBuffer = &vertices[0];
-	e.VBsize = vertices.size();
+	e.VBsize = vertices.size() * sizeof(float);
 
 	if (drawListElementValid)
 	{
@@ -199,19 +199,22 @@ std::vector<float> Jello::GetVertices()
 					layout(location = 0) in vec3 normal;
 				*/
 				// vertex 1
-				resultVector.push_back(NODE(face, i, j).x);
-				resultVector.push_back(NODE(face, i, j).y);
-				resultVector.push_back(NODE(face, i, j).z);
-
+				glm::vec3 v1 = ((Particle*)(m_particles)+pointMap((face), (i), (j)))->m_position;
+				resultVector.push_back(v1.x);
+				resultVector.push_back(v1.y);
+				resultVector.push_back(v1.z);
+				//std::cout << printf("(%.2f, %.2f, %.2f)", v1.x, v1.y, v1.z) << std::endl;
 				// normal 1
 				resultVector.push_back(normal[i][j].x / counter[i][j]);
 				resultVector.push_back(normal[i][j].y / counter[i][j]);
 				resultVector.push_back(normal[i][j].z / counter[i][j]);
 
 				// vertex 2
-				resultVector.push_back(NODE(face, i, j - 1).x);
-				resultVector.push_back(NODE(face, i, j - 1).y);
-				resultVector.push_back(NODE(face, i, j - 1).z);
+				glm::vec3 v2 = ((Particle*)(m_particles)+pointMap((face), (i), (j - 1)))->m_position;
+				resultVector.push_back(v2.x);
+				resultVector.push_back(v2.y);
+				resultVector.push_back(v2.z);
+				//std::cout << printf("(%.2f, %.2f, %.2f)", v2.x, v2.y, v2.z) << std::endl;
 
 				// normal 2
 				resultVector.push_back(normal[i][j - 1].x / counter[i][j - 1]);

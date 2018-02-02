@@ -36,7 +36,8 @@ struct DrawListElement
 	unsigned int vertexBufferObject;
 	unsigned int vertexArrayObject;
 
-	void BindBuffers();
+	void GetRenderReady();
+	void DisableAttributePointer();
 };
 
 class DrawList : public BaseClass

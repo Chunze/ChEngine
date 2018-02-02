@@ -69,6 +69,8 @@
     <None Include="DebugDrawShader.vert" />
     <None Include="LightingShader.frag" />
     <None Include="LampShader.frag" />
+    <None Include="JelloVS.vert" />
+    <None Include="JelloFS.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\FileManager.h">
