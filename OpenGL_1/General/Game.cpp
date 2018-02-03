@@ -143,8 +143,13 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 void Game::Update(float Delta)
 {
+	// force update
+	m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
+
 	// world update
 	m_gameContext.GetWorld()->Update(Delta);
+
+	// physics update
 
 	// render update
 	m_gameContext.m_renderer->Update(deltaTime);

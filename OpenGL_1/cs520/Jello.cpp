@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Jello.h"
 #include "JelloWorld.h"
+#include "ForceGenerators/BasicSprintFG.h"
+#include "PhysicsManager.h"
 
 #define point glm::vec3
 #define pDIFFERENCE(src1,src2,dest) dest = src1 - src2;
@@ -229,5 +231,96 @@ std::vector<float> Jello::GetVertices()
 
 
 	return resultVector;
+}
+
+void Jello::CreateSprings()
+{
+	float segment = m_size / 7.0f;
+	int i, j, k, offset;
+	// Create spring force generators
+	for (i = 0; i <= 7; i++)
+	{
+		for (j = 0; j <= 7; j++)
+		{
+			for (k = 0; j <= 7; k++)
+			{
+				for (offset = -2; offset <= 2; offset++)
+				{
+					if (offset == 0)
+					{
+						continue;
+					}
+
+					if ((i + offset >= 0 && i + offset <= 7))
+					{
+						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k], segment);
+						m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+					}
+
+					if ((j + offset >= 0 && j + offset <= 7))
+					{
+						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k], segment);
+						m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+					}
+
+					if ((k + offset >= 0 && k + offset <= 7))
+					{
+						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j][k + offset], segment);
+						m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+					}
+
+					if (offset == -2 || offset == 2)
+					{
+						continue;
+					}
+
+					if (i + offset >= 0 && i + offset <= 7)
+					{
+						if (j + offset >= 0 && j + offset <= 7)
+						{
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j + offset][k], segment);
+							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+						}
+
+						if (j - offset >= 0 && j - offset <= 7)
+						{
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j - offset][k], segment);
+							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+						}
+
+						if (k + offset >= 0 && k + offset <= 7)
+						{
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k + offset], segment);
+							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+						}
+
+						if (k - offset >= 0 && k - offset <= 7)
+						{
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k - offset], segment);
+							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+						}
+					}
+
+					if (j + offset >= 0 && j + offset <= 7)
+					{
+						if (k + offset >= 0 && k + offset <= 7)
+						{
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k + offset], segment);
+							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+						}
+
+						if (k - offset >= 0 && k - offset <= 7)
+						{
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k - offset], segment);
+							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
+						}
+					}
+
+					
+				}
+
+			}
+		}
+	}
 }
 

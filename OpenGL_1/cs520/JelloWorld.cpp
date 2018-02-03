@@ -3,12 +3,14 @@
 
 #include "JelloWorld.h"
 #include "Jello.h"
+#include "PhysicsManager.h"
 
 
 JelloWorld::JelloWorld(GameContext gameContext)
 	: World(gameContext)
 {
 	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0));
+	m_gameObjects.push_back(*m_jello);
 }
 
 void JelloWorld::InitWorld()
@@ -29,6 +31,14 @@ void JelloWorld::LoadWorld(const char* fileName)
 
 	/* read integrator algorithm */
 	fscanf(file, "%s\n", &m_intergrator);
+	if (m_intergrator[0] == 'E')
+	{
+		m_gameContext.GetPhysicsManager()->SetIntegrator(0);
+	}
+	else if (m_intergrator[0] == 'R')
+	{
+		m_gameContext.GetPhysicsManager()->SetIntegrator(1);
+	}
 
 	/* read timestep size and render */
 	fscanf_s(file, "%f %d\n", &m_dt, &m_n);

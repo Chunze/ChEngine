@@ -11,6 +11,7 @@ public:
 	float m_inverseMass;
 	glm::vec3 m_position;
 	glm::vec3 m_volecity;
+	glm::vec3 m_acceleration;
 
 	glm::vec3 m_gravity = glm::vec3(0.0f, -9.8f, 0.0f);
 
@@ -20,6 +21,7 @@ public:
 	*/
 	void addForce(const glm::vec3 &force);
 
+	void Integrate(float Delta, int Mode);
 protected:
 	/**
 	* Holds the accumulated force to be applied at the next

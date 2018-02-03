@@ -30,4 +30,6 @@ protected:
 	bool drawListElementValid = false;
 	std::vector<float> GetVertices();
 	int m_drawListIndex = -1;
+
+	void CreateSprings();
 };

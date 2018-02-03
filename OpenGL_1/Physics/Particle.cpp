@@ -25,3 +25,20 @@ void Particle::addForce(const glm::vec3 &force)
 {
 	forceAccum += force;
 }
+
+void Particle::Integrate(float Delta, int Mode)
+{
+	if (Mode = 1)
+	{
+		m_position = m_volecity * Delta;
+		m_volecity = m_acceleration * Delta;
+		m_acceleration = forceAccum * m_inverseMass;
+	}
+	else if (Mode == 2)
+	{
+		glm::vec3 f1p, f2p, f3p, f4p;
+		glm::vec4 f1v, f2v, f3v, f4v;
+
+
+	}
+}
