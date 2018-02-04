@@ -19,6 +19,7 @@ public:
 
 	void Update(float Delta);
 
+	int GetIntegrator() { return m_intergrator; }
 	void SetIntegrator(int in) { m_intergrator = in; }
 
 protected:

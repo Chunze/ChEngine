@@ -36,20 +36,25 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 	  m_position(position),
 	  m_size(size)
 {
-	float step = m_size / 7.0f;
+	
+}
+
+void Jello::InitJello()
+{
+	m_step = m_size / 7.0f;
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
 			for (int k = 0; k < 8; k++)
 			{
-				glm::vec3 particlePos = glm::vec3(m_position.x + i * step, m_position.y + j * step, m_position.z + k * step);
-				Particle* temp = new Particle(1.0f, particlePos, glm::vec3(0.0));
+				glm::vec3 particlePos = glm::vec3(0.0f, 0.0f, 0.0f);
+				Particle* temp = new Particle(m_mass, particlePos, glm::vec3(0.0));
 				m_particles[i][j][k] = *temp;
 			}
 		}
 	}
-
+	
 	// init shader
 	shader = new Shader("JelloVS.vert", "JelloFS.frag");
 }
@@ -80,6 +85,21 @@ void Jello::Update(float Delta)
 {
 	// add to drawlist
 	CreateAndAddDrawListElement(0);
+
+	int Mode = m_gameContext.GetPhysicsManager()->GetIntegrator();
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			for (int k = 0; k < 8; k++)
+			{
+				glm::vec3 externalForce = ((JelloWorld*)GetWorld())->GetForceInForceField(m_particles[i][j][k].m_position);
+				m_particles[i][j][k].addForce(externalForce);
+				m_particles[i][j][k].Integrate(Delta, Mode);
+			}
+		}
+	}
 }
 
 std::vector<float> Jello::GetVertices()
@@ -124,7 +144,7 @@ std::vector<float> Jello::GetVertices()
 	int face;
 	float faceFactor, length;
 
-	if (fabs(m_particles[0][0][0].m_position.x) > 10)
+	if (fabs(m_particles[0][0][0].m_position.x) > 30)
 	{
 		printf("Your cube somehow escaped way out of the box.\n");
 		exit(0);
@@ -235,14 +255,15 @@ std::vector<float> Jello::GetVertices()
 
 void Jello::CreateSprings()
 {
-	float segment = m_size / 7.0f;
+	float sqrt2 = 1.41421356237f;
+	float segment = m_step;
 	int i, j, k, offset;
 	// Create spring force generators
 	for (i = 0; i <= 7; i++)
 	{
 		for (j = 0; j <= 7; j++)
 		{
-			for (k = 0; j <= 7; k++)
+			for (k = 0; k <= 7; k++)
 			{
 				for (offset = -2; offset <= 2; offset++)
 				{
@@ -253,19 +274,19 @@ void Jello::CreateSprings()
 
 					if ((i + offset >= 0 && i + offset <= 7))
 					{
-						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k], segment);
+						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k], segment * abs(offset));
 						m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 					}
 
 					if ((j + offset >= 0 && j + offset <= 7))
 					{
-						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k], segment);
+						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k], segment * abs(offset));
 						m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 					}
 
 					if ((k + offset >= 0 && k + offset <= 7))
 					{
-						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j][k + offset], segment);
+						BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j][k + offset], segment * abs(offset));
 						m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 					}
 
@@ -278,25 +299,25 @@ void Jello::CreateSprings()
 					{
 						if (j + offset >= 0 && j + offset <= 7)
 						{
-							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j + offset][k], segment);
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j + offset][k], segment * sqrt2);
 							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 						}
 
 						if (j - offset >= 0 && j - offset <= 7)
 						{
-							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j - offset][k], segment);
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j - offset][k], segment * sqrt2);
 							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 						}
 
 						if (k + offset >= 0 && k + offset <= 7)
 						{
-							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k + offset], segment);
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k + offset], segment * sqrt2);
 							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 						}
 
 						if (k - offset >= 0 && k - offset <= 7)
 						{
-							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k - offset], segment);
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i + offset][j][k - offset], segment * sqrt2);
 							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 						}
 					}
@@ -305,13 +326,13 @@ void Jello::CreateSprings()
 					{
 						if (k + offset >= 0 && k + offset <= 7)
 						{
-							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k + offset], segment);
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k + offset], segment * sqrt2);
 							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 						}
 
 						if (k - offset >= 0 && k - offset <= 7)
 						{
-							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k - offset], segment);
+							BasicSprintFG *sprintFG = new BasicSprintFG(&m_particles[i][j + offset][k - offset], segment * sqrt2);
 							m_gameContext.GetPhysicsManager()->registerForce(&m_particles[i][j][k], sprintFG);
 						}
 					}

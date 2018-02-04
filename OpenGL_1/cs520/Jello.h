@@ -9,11 +9,14 @@ class Jello : public GameObject
 {
 public:
 
-	Jello(GameContext gameContext, World* world, glm::vec3 position = glm::vec3(0.0f), float size = 7.0f);
+	Jello(GameContext gameContext, World* world, glm::vec3 position = glm::vec3(0.0f), float size = 1.0f);
 
 	glm::vec3 m_position;
 	float m_size;
+
+	// mass for each particle
 	float m_mass;
+	float m_step;
 
 	Particle m_particles[8][8][8];
 
@@ -21,6 +24,9 @@ public:
 	float m_dElastic; // Damping coefficient for all springs except collision springs
 	float m_kCollision; // Hook's elasticity coefficient for collision springs
 	float m_dCollision; // Damping coefficient collision springs
+
+	void InitJello();
+	void CreateSprings();
 
 	virtual void CreateAndAddDrawListElement(int Mode);
 	virtual void Update(float Delta);
@@ -31,5 +37,5 @@ protected:
 	std::vector<float> GetVertices();
 	int m_drawListIndex = -1;
 
-	void CreateSprings();
+	
 };

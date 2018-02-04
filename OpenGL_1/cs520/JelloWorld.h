@@ -17,9 +17,11 @@ public:
 	int m_resolution;			// resolution for the 3d grid specifying the external force field; value of 0 means that there is no force field
 	glm::vec3 * m_forceField;	// pointer to the array of values of the force field
 
+
 	int viewingMode;
 
-	void InitWorld();
 	virtual void LoadWorld(const char* fileName);
 	virtual void Update(float Delta);
+
+	glm::vec3 GetForceInForceField(glm::vec3 position) const;
 };

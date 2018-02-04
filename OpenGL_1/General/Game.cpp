@@ -57,7 +57,7 @@ void Game::InitGame()
 	}
 	{
 		World* world = new JelloWorld(m_gameContext);
-		world->LoadWorld("cs520/jello.w");
+		world->LoadWorld("cs520/rotate.w");
 		m_gameContext.m_world = world;
 	}
 }

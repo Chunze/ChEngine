@@ -16,10 +16,14 @@ void BasicSprintFG::UpdateForce(Particle* particle, float duration)
 	glm::vec3 force = particle->m_position - other->m_position;
 
 	float magnitude = glm::length(force);
+	float dragCoefficient = magnitude;
 	magnitude = fabsf(magnitude - restLength);
 	magnitude *= springConstant;
 
 	force = glm::normalize(force);
 	force *= -magnitude;
+
+	//dragCoefficient = k1 * dragCoefficient + k2 * dragCoefficient * dragCoefficient;
+
 	particle->addForce(force);
 }

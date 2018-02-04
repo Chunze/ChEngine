@@ -12,7 +12,7 @@ class BasicSprintFG : public ForceGenerator
 public:
 	BasicSprintFG();
 
-	BasicSprintFG(Particle* _other, float _restLength, float _sprintConstant = 100);
+	BasicSprintFG(Particle* _other, float _restLength, float _sprintConstant = 10);
 
 	virtual void UpdateForce(Particle* particle, float duration);
 
