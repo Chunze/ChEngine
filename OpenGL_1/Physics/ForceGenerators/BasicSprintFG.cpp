@@ -16,12 +16,12 @@ void BasicSprintFG::UpdateForce(Particle* particle, float duration)
 	glm::vec3 springForceDir, springForce, dampingForce;
 
 	// pointing from this particle to other
-	springForceDir = other->m_position - particle->m_position;
-	float distance = glm::length(springForce);
-	springForceDir = glm::normalize(springForceDir);
+	springForceDir = particle->m_position - other->m_position;
+	float distance = glm::length(springForceDir);
+	springForceDir = springForceDir / distance;
 
 	springForce = -springForceDir * springConstant * (distance - restLength);
-	dampingForce = -dampingConstant * ((particle->m_volecity - other->m_volecity) * springForceDir) * springForceDir;
+	dampingForce = -springForceDir * dampingConstant * ((particle->m_volecity - other->m_volecity) * springForceDir);
 
 	glm::vec3 force = springForce + dampingForce;
 
