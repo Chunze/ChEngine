@@ -36,7 +36,8 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 	  m_position(position),
 	  m_size(size)
 {
-	
+	// init shader
+	shader = new Shader("JelloVS.vert", "JelloFS.frag");
 }
 
 void Jello::InitJello()
@@ -48,15 +49,12 @@ void Jello::InitJello()
 		{
 			for (int k = 0; k < 8; k++)
 			{
-				glm::vec3 particlePos = glm::vec3(0.0f, 0.0f, 0.0f);
+				glm::vec3 particlePos = glm::vec3(i * m_step, j * m_step, k * m_step);
 				Particle* temp = new Particle(m_mass, particlePos, glm::vec3(0.0));
 				m_particles[i][j][k] = *temp;
 			}
 		}
 	}
-	
-	// init shader
-	shader = new Shader("JelloVS.vert", "JelloFS.frag");
 }
 
 void Jello::CreateAndAddDrawListElement(int Mode)
@@ -84,6 +82,7 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 
 void Jello::Update(float Delta)
 {
+	//std::cout << m_particles[0][0][1].m_position.x << ", " << m_particles[0][0][1].m_position.y << ", " << m_particles[0][0][1].m_position.z << std::endl;
 	// add to drawlist
 	CreateAndAddDrawListElement(0);
 
@@ -98,11 +97,13 @@ void Jello::Update(float Delta)
 				glm::vec3 externalForce = ((JelloWorld*)GetWorld())->GetForceInForceField(m_particles[i][j][k].m_position);
 
 				// COMMENT: adding external force
-				//m_particles[i][j][k].addForce(externalForce);
+				m_particles[i][j][k].addForce(externalForce);
 				m_particles[i][j][k].Integrate(Delta, Mode);
 			}
 		}
 	}
+
+	
 }
 
 std::vector<float> Jello::GetVertices()
@@ -181,6 +182,7 @@ std::vector<float> Jello::GetVertices()
 		/* process triangles, accumulate normals for Gourad shading */
 
 		for (i = 0; i <= 6; i++)
+		{
 			for (j = 0; j <= 6; j++) // process block (i,j)
 			{
 				r1 = NODE(face, i + 1, j) - NODE(face, i, j); // first triangle
@@ -206,7 +208,7 @@ std::vector<float> Jello::GetVertices()
 				pSUM(normal[i + 1][j + 1], r3, normal[i + 1][j + 1]);
 				counter[i + 1][j + 1]++;
 			}
-
+		}
 
 		/* the actual rendering */
 		for (j = 1; j <= 7; j++)
@@ -261,6 +263,8 @@ std::vector<float> Jello::GetVertices()
 
 void Jello::CreateSprings()
 {
+	InitJello();
+
 	float sqrt2 = 1.41421356237f;
 	float segment = m_step;
 	int i, j, k, offset;

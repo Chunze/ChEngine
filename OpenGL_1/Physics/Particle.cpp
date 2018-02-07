@@ -30,10 +30,11 @@ void Particle::Integrate(float Delta, int Mode, int step)
 {
 	if (Mode == 0)
 	{
-		m_position += m_volecity * Delta;
-		m_volecity += m_acceleration * Delta;
 		m_acceleration = forceAccum * m_inverseMass;
 
+		m_volecity += m_acceleration * Delta;
+
+		m_position += m_volecity * Delta;
 	}
 	else if (Mode == 1)
 	{

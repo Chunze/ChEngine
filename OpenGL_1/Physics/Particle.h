@@ -16,6 +16,8 @@ public:
 	glm::vec3 m_gravity = glm::vec3(0.0f, -9.8f, 0.0f);
 
 	float damping = 0.98f;
+
+	float a = 10;
 	/**
 	* Adds the given force to the particle to be applied at the
 	* next iteration only.

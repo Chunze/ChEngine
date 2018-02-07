@@ -6,11 +6,11 @@
 Camera::Camera()
 {
 	// start position
-	m_position = glm::vec3(12.0f, 5.0f, -10.0f);
+	m_position = glm::vec3(4.0f, 4.0f, 4.0f);
 
 	// Look at vector
 	glm::vec3 LookatPt = glm::vec3(0.0f, 0.0f, 0.0f);		// looking at the origin
-	m_forward = glm::vec3(-0.6f, -0.2f, 0.8f);
+	m_forward = glm::normalize(LookatPt - m_position);
 
 	// up vector
 	m_up = glm::vec3(0.0f, 1.0f, 0.0f);

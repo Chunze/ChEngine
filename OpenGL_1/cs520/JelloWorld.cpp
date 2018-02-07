@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <fstream>
+#include <iostream>
 
 #include "JelloWorld.h"
 #include "Jello.h"
@@ -68,17 +69,20 @@ void JelloWorld::LoadWorld(const char* fileName)
 						&m_forceField[i * m_resolution * m_resolution + j * m_resolution + k].x,
 						&m_forceField[i * m_resolution * m_resolution + j * m_resolution + k].y,
 						&m_forceField[i * m_resolution * m_resolution + j * m_resolution + k].z);
-
+	float as = 0;
+	float ad = 0;
+	float af = 0;
 	/* read initial point positions */
 	for (i = 0; i <= 7; i++)
 	{
 		for (j = 0; j <= 7; j++)
 		{
 			for (k = 0; k <= 7; k++)
-				fscanf_s(file, "%f %f %f\n",
-					&m_jello->m_particles[i][j][k].m_position.x, 
-					&m_jello->m_particles[i][j][k].m_position.y,
-					&m_jello->m_particles[i][j][k].m_position.z);
+// 				fscanf_s(file, "%f %f %f\n",
+// 					&m_jello->m_particles[i][j][k].m_position.x, 
+// 					&m_jello->m_particles[i][j][k].m_position.y,
+// 					&m_jello->m_particles[i][j][k].m_position.z);
+fscanf_s(file, "%f %f %f\n", &as, &ad, &af);
 		}
 	}
 
@@ -95,6 +99,9 @@ void JelloWorld::LoadWorld(const char* fileName)
 					&m_jello->m_particles[i][j][k].m_volecity.y,
 					&m_jello->m_particles[i][j][k].m_volecity.z);
 		}
+		std::cout << m_jello->m_particles[i][j][k].m_volecity.x << "," <<
+			m_jello->m_particles[i][j][k].m_volecity.y << "," <<
+			m_jello->m_particles[i][j][k].m_volecity.z << std::endl;
 	}
 
 	fclose(file);

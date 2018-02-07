@@ -7,8 +7,8 @@
 
 enum class DrawingPrimitives
 {
-	POINTS,
-	LINES,
+	POINTS			= 0x0000,
+	LINES			= 0x0001,
 	LINE_STRIP,
 	LINE_LOOP,
 	TRIANGLES,
@@ -39,6 +39,7 @@ struct DrawListElement
 	void GetRenderReady();
 	void DisableAttributePointer();
 };
+
 
 class DrawList : public BaseClass
 {

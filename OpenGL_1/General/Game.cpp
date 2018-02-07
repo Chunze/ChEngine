@@ -66,9 +66,11 @@ void Game::GameLoop()
 {
 	GLFWwindow* contextWindow = m_gameContext.m_contextWindow;
 	gameContext = &m_gameContext;
+	
 
 	while (!glfwWindowShouldClose(contextWindow))
 	{
+		bWasPausedLastFrame = bPaused;
 		float currentTime = glfwGetTime();
 		deltaTime = currentTime - lastFrameTime;
 		lastFrameTime = currentTime;
@@ -76,8 +78,18 @@ void Game::GameLoop()
 		// input
 		processInput(contextWindow);
 
-		deltaTime = 0.0005;
-		Update(deltaTime);
+
+		if (bWasPausedLastFrame && !bPaused)
+		{
+			deltaTime = 0.0f;
+			bWasPausedLastFrame = false;
+		}
+
+
+			deltaTime = 0.0005;
+			Update(deltaTime);
+		
+		
 		
 
 		//std::cout << "Frame: " << deltaTime << endl;
@@ -93,11 +105,22 @@ void Game::processInput(GLFWwindow* contextWindow)
 	{
 		glfwSetWindowShouldClose(contextWindow, true);
 	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		bPaused = false;
+	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_ENTER) == GLFW_PRESS)
+	{
+		bPaused = true;
+	}
+
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		glfwSetInputMode(contextWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetCursorPosCallback(contextWindow, mouse_callback);
-
+		
 		if (glfwGetKey(contextWindow, GLFW_KEY_W) == GLFW_PRESS)
 		{
 			m_gameContext.m_renderer->FlyCameraForward(1.0f);
@@ -144,13 +167,17 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 void Game::Update(float Delta)
 {
-	// force update
-	m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
+	if (!bGamePaused || !bPaused)
+	{
+		// force update
+		m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
 
-	// world update
-	m_gameContext.GetWorld()->Update(Delta);
+		// world update
+		m_gameContext.GetWorld()->Update(Delta);
+		// physics update
 
-	// physics update
+		bGamePaused = true;
+	}
 
 	// render update
 	m_gameContext.m_renderer->Update(deltaTime);

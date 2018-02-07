@@ -19,6 +19,9 @@ public:
 	float deltaTime = 0.0f;
 	float lastFrameTime = 0.0f;
 
+	bool bWasPausedLastFrame = false;
+	bool bPaused = true;
+	bool bGamePaused = false;
 };
 
 #endif

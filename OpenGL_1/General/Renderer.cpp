@@ -244,7 +244,6 @@ void Renderer::Update(float deltaTime)
 	mainCamera->Update(deltaTime);
 
 	Draw();
-	CleanupDraw();
 
 	//DrawDebug();
 	//CleanupDebugDraw();
@@ -262,9 +261,6 @@ void Renderer::Draw()
 
 
 	DrawList drawList = *m_gameContext.GetDrawList();
-
-
-
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -302,10 +298,9 @@ void Renderer::Draw()
 		drawCall.shader.SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
 		drawCall.shader.SetUniformVector("light.position", value_ptr(m_lightPosition));
 
+		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
 
-		
-
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, drawCall.numOfVertices);
+		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
 		drawCall.DisableAttributePointer();
 	}
 
@@ -331,11 +326,13 @@ void Renderer::CleanupDraw()
 {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
 }
 
 void Renderer::InitDrawDebug()
 {
+	
+	glGenVertexArrays(1, &DebugVertextArray);
+	glBindVertexArray(DebugVertextArray);
 	glGenBuffers(1, &DebugVertextBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
 	glLineWidth(3.0f);
@@ -348,14 +345,22 @@ void Renderer::InitDrawDebug()
 		0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 1.0f,
 	};
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);
 	debugShader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
 	
-	glGenVertexArrays(1, &DebugVertextArray);
-	glBindVertexArray(DebugVertextArray);
+	DrawListElement e;
+	e.vertexBuffer = axisLineVertices;
+	e.drawingPrimitive = DrawingPrimitives::LINES;
+	e.shader = *debugShader;
+	e.VBsize = sizeof(axisLineVertices);
+	e.attributeSizes.push_back(3);
+	e.attributeSizes.push_back(3);
+	e.vertextInfoSize = 6;
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	m_gameContext.GetDrawList()->Add(e, -1);
+
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 }
 
 void Renderer::CleanupDebugDraw()
