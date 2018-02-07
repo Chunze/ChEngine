@@ -37,7 +37,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 Game::Game(GameContext* gameContext)
 	: BaseClass(*gameContext)
 {
-	InitGame();
+	
 }
 
 void Game::InitGame()
@@ -57,7 +57,7 @@ void Game::InitGame()
 	}
 	{
 		World* world = new JelloWorld(m_gameContext);
-		world->LoadWorld("cs520/rotate.w");
+		world->LoadWorld("cs520/jello.w");
 		m_gameContext.m_world = world;
 	}
 }
@@ -76,6 +76,7 @@ void Game::GameLoop()
 		// input
 		processInput(contextWindow);
 
+		deltaTime = 0.0005;
 		Update(deltaTime);
 		
 

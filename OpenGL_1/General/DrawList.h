@@ -48,8 +48,12 @@ public:
 	std::vector<DrawListElement> m_elements;
 
 	int Add(DrawListElement elementToAdd, int index);
+	
 	void Clear();
 	bool IsHaveNewData() { return bHasNewData; };
+
+	// will be overloaded
+	void UpdateElement(int index, float* newVB, int VBsize_byte);
 
 protected:
 

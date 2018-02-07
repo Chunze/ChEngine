@@ -35,6 +35,7 @@ protected:
 	DrawListElement e;
 	bool drawListElementValid = false;
 	std::vector<float> GetVertices();
+	std::vector<int> vertexIndies;
 	int m_drawListIndex = -1;
 
 	

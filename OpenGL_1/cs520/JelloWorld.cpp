@@ -46,6 +46,7 @@ void JelloWorld::LoadWorld(const char* fileName)
 	/* read mass of each of the 512 points */
 	fscanf_s(file, "%f\n", &m_jello->m_mass);
 
+	// Init jello cube, passing mass to particles
 	m_jello->InitJello();
 
 	/* read info about the plane */

@@ -26,22 +26,37 @@ void Particle::addForce(const glm::vec3 &force)
 	forceAccum += force;
 }
 
-void Particle::Integrate(float Delta, int Mode)
+void Particle::Integrate(float Delta, int Mode, int step)
 {
 	if (Mode == 0)
 	{
-		m_position = m_volecity * Delta;
-		m_volecity = m_acceleration * Delta;
+		m_position += m_volecity * Delta;
+		m_volecity += m_acceleration * Delta;
 		m_acceleration = forceAccum * m_inverseMass;
 
-		m_volecity *= powf(damping, Delta);
 	}
 	else if (Mode == 1)
 	{
 		glm::vec3 f1p, f2p, f3p, f4p;
 		glm::vec4 f1v, f2v, f3v, f4v;
 
+		switch (step)
+		{
+		case 1:
 
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		case 4:
+
+			break;
+		default:
+			break;
+		}
 	}
 
 	ClearForce();

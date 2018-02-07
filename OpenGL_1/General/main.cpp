@@ -72,6 +72,7 @@ int main()
 
 	// create game instance
 	Game* game = new Game(gameContext);
+	game->InitGame();
 
 	game->GameLoop();
 

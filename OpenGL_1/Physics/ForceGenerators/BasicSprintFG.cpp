@@ -7,23 +7,23 @@ BasicSprintFG::BasicSprintFG()
 
 }
 
-BasicSprintFG::BasicSprintFG(Particle* _other, float _restLength, float _sprintConstant /*= 100*/)
-	: other(_other), restLength(_restLength), springConstant(_sprintConstant)
+BasicSprintFG::BasicSprintFG(Particle* _other, float _restLength, float _sprintConstant /*= 10*/, float _damping /*= 0*/)
+	: other(_other), restLength(_restLength), springConstant(_sprintConstant), dampingConstant(_damping)
 {}
 
 void BasicSprintFG::UpdateForce(Particle* particle, float duration)
 {
-	glm::vec3 force = particle->m_position - other->m_position;
+	glm::vec3 springForceDir, springForce, dampingForce;
 
-	float magnitude = glm::length(force);
-	float dragCoefficient = magnitude;
-	magnitude = fabsf(magnitude - restLength);
-	magnitude *= springConstant;
+	// pointing from this particle to other
+	springForceDir = other->m_position - particle->m_position;
+	float distance = glm::length(springForce);
+	springForceDir = glm::normalize(springForceDir);
 
-	force = glm::normalize(force);
-	force *= -magnitude;
+	springForce = -springForceDir * springConstant * (distance - restLength);
+	dampingForce = -dampingConstant * ((particle->m_volecity - other->m_volecity) * springForceDir) * springForceDir;
 
-	//dragCoefficient = k1 * dragCoefficient + k2 * dragCoefficient * dragCoefficient;
+	glm::vec3 force = springForce + dampingForce;
 
 	particle->addForce(force);
 }

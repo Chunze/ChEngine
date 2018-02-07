@@ -12,7 +12,7 @@ class BasicSprintFG : public ForceGenerator
 public:
 	BasicSprintFG();
 
-	BasicSprintFG(Particle* _other, float _restLength, float _sprintConstant = 10);
+	BasicSprintFG(Particle* _other, float _restLength, float _sprintConstant = 10, float _damping = 0.0f);
 
 	virtual void UpdateForce(Particle* particle, float duration);
 
@@ -25,6 +25,7 @@ public:
 	/** Holds the rest length of the spring. */
 	float restLength;
 
+	float dampingConstant;
 };
 
 #endif

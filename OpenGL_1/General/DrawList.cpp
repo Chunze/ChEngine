@@ -58,6 +58,15 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 	return size;
 }
 
+void DrawList::UpdateElement(int index, float* newVB, int VBsize_byte)
+{
+	DrawListElement* elementToUpdate = &m_elements[index];
+	elementToUpdate->VBsize = VBsize_byte;
+	elementToUpdate->vertexBuffer = newVB;
+	glBindBuffer(GL_ARRAY_BUFFER, elementToUpdate->vertexBufferObject);
+	glBufferData(GL_ARRAY_BUFFER, elementToUpdate->VBsize, elementToUpdate->vertexBuffer, GL_STATIC_DRAW);
+}
+
 void DrawList::Clear()
 {
 	bHasNewData = false;
