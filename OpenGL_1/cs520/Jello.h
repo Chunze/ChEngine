@@ -22,8 +22,7 @@ public:
 
 	float m_kElastic; // Hook's elasticity coefficient for all springs except collision springs
 	float m_dElastic; // Damping coefficient for all springs except collision springs
-	float m_kCollision; // Hook's elasticity coefficient for collision springs
-	float m_dCollision; // Damping coefficient collision springs
+	
 
 	void InitJello();
 	void CreateSprings();

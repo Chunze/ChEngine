@@ -6,13 +6,17 @@
 #include "Jello.h"
 #include "PhysicsManager.h"
 
+#define BOUND_X_MIN -2
+#define BOUND_Y_MIN -2
+#define BOUND_Z_MIN -2
+#define BOUND_X_MAX 2
+#define BOUND_Y_MAX 2
+#define BOUND_Z_MAX 2
 
 JelloWorld::JelloWorld(GameContext gameContext)
 	: World(gameContext)
 {
 	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0));
-	//m_gameObjects.push_back(*m_jello);
-	
 }
 
 void JelloWorld::LoadWorld(const char* fileName)
@@ -42,7 +46,7 @@ void JelloWorld::LoadWorld(const char* fileName)
 
 	/* read physical parameters */
 	fscanf_s(file, "%f %f %f %f\n",
-		&m_jello->m_kElastic, &m_jello->m_dElastic, &m_jello->m_kCollision, &m_jello->m_dCollision);
+		&m_jello->m_kElastic, &m_jello->m_dElastic, &m_kCollision, &m_dCollision);
 
 	/* read mass of each of the 512 points */
 	fscanf_s(file, "%f\n", &m_jello->m_mass);
@@ -78,11 +82,11 @@ void JelloWorld::LoadWorld(const char* fileName)
 		for (j = 0; j <= 7; j++)
 		{
 			for (k = 0; k <= 7; k++)
-// 				fscanf_s(file, "%f %f %f\n",
-// 					&m_jello->m_particles[i][j][k].m_position.x, 
-// 					&m_jello->m_particles[i][j][k].m_position.y,
-// 					&m_jello->m_particles[i][j][k].m_position.z);
-fscanf_s(file, "%f %f %f\n", &as, &ad, &af);
+				fscanf_s(file, "%f %f %f\n",
+					&m_jello->m_particles[i][j][k].m_position.x, 
+					&m_jello->m_particles[i][j][k].m_position.y,
+					&m_jello->m_particles[i][j][k].m_position.z);
+//fscanf_s(file, "%f %f %f\n", &as, &ad, &af);
 		}
 	}
 
@@ -99,9 +103,6 @@ fscanf_s(file, "%f %f %f\n", &as, &ad, &af);
 					&m_jello->m_particles[i][j][k].m_volecity.y,
 					&m_jello->m_particles[i][j][k].m_volecity.z);
 		}
-		std::cout << m_jello->m_particles[i][j][k].m_volecity.x << "," <<
-			m_jello->m_particles[i][j][k].m_volecity.y << "," <<
-			m_jello->m_particles[i][j][k].m_volecity.z << std::endl;
 	}
 
 	fclose(file);
@@ -110,6 +111,63 @@ fscanf_s(file, "%f %f %f\n", &as, &ad, &af);
 void JelloWorld::Update(float Delta)
 {
 	m_jello->Update(Delta);
+	CheckBoundary();
+}
+
+void JelloWorld::CheckBoundary()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			for (int k = 0; k < 8; k++)
+			{
+				Particle* Anchor = new Particle();
+				glm::vec3 OutwardDir = glm::vec3(0.0f);
+				bool bOutOfBound = false;
+
+				Particle* CurrentParticle = &m_jello->m_particles[i][j][k];
+
+				if (CurrentParticle->m_position.x < BOUND_X_MIN || CurrentParticle->m_position.x > BOUND_X_MAX)
+				{
+					bOutOfBound = true;
+					Anchor->m_position.x = CurrentParticle->m_position.x < 0 ? BOUND_X_MIN : BOUND_X_MAX;
+					OutwardDir.x = Anchor->m_position.x;
+				}
+				else
+				{
+					Anchor->m_position.x = CurrentParticle->m_position.x;
+				}
+
+				if (CurrentParticle->m_position.y < BOUND_Y_MIN || CurrentParticle->m_position.y > BOUND_Y_MAX)
+				{
+					bOutOfBound = true;
+					Anchor->m_position.y = CurrentParticle->m_position.y < 0 ? BOUND_Y_MIN : BOUND_Y_MAX;
+					OutwardDir.y = Anchor->m_position.y;
+				}
+				else
+				{
+					Anchor->m_position.y = CurrentParticle->m_position.y;
+				}
+
+				if (CurrentParticle->m_position.z < BOUND_Z_MIN || CurrentParticle->m_position.z > BOUND_Z_MAX)
+				{
+					bOutOfBound = true;
+					Anchor->m_position.z = CurrentParticle->m_position.z < 0 ? BOUND_Z_MIN : BOUND_Z_MAX;
+					OutwardDir.z = Anchor->m_position.z;
+				}
+				else
+				{
+					Anchor->m_position.z = CurrentParticle->m_position.z;
+				}
+
+				if (bOutOfBound)
+				{
+					m_gameContext.GetPhysicsManager()->GenerateCollisionInfo(CurrentParticle, Anchor, OutwardDir, m_kCollision, m_dCollision);
+				}
+			}
+		}
+	}
 }
 
 glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const
@@ -117,27 +175,46 @@ glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const
 	float X = position.x;
 	float Y = position.y;
 	float Z = position.z;
-	if (X < 0.0f || X > m_resolution)
+// 	if (X < 0.0f || X > m_resolution)
+// 	{
+// 		return glm::vec3(0.0f);
+// 	}
+// 
+// 	if (Y < 0.0f || Y > m_resolution)
+// 	{
+// 		return glm::vec3(0.0f);
+// 	}
+// 
+// 	if (Z < 0.0f || Z > m_resolution)
+// 	{
+// 		return glm::vec3(0.0f);
+// 	}
+
+	if (X < BOUND_X_MIN || X > BOUND_X_MAX)
 	{
 		return glm::vec3(0.0f);
 	}
 
-	if (Y < 0.0f || Y > m_resolution)
+	if (Y < BOUND_Y_MIN || Y > BOUND_Y_MAX)
 	{
 		return glm::vec3(0.0f);
 	}
 
-	if (Z < 0.0f || Z > m_resolution)
+	if (Z < BOUND_Z_MIN || Z > BOUND_Z_MAX)
 	{
 		return glm::vec3(0.0f);
 	}
 
-	int xFloor		= (int)(X);
-	int yFloor		= (int)(Y);
-	int zFloor		= (int)(Z);
-	int xCeiling	= (int)(X+1);
-	int yCeiling	= (int)(Y+1);
-	int zCeiling	= (int)(Z+1);
+	float resX = (X - BOUND_X_MIN) * m_resolution / (BOUND_X_MAX - BOUND_X_MIN);
+	float resY = (Y - BOUND_Y_MIN) * m_resolution / (BOUND_Y_MAX - BOUND_Y_MIN);
+	float resZ = (Z - BOUND_Z_MIN) * m_resolution / (BOUND_Z_MAX - BOUND_Z_MIN);
+
+	int xFloor		= (int)(resX);
+	int yFloor		= (int)(resY);
+	int zFloor		= (int)(resZ);
+	int xCeiling	= (int)(resX +1);
+	int yCeiling	= (int)(resY +1);
+	int zCeiling	= (int)(resZ +1);
 
 	int offsetX = m_resolution * m_resolution;
 	int offsetY = m_resolution;
@@ -151,21 +228,21 @@ glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const
 	glm::vec3 p8 = m_forceField[xFloor * offsetX + yCeiling * offsetY + zCeiling];
 
 	// interpolating X
-	float lowerX = (float)xCeiling - X;
-	float upperX = X - (float)xFloor;
+	float lowerX = (float)xCeiling - resX;
+	float upperX = resX - (float)xFloor;
 	glm::vec3 interp_x_1 = lowerX * p1 + upperX * p2;
 	glm::vec3 interp_x_2 = lowerX * p3 + upperX * p4;
 	glm::vec3 interp_x_3 = lowerX * p5 + upperX * p6;
 	glm::vec3 interp_x_4 = lowerX * p7 + upperX * p8;
 
 	// interpolating Y
-	float lowerY = (float)yCeiling - Y;
-	float upperY = Y - (float)yFloor;
+	float lowerY = (float)yCeiling - resY;
+	float upperY = resY - (float)yFloor;
 	glm::vec3 interp_xy_1 = lowerY * interp_x_1 + upperY * interp_x_3;
 	glm::vec3 interp_xy_2 = lowerY * interp_x_2 + upperY * interp_x_4;
 
 	// interpolating Z
-	glm::vec3 interp_xyz = ((float)zCeiling - Z) * interp_xy_1 + (Z - (float)zFloor) * interp_xy_2;
+	glm::vec3 interp_xyz = ((float)zCeiling - resZ) * interp_xy_1 + (resZ - (float)zFloor) * interp_xy_2;
 
 	return interp_xyz;
 }

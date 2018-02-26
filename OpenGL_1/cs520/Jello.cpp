@@ -43,6 +43,7 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 void Jello::InitJello()
 {
 	m_step = m_size / 7.0f;
+
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)

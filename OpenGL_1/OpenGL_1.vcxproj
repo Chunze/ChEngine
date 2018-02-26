@@ -38,6 +38,7 @@
     <ClCompile Include="General\Texture.cpp" />
     <ClCompile Include="General\World.cpp" />
     <ClCompile Include="Physics\ForceGenerators\BasicSprintFG.cpp" />
+    <ClCompile Include="Physics\ForceGenerators\CollisionSpringFG.cpp" />
     <ClCompile Include="Physics\Particle.cpp" />
     <ClCompile Include="Physics\ParticleForceRegistry.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="General\World.h" />
     <ClInclude Include="Physics\ForceGenerator.h" />
     <ClInclude Include="Physics\ForceGenerators\BasicSprintFG.h" />
+    <ClInclude Include="Physics\ForceGenerators\CollisionSpringFG.h" />
     <ClInclude Include="Physics\Particle.h" />
     <ClInclude Include="Physics\ParticleForceRegistry.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />

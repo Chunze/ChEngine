@@ -52,7 +52,7 @@ void Game::InitGame()
 		m_gameContext.m_renderer = renderer;
 	}
 	{
-		PhysicsManager* physicsManager = new PhysicsManager();
+		PhysicsManager* physicsManager = new PhysicsManager(m_gameContext);
 		m_gameContext.m_physicsManager = physicsManager;
 	}
 	{
@@ -86,8 +86,8 @@ void Game::GameLoop()
 		}
 
 
-			deltaTime = 0.0005;
-			Update(deltaTime);
+		deltaTime = 0.0005;
+		Update(deltaTime);
 		
 		
 		
@@ -175,6 +175,8 @@ void Game::Update(float Delta)
 		// world update
 		m_gameContext.GetWorld()->Update(Delta);
 		// physics update
+
+		m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
 
 		bGamePaused = true;
 	}

@@ -1,6 +1,6 @@
 #include "BasicSprintFG.h"
 #include "glm.h"
-#include "Particle.h"
+
 
 BasicSprintFG::BasicSprintFG()
 {

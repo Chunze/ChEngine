@@ -1,7 +1,7 @@
 #ifndef FORCE_GENERATOR_H
 #define FORCE_GENERATOR_H
 
-class Particle;
+#include "Particle.h"
 
 class ForceGenerator
 {
