@@ -10,6 +10,7 @@ class Jello : public GameObject
 public:
 
 	Jello(GameContext gameContext, World* world, glm::vec3 position = glm::vec3(0.0f), float size = 1.0f);
+	~Jello();
 
 	glm::vec3 m_position;
 	float m_size;
@@ -37,5 +38,6 @@ protected:
 	std::vector<int> vertexIndies;
 	int m_drawListIndex = -1;
 
-	
+private:
+	int debug;
 };

@@ -205,9 +205,9 @@ glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const
 		return glm::vec3(0.0f);
 	}
 
-	float resX = (X - BOUND_X_MIN) * m_resolution / (BOUND_X_MAX - BOUND_X_MIN);
-	float resY = (Y - BOUND_Y_MIN) * m_resolution / (BOUND_Y_MAX - BOUND_Y_MIN);
-	float resZ = (Z - BOUND_Z_MIN) * m_resolution / (BOUND_Z_MAX - BOUND_Z_MIN);
+	float resX = (X - BOUND_X_MIN) * (m_resolution - 1) / (BOUND_X_MAX - BOUND_X_MIN);
+	float resY = (Y - BOUND_Y_MIN) * (m_resolution - 1) / (BOUND_Y_MAX - BOUND_Y_MIN);
+	float resZ = (Z - BOUND_Z_MIN) * (m_resolution - 1) / (BOUND_Z_MAX - BOUND_Z_MIN);
 
 	int xFloor		= (int)(resX);
 	int yFloor		= (int)(resY);

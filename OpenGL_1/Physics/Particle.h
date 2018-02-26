@@ -17,7 +17,6 @@ public:
 
 	float damping = 0.98f;
 
-	float a = 10;
 	/**
 	* Adds the given force to the particle to be applied at the
 	* next iteration only.
@@ -34,4 +33,6 @@ protected:
 	* integration step.
 	*/
 	glm::vec3 forceAccum = glm::vec3(0.0f);
+
+	bool bUseGravite = true;
 };

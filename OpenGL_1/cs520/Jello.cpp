@@ -40,6 +40,11 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 	shader = new Shader("JelloVS.vert", "JelloFS.frag");
 }
 
+Jello::~Jello()
+{
+	delete[] m_particles;
+}
+
 void Jello::InitJello()
 {
 	m_step = m_size / 7.0f;
@@ -62,7 +67,7 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 {
 	std::vector<float> vertices = GetVertices();
 	e.vertexBuffer = &vertices[0];
-	e.VBsize = vertices.size() * sizeof(float);
+	e.VBsize = 12* sizeof(float);
 
 	if (drawListElementValid)
 	{
@@ -227,13 +232,17 @@ std::vector<float> Jello::GetVertices()
 					layout(location = 0) in vec3 normal;
 				*/
 				// vertex 1
-					int index = pointMap(face, i, j);
-					//vertexIndies.push_back(index);
+				int index = pointMap(face, i, j);
+
 				glm::vec3 v1 = ((Particle*)(m_particles) +index)->m_position;
 				resultVector.push_back(v1.x);
 				resultVector.push_back(v1.y);
 				resultVector.push_back(v1.z);
-				//std::cout << printf("(%.2f, %.2f, %.2f)", v1.x, v1.y, v1.z) << std::endl;
+// 				if (glm::length(v1) < 0.1)
+// 				{
+// 					std::cout << printf("(%.2f, %.2f, %.2f)", v1.x, v1.y, v1.z) << std::endl;
+// 				}
+
 				// normal 1
 				resultVector.push_back(normal[i][j].x / counter[i][j]);
 				resultVector.push_back(normal[i][j].y / counter[i][j]);
@@ -245,7 +254,10 @@ std::vector<float> Jello::GetVertices()
 				resultVector.push_back(v2.x);
 				resultVector.push_back(v2.y);
 				resultVector.push_back(v2.z);
-				//std::cout << printf("(%.2f, %.2f, %.2f)", v2.x, v2.y, v2.z) << std::endl;
+// 				if (glm::length(v2) < 0.1)
+// 				{
+// 					std::cout << printf("(%.2f, %.2f, %.2f)", v2.x, v2.y, v2.z) << std::endl;
+// 				}
 
 				// normal 2
 				resultVector.push_back(normal[i][j - 1].x / counter[i][j - 1]);

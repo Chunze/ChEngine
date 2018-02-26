@@ -32,6 +32,11 @@ void Particle::Integrate(float Delta, int Mode, int step)
 	{
 		m_acceleration = forceAccum * m_inverseMass;
 
+		if (bUseGravite)
+		{
+			m_acceleration += m_gravity;
+		}
+
 		m_volecity += m_acceleration * Delta;
 
 		m_position += m_volecity * Delta;

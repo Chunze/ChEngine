@@ -26,13 +26,13 @@ void main()
 {
 	// ambient lighting
 	float ambientStrength = 0.1;
-	vec3 ambient = vec3(0.7, 0.3, 0.2) * light.ambient;
+	vec3 ambient = vec3(0.1, 0.8, 0.2) * light.ambient;
 
 	// difuse lighting
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(light.position - FragPos);
 	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = vec3(0.7, 0.3, 0.2) * diff * light.diffuse;
+	vec3 diffuse = vec3(0.1, 0.8, 0.2) * diff * light.diffuse;
 
 	// specular lighting
 	float specularStrength = 0.5;
@@ -41,7 +41,7 @@ void main()
 	vec3 viewDir = normalize(viewPos - FragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-	vec3 specular = vec3(0.7, 0.3, 0.2) * spec * light.specular;
+	vec3 specular = vec3(0.1, 0.8, 0.2) * spec * light.specular;
 
 	vec3 result = ambient + diffuse + specular;
 

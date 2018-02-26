@@ -42,7 +42,7 @@ int main()
 	InitGLFW(3, 3, GLFW_OPENGL_CORE_PROFILE);
 
 	// create window object
-	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1200, 900, "OpenGL", NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -62,7 +62,7 @@ int main()
 	}
 
 	// specify the actual window for the rendering
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, 1200, 900);
 
 	// add callback function for resizing the window
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
