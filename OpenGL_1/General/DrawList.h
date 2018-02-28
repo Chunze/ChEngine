@@ -36,6 +36,8 @@ struct DrawListElement
 	unsigned int vertexBufferObject;
 	unsigned int vertexArrayObject;
 
+	bool bIsDebug = false;
+
 	void GetRenderReady();
 	void DisableAttributePointer();
 };

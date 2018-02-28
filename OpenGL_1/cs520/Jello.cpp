@@ -67,7 +67,7 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 {
 	std::vector<float> vertices = GetVertices();
 	e.vertexBuffer = &vertices[0];
-	e.VBsize = 12* sizeof(float);
+	e.VBsize = vertices.size() * sizeof(float);
 
 	if (drawListElementValid)
 	{
@@ -92,23 +92,54 @@ void Jello::Update(float Delta)
 	// add to drawlist
 	CreateAndAddDrawListElement(0);
 
-	int Mode = m_gameContext.GetPhysicsManager()->GetIntegrator();
-
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
 			for (int k = 0; k < 8; k++)
 			{
-				glm::vec3 externalForce = ((JelloWorld*)GetWorld())->GetForceInForceField(m_particles[i][j][k].m_position);
-
 				// COMMENT: adding external force
+				glm::vec3 externalForce = ((JelloWorld*)GetWorld())->GetForceInForceField(m_particles[i][j][k].m_position);
 				m_particles[i][j][k].addForce(externalForce);
-				m_particles[i][j][k].Integrate(Delta, Mode);
 			}
 		}
 	}
 
+	int Mode = m_gameContext.GetPhysicsManager()->GetIntegrator();
+	int step = 1;
+
+	if (Mode == 0 /* Euler */)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				for (int k = 0; k < 8; k++)
+				{
+					m_particles[i][j][k].Integrate_Euler(Delta);
+				}
+			}
+		}
+	}
+	else if (Mode == 1 /* RK4 */)
+	{
+		while (step <= 4)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					for (int k = 0; k < 8; k++)
+					{
+						m_particles[i][j][k].Integrate_Rk4(Delta, step);
+					}
+				}
+			}
+
+			++step;
+		}
+	}
+	
 	
 }
 
@@ -219,6 +250,7 @@ std::vector<float> Jello::GetVertices()
 		/* the actual rendering */
 		for (j = 1; j <= 7; j++)
 		{
+			// TODO: add this for the core profile
 
 // 			if (faceFactor > 0)
 // 				glFrontFace(GL_CCW); // the usual definition of front face

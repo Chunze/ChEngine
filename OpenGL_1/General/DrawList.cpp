@@ -41,7 +41,7 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 			int attribute = elementToAdd.attributeSizes[index];
 			
 			glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, attributeByteSize, (void*)offset);
-			offset += attributeByteSize;
+			offset += attributeSize * sizeof(float);
 			++index;
 		}
 

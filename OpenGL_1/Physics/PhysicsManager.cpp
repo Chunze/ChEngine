@@ -18,6 +18,8 @@ void PhysicsManager::UpdateForces(float Delta)
 	m_particleForceRegistry.UpdateForces(Delta);
 }
 
+// TODO: take care RK4 here, get world reference and do intermediate update
+
 void PhysicsManager::UpdateContactForces(float Delta)
 {
 	m_contactForceRegistry.UpdateForces(Delta);

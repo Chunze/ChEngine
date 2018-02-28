@@ -38,10 +38,17 @@ public:
 
 	int GetIntegrator() { return m_intergrator; }
 	void SetIntegrator(int in) { m_intergrator = in; }
+
+	int GetRK4StepCount() { return RK4_step; }
+
+	void Increment_RK4_step() { RK4_step++; }
 	
 protected:
 	// 0 = Euler; 1 = RK4
 	int m_intergrator;
+
+	// RK4 step count
+	int RK4_step = 0;
 	std::vector<Particle*> m_physicsParticles;
 	World* m_world;
 };

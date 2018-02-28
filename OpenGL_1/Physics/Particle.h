@@ -23,7 +23,9 @@ public:
 	*/
 	void addForce(const glm::vec3 &force);
 
-	void Integrate(float Delta, int Mode = 0, int step = 0);
+	void Integrate_Euler(float Delta);
+
+	void Integrate_Rk4(float Delta, int step);
 
 	void ClearForce();
 protected:
@@ -35,4 +37,9 @@ protected:
 	glm::vec3 forceAccum = glm::vec3(0.0f);
 
 	bool bUseGravite = true;
+
+	// Intermediate value for RK4 calculation
+	glm::vec3 RK4_Position;
+	glm::vec3 RK4_Volecity;
+	glm::vec3 TRK4_Acceleration;
 };

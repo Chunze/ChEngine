@@ -167,16 +167,27 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 void Game::Update(float Delta)
 {
+	int IntegrationMode = m_gameContext.GetPhysicsManager()->GetIntegrator();
 	if (!bGamePaused || !bPaused)
 	{
-		// force update
-		m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
+		if (IntegrationMode == 0)
+		{
+			// force update
+			m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
 
-		// world update
-		m_gameContext.GetWorld()->Update(Delta);
-		// physics update
+			// world update
+			m_gameContext.GetWorld()->Update(Delta);
+			// physics update
 
-		m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
+			m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
+		}
+		else if (IntegrationMode == 1)
+		{
+			while (m_gameContext.GetPhysicsManager()->GetRK4StepCount() < 4)
+			{
+
+			}
+		}
 
 		bGamePaused = true;
 	}

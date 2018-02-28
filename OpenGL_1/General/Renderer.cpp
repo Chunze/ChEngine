@@ -267,7 +267,7 @@ void Renderer::Draw()
 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(0.0f,  3.0f, 5.0f),
+		glm::vec3(0.0f,  1.0f, 1.0f),
 		glm::vec3(0.0f, 6.0f, 0.0f),
 		glm::vec3(-3.8f, -2.0f, -12.3f),
 		glm::vec3(2.4f, -0.4f, -3.5f),
@@ -286,7 +286,18 @@ void Renderer::Draw()
 	for (auto drawCall : drawList.m_elements)
 	{
 		drawCall.GetRenderReady();
-		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+		if (!drawCall.bIsDebug)
+		{
+			glm::mat4 temp;
+			model = glm::translate(temp, cubePositions[1]);
+			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+		}
+		else
+		{
+			glm::mat4 temp;
+			model = glm::translate(temp, cubePositions[0]);
+			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+		}
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
@@ -356,6 +367,7 @@ void Renderer::InitDrawDebug()
 	e.attributeSizes.push_back(3);
 	e.attributeSizes.push_back(3);
 	e.vertextInfoSize = 6;
+	e.bIsDebug = true;
 
 	m_gameContext.GetDrawList()->Add(e, -1);
 

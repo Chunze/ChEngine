@@ -36,10 +36,5 @@ void CollisionSpringFG::UpdateForce(Particle* particle, float duration)
 
 	glm::vec3 force = springForce + dampingForce;
 
-	if (glm::length(force) > 1e10)
-	{
-		k1 += 1.0f;
-	}
-
 	particle->addForce(force);
 }
