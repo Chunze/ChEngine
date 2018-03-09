@@ -18,8 +18,6 @@ void PhysicsManager::UpdateForces(float Delta)
 	m_particleForceRegistry.UpdateForces(Delta);
 }
 
-// TODO: take care RK4 here, get world reference and do intermediate update
-
 void PhysicsManager::UpdateContactForces(float Delta)
 {
 	m_contactForceRegistry.UpdateForces(Delta);
@@ -27,9 +25,9 @@ void PhysicsManager::UpdateContactForces(float Delta)
 	m_contactForceRegistry.Clear();
 }
 
-void PhysicsManager::Update(float Delta)
+void PhysicsManager::Update_RK4(float Delta)
 {
-	
+
 }
 
 void PhysicsManager::GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping)

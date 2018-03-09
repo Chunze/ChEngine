@@ -24,7 +24,7 @@ struct DrawListElement
 	DrawingPrimitives drawingPrimitive;
 
 	float* vertexBuffer;
-	size_t VBsize;
+	size_t VBsize_inByte;
 	// TODO: add vector for attribute pointer info
 
 	size_t vertextInfoSize;

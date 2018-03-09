@@ -28,7 +28,7 @@ public:
 	// updating forces for one frame, new contact forces will be generated next frame
 	void UpdateContactForces(float Delta);
 
-	void Update(float Delta);
+	void Update_RK4(float Delta);
 
 
 	// Generating collision spring
@@ -42,13 +42,14 @@ public:
 	int GetRK4StepCount() { return RK4_step; }
 
 	void Increment_RK4_step() { RK4_step++; }
+	void Reset_RK4_Step() { RK4_step = 1; }
 	
 protected:
 	// 0 = Euler; 1 = RK4
 	int m_intergrator;
 
 	// RK4 step count
-	int RK4_step = 0;
+	int RK4_step = 1;
 	std::vector<Particle*> m_physicsParticles;
 	World* m_world;
 };

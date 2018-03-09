@@ -363,7 +363,7 @@ void Renderer::InitDrawDebug()
 	e.vertexBuffer = axisLineVertices;
 	e.drawingPrimitive = DrawingPrimitives::LINES;
 	e.shader = *debugShader;
-	e.VBsize = sizeof(axisLineVertices);
+	e.VBsize_inByte = sizeof(axisLineVertices);
 	e.attributeSizes.push_back(3);
 	e.attributeSizes.push_back(3);
 	e.vertextInfoSize = 6;

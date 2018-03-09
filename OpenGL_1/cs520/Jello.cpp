@@ -67,11 +67,11 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 {
 	std::vector<float> vertices = GetVertices();
 	e.vertexBuffer = &vertices[0];
-	e.VBsize = vertices.size() * sizeof(float);
+	e.VBsize_inByte = vertices.size() * sizeof(float);
 
 	if (drawListElementValid)
 	{
-		m_gameContext.GetDrawList()->UpdateElement(m_drawListIndex, e.vertexBuffer, e.VBsize);
+		m_gameContext.GetDrawList()->UpdateElement(m_drawListIndex, e.vertexBuffer, e.VBsize_inByte);
 		return;
 	}
 
@@ -106,7 +106,6 @@ void Jello::Update(float Delta)
 	}
 
 	int Mode = m_gameContext.GetPhysicsManager()->GetIntegrator();
-	int step = 1;
 
 	if (Mode == 0 /* Euler */)
 	{
@@ -123,20 +122,16 @@ void Jello::Update(float Delta)
 	}
 	else if (Mode == 1 /* RK4 */)
 	{
-		while (step <= 4)
+		int step = m_gameContext.GetPhysicsManager()->GetRK4StepCount();
+		for (int i = 0; i < 8; i++)
 		{
-			for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
 			{
-				for (int j = 0; j < 8; j++)
+				for (int k = 0; k < 8; k++)
 				{
-					for (int k = 0; k < 8; k++)
-					{
-						m_particles[i][j][k].Integrate_Rk4(Delta, step);
-					}
+					m_particles[i][j][k].Integrate_Rk4(Delta, step);
 				}
 			}
-
-			++step;
 		}
 	}
 	

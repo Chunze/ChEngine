@@ -111,6 +111,8 @@ void JelloWorld::LoadWorld(const char* fileName)
 void JelloWorld::Update(float Delta)
 {
 	m_jello->Update(Delta);
+	// TODO: need to take care of RK4 integration
+	// RK4 is calling this each step
 	CheckBoundary();
 }
 

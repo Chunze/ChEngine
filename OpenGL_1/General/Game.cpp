@@ -177,16 +177,36 @@ void Game::Update(float Delta)
 
 			// world update
 			m_gameContext.GetWorld()->Update(Delta);
+
+			// TODO: need to call generate contact info here to separate world update so that RK4 would not do this 4 times
+
 			// physics update
 
 			m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
 		}
 		else if (IntegrationMode == 1)
 		{
-			while (m_gameContext.GetPhysicsManager()->GetRK4StepCount() < 4)
-			{
+			//TODO: make a copy to all particle in the world (save this as the original copy of last frame)
 
+
+			while (m_gameContext.GetPhysicsManager()->GetRK4StepCount() <= 4)
+			{
+				// force update
+				m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
+				// world update (Particles will check current integrate method, and act accordingly)
+				m_gameContext.GetWorld()->Update(Delta);
+
+				// Update RK4 step, very important for the particle to know what stage the update is in
+				m_gameContext.GetPhysicsManager()->Increment_RK4_step();
 			}
+
+			m_gameContext.GetPhysicsManager()->Reset_RK4_Step();
+
+			// TODO: Update all the particles using original copy of last frame
+
+			// TODO: Generate contact info
+
+			// TODO: resolve contacts (need to take care of this in RK4)
 		}
 
 		bGamePaused = true;

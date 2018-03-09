@@ -24,35 +24,27 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 		// vertex buffer and populate data
 		glGenBuffers(1, &elementToAdd.vertexBufferObject);
 		glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
 
-
-		int attributeByteSize = 0;
-		for (int attributeSize : elementToAdd.attributeSizes)
-		{
-			attributeByteSize += attributeSize;
-		}
-
-		attributeByteSize *= sizeof(float);
 		size_t index = 0;
 		int offset = 0;
 		for (int attributeSize : elementToAdd.attributeSizes)
 		{
 			int attribute = elementToAdd.attributeSizes[index];
 			
-			glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, attributeByteSize, (void*)offset);
+			glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, elementToAdd.vertextInfoSize * sizeof(float), (void*)offset);
 			offset += attributeSize * sizeof(float);
 			++index;
 		}
 
-		elementToAdd.numOfVertices = elementToAdd.VBsize / elementToAdd.vertextInfoSize;
+		elementToAdd.numOfVertices = elementToAdd.VBsize_inByte / (elementToAdd.vertextInfoSize * sizeof(float));
 
 		m_elements.push_back(elementToAdd);
 	}
 	else
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
 	}
 
 	return size;
@@ -61,10 +53,10 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 void DrawList::UpdateElement(int index, float* newVB, int VBsize_byte)
 {
 	DrawListElement* elementToUpdate = &m_elements[index];
-	elementToUpdate->VBsize = VBsize_byte;
+	elementToUpdate->VBsize_inByte = VBsize_byte;
 	elementToUpdate->vertexBuffer = newVB;
 	glBindBuffer(GL_ARRAY_BUFFER, elementToUpdate->vertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, elementToUpdate->VBsize, elementToUpdate->vertexBuffer, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, elementToUpdate->VBsize_inByte, elementToUpdate->vertexBuffer, GL_STATIC_DRAW);
 }
 
 void DrawList::Clear()
