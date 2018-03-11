@@ -27,6 +27,8 @@ public:
 
 	void Integrate_Rk4(float Delta, int step);
 
+
+
 	void ClearForce();
 protected:
 	/**
@@ -34,12 +36,12 @@ protected:
 	* simulation iteration only. This value is zeroed at each
 	* integration step.
 	*/
-	glm::vec3 forceAccum = glm::vec3(0.0f);
+	glm::vec3 m_forceAccum = glm::vec3(0.0f);
 
 	bool bUseGravite = true;
 
+private:
 	// Intermediate value for RK4 calculation
-	glm::vec3 RK4_Position;
-	glm::vec3 RK4_Volecity;
-	glm::vec3 TRK4_Acceleration;
+	glm::vec3 RK4_V_1, RK4_V_2, RK4_V_3, RK4_V_4;
+	glm::vec3 RK4_A_1, RK4_A_2, RK4_A_3, RK4_A_4;
 };

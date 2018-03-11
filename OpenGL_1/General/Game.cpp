@@ -86,13 +86,8 @@ void Game::GameLoop()
 		}
 
 
-		deltaTime = 0.0005;
+		//deltaTime = 0.0005;
 		Update(deltaTime);
-		
-		
-		
-
-		//std::cout << "Frame: " << deltaTime << endl;
 		
 		glfwSwapBuffers(contextWindow);
 		glfwPollEvents();
@@ -181,7 +176,6 @@ void Game::Update(float Delta)
 			// TODO: need to call generate contact info here to separate world update so that RK4 would not do this 4 times
 
 			// physics update
-
 			m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
 		}
 		else if (IntegrationMode == 1)
@@ -195,13 +189,15 @@ void Game::Update(float Delta)
 				m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
 				// world update (Particles will check current integrate method, and act accordingly)
 				m_gameContext.GetWorld()->Update(Delta);
-
+				// physics update
+				m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
 				// Update RK4 step, very important for the particle to know what stage the update is in
 				m_gameContext.GetPhysicsManager()->Increment_RK4_step();
 			}
 
 			m_gameContext.GetPhysicsManager()->Reset_RK4_Step();
 
+			
 			// TODO: Update all the particles using original copy of last frame
 
 			// TODO: Generate contact info

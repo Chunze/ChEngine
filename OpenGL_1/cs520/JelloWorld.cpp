@@ -111,8 +111,6 @@ void JelloWorld::LoadWorld(const char* fileName)
 void JelloWorld::Update(float Delta)
 {
 	m_jello->Update(Delta);
-	// TODO: need to take care of RK4 integration
-	// RK4 is calling this each step
 	CheckBoundary();
 }
 
@@ -177,20 +175,6 @@ glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const
 	float X = position.x;
 	float Y = position.y;
 	float Z = position.z;
-// 	if (X < 0.0f || X > m_resolution)
-// 	{
-// 		return glm::vec3(0.0f);
-// 	}
-// 
-// 	if (Y < 0.0f || Y > m_resolution)
-// 	{
-// 		return glm::vec3(0.0f);
-// 	}
-// 
-// 	if (Z < 0.0f || Z > m_resolution)
-// 	{
-// 		return glm::vec3(0.0f);
-// 	}
 
 	if (X < BOUND_X_MIN || X > BOUND_X_MAX)
 	{

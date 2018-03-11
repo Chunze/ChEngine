@@ -23,12 +23,12 @@ Particle::Particle()
 
 void Particle::addForce(const glm::vec3 &force)
 {
-	forceAccum += force;
+	m_forceAccum += force;
 }
 
 void Particle::Integrate_Euler(float Delta)
 {
-	m_acceleration = forceAccum * m_inverseMass;
+	m_acceleration = m_forceAccum * m_inverseMass;
 
 	if (bUseGravite)
 	{
@@ -44,33 +44,46 @@ void Particle::Integrate_Euler(float Delta)
 
 void Particle::Integrate_Rk4(float Delta, int step)
 {
-	glm::vec3 f1p, f2p, f3p, f4p;
-	glm::vec3 f1v, f2v, f3v, f4v;
-
-	switch (step)
+	if(m_forceAccum.x != 0.0f || m_forceAccum.y != 0.0f || m_forceAccum.z != 0.0f)
 	{
-	case 1:
-		m_position = 0.5f * m_volecity * Delta + m_position;
-		m_volecity = 0.5f * m_acceleration * Delta + m_volecity;
-		break;
-	case 2:
+		switch (step)
+		{
+		case 1:
+			RK4_A_1 = m_forceAccum * m_inverseMass;
+			RK4_V_1 = RK4_A_1 * Delta + m_volecity;
+			m_position += RK4_V_1 * Delta;
+			ClearForce();
+			break;
+		case 2:
+			RK4_A_2 = m_forceAccum * m_inverseMass;
+			RK4_V_2 = RK4_A_2 * Delta * 0.5f + m_volecity;
+			m_position += RK4_V_2 * Delta * 0.5f;
+			ClearForce();
+			break;
+		case 3:
+			RK4_A_3 = m_forceAccum * m_inverseMass;
+			RK4_V_3 = RK4_A_3 * Delta * 0.5f + m_volecity;
+			m_position += RK4_V_3 * Delta * 0.5f;
+			ClearForce();
+			break;
+		case 4:
+			RK4_A_4 = m_forceAccum * m_inverseMass;
+			RK4_V_4 = RK4_A_4 * Delta + m_volecity;
 
-		break;
-	case 3:
-
-		break;
-	case 4:
-
-		break;
-	default:
-		break;
+			m_volecity = (RK4_V_1 + 2.0f * (RK4_V_2 + RK4_V_3) + RK4_V_4) * 0.166667f /* = 1 / 6 */;
+			m_position += m_volecity * Delta;
+			ClearForce();
+			break;
+		default:
+			break;
+		}
 	}
 	
 }
 
 void Particle::ClearForce()
 {
-	forceAccum.x = 0.0f;
-	forceAccum.y = 0.0f;
-	forceAccum.z = 0.0f;
+	m_forceAccum.x = 0.0f;
+	m_forceAccum.y = 0.0f;
+	m_forceAccum.z = 0.0f;
 }
