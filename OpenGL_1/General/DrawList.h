@@ -25,7 +25,6 @@ struct DrawListElement
 
 	float* vertexBuffer;
 	size_t VBsize_inByte;
-	// TODO: add vector for attribute pointer info
 
 	size_t vertextInfoSize;
 	size_t numOfVertices;

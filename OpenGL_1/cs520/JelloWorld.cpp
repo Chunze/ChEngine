@@ -118,55 +118,74 @@ void JelloWorld::CheckBoundary()
 {
 	for (int i = 0; i < 8; i++)
 	{
+		for (int k = 0; k < 8; k++)
+		{
+			CheckBoundary(&m_jello->m_particles[i][0][k]);
+			CheckBoundary(&m_jello->m_particles[i][7][k]);
+		}
+	}
+
+	for (int j = 0; j < 8; j++)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			CheckBoundary(&m_jello->m_particles[i][j][0]);
+			CheckBoundary(&m_jello->m_particles[i][j][7]);
+		}
+	}
+
+	for (int k = 0; k < 8; k++)
+	{
 		for (int j = 0; j < 8; j++)
 		{
-			for (int k = 0; k < 8; k++)
-			{
-				Particle* Anchor = new Particle();
-				glm::vec3 OutwardDir = glm::vec3(0.0f);
-				bool bOutOfBound = false;
-
-				Particle* CurrentParticle = &m_jello->m_particles[i][j][k];
-
-				if (CurrentParticle->m_position.x < BOUND_X_MIN || CurrentParticle->m_position.x > BOUND_X_MAX)
-				{
-					bOutOfBound = true;
-					Anchor->m_position.x = CurrentParticle->m_position.x < 0 ? BOUND_X_MIN : BOUND_X_MAX;
-					OutwardDir.x = Anchor->m_position.x;
-				}
-				else
-				{
-					Anchor->m_position.x = CurrentParticle->m_position.x;
-				}
-
-				if (CurrentParticle->m_position.y < BOUND_Y_MIN || CurrentParticle->m_position.y > BOUND_Y_MAX)
-				{
-					bOutOfBound = true;
-					Anchor->m_position.y = CurrentParticle->m_position.y < 0 ? BOUND_Y_MIN : BOUND_Y_MAX;
-					OutwardDir.y = Anchor->m_position.y;
-				}
-				else
-				{
-					Anchor->m_position.y = CurrentParticle->m_position.y;
-				}
-
-				if (CurrentParticle->m_position.z < BOUND_Z_MIN || CurrentParticle->m_position.z > BOUND_Z_MAX)
-				{
-					bOutOfBound = true;
-					Anchor->m_position.z = CurrentParticle->m_position.z < 0 ? BOUND_Z_MIN : BOUND_Z_MAX;
-					OutwardDir.z = Anchor->m_position.z;
-				}
-				else
-				{
-					Anchor->m_position.z = CurrentParticle->m_position.z;
-				}
-
-				if (bOutOfBound)
-				{
-					m_gameContext.GetPhysicsManager()->GenerateCollisionInfo(CurrentParticle, Anchor, OutwardDir, m_kCollision, m_dCollision);
-				}
-			}
+			CheckBoundary(&m_jello->m_particles[0][j][k]);
+			CheckBoundary(&m_jello->m_particles[7][j][k]);
 		}
+	}
+}
+
+void JelloWorld::CheckBoundary(class Particle* CurrentParticle)
+{
+	Particle* Anchor = new Particle();
+	glm::vec3 OutwardDir = glm::vec3(0.0f);
+	bool bOutOfBound = false;
+
+	if (CurrentParticle->m_position.x < BOUND_X_MIN || CurrentParticle->m_position.x > BOUND_X_MAX)
+	{
+		bOutOfBound = true;
+		Anchor->m_position.x = CurrentParticle->m_position.x < 0 ? BOUND_X_MIN : BOUND_X_MAX;
+		OutwardDir.x = Anchor->m_position.x;
+	}
+	else
+	{
+		Anchor->m_position.x = CurrentParticle->m_position.x;
+	}
+
+	if (CurrentParticle->m_position.y < BOUND_Y_MIN || CurrentParticle->m_position.y > BOUND_Y_MAX)
+	{
+		bOutOfBound = true;
+		Anchor->m_position.y = CurrentParticle->m_position.y < 0 ? BOUND_Y_MIN : BOUND_Y_MAX;
+		OutwardDir.y = Anchor->m_position.y;
+	}
+	else
+	{
+		Anchor->m_position.y = CurrentParticle->m_position.y;
+	}
+
+	if (CurrentParticle->m_position.z < BOUND_Z_MIN || CurrentParticle->m_position.z > BOUND_Z_MAX)
+	{
+		bOutOfBound = true;
+		Anchor->m_position.z = CurrentParticle->m_position.z < 0 ? BOUND_Z_MIN : BOUND_Z_MAX;
+		OutwardDir.z = Anchor->m_position.z;
+	}
+	else
+	{
+		Anchor->m_position.z = CurrentParticle->m_position.z;
+	}
+
+	if (bOutOfBound)
+	{
+		m_gameContext.GetPhysicsManager()->GenerateCollisionInfo(CurrentParticle, Anchor, OutwardDir, m_kCollision, m_dCollision);
 	}
 }
 

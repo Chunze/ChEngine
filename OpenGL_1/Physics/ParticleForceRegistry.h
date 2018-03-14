@@ -43,6 +43,11 @@ protected:
 			: particle(_particle), FG(_FG)
 		{}
 
+		~ParticleForceRegistration()
+		{
+			// TODO: call FG's destructor
+		}
+
 		Particle* particle;
 		ForceGenerator* FG;
 

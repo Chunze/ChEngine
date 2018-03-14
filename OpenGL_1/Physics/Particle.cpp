@@ -49,29 +49,37 @@ void Particle::Integrate_Rk4(float Delta, int step)
 		switch (step)
 		{
 		case 1:
+			// saving position and volecity at the beginning of the frame
+			m_prePosition = m_position;
+			m_preVolecity = m_volecity;
+
+
 			RK4_A_1 = m_forceAccum * m_inverseMass;
-			RK4_V_1 = RK4_A_1 * Delta + m_volecity;
-			m_position += RK4_V_1 * Delta;
+			RK4_V_1 = RK4_A_1 * Delta + m_preVolecity;
+			m_volecity = RK4_V_1;
+			m_position = m_prePosition + RK4_V_1 * Delta;
 			ClearForce();
 			break;
 		case 2:
 			RK4_A_2 = m_forceAccum * m_inverseMass;
-			RK4_V_2 = RK4_A_2 * Delta * 0.5f + m_volecity;
-			m_position += RK4_V_2 * Delta * 0.5f;
+			RK4_V_2 = RK4_A_2 * Delta * 0.5f + m_preVolecity;
+			m_volecity = RK4_V_2;
+			m_position = m_prePosition + RK4_V_2 * Delta * 0.5f;
 			ClearForce();
 			break;
 		case 3:
 			RK4_A_3 = m_forceAccum * m_inverseMass;
-			RK4_V_3 = RK4_A_3 * Delta * 0.5f + m_volecity;
-			m_position += RK4_V_3 * Delta * 0.5f;
+			RK4_V_3 = RK4_A_3 * Delta * 0.5f + m_preVolecity;
+			m_volecity = RK4_V_3;
+			m_position = m_prePosition + RK4_V_3 * Delta * 0.5f;
 			ClearForce();
 			break;
 		case 4:
 			RK4_A_4 = m_forceAccum * m_inverseMass;
-			RK4_V_4 = RK4_A_4 * Delta + m_volecity;
+			RK4_V_4 = RK4_A_4 * Delta + m_preVolecity;
 
 			m_volecity = (RK4_V_1 + 2.0f * (RK4_V_2 + RK4_V_3) + RK4_V_4) * 0.166667f /* = 1 / 6 */;
-			m_position += m_volecity * Delta;
+			m_position = m_prePosition + m_volecity * Delta;
 			ClearForce();
 			break;
 		default:

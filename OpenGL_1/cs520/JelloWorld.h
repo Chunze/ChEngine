@@ -28,6 +28,8 @@ public:
 	// checking the jello against the boundary, generate collision spring if out of bound
 	void CheckBoundary();
 
+	void CheckBoundary(class Particle* CurrentParticle);
+
 	glm::vec3 GetForceInForceField(glm::vec3 position) const;
 
 	Jello* GetJello() { return m_jello; }

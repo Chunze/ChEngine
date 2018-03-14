@@ -10,7 +10,7 @@
 #include "JelloWorld.h"
 
 GameContext* gameContext;
-float mouselastX = 400, mouselastY = 300;
+double mouselastX = 400, mouselastY = 300;
 bool firstMouse = true;
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -22,8 +22,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		firstMouse = false;
 	}
 
-	float offsetX = xpos - mouselastX;
-	float offsetY = mouselastY - ypos;
+	float offsetX = (float)(xpos - mouselastX);
+	float offsetY = (float)(mouselastY - ypos);
 	mouselastX = xpos;
 	mouselastY = ypos;
 
@@ -71,8 +71,15 @@ void Game::GameLoop()
 	while (!glfwWindowShouldClose(contextWindow))
 	{
 		bWasPausedLastFrame = bPaused;
-		float currentTime = glfwGetTime();
+		float currentTime = (float)glfwGetTime();
 		deltaTime = currentTime - lastFrameTime;
+
+		// First frame
+		if (lastFrameTime == 0.0f)
+		{
+			deltaTime = 0.0005f;
+		}
+
 		lastFrameTime = currentTime;
 
 		// input
@@ -85,8 +92,7 @@ void Game::GameLoop()
 			bWasPausedLastFrame = false;
 		}
 
-
-		//deltaTime = 0.0005;
+		deltaTime = 0.0010f;
 		Update(deltaTime);
 		
 		glfwSwapBuffers(contextWindow);
@@ -162,9 +168,9 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 void Game::Update(float Delta)
 {
-	int IntegrationMode = m_gameContext.GetPhysicsManager()->GetIntegrator();
 	if (!bGamePaused || !bPaused)
 	{
+		int IntegrationMode = m_gameContext.GetPhysicsManager()->GetIntegrator();
 		if (IntegrationMode == 0)
 		{
 			// force update
@@ -173,15 +179,11 @@ void Game::Update(float Delta)
 			// world update
 			m_gameContext.GetWorld()->Update(Delta);
 
-			// TODO: need to call generate contact info here to separate world update so that RK4 would not do this 4 times
-
 			// physics update
 			m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
 		}
 		else if (IntegrationMode == 1)
 		{
-			//TODO: make a copy to all particle in the world (save this as the original copy of last frame)
-
 
 			while (m_gameContext.GetPhysicsManager()->GetRK4StepCount() <= 4)
 			{
@@ -196,13 +198,6 @@ void Game::Update(float Delta)
 			}
 
 			m_gameContext.GetPhysicsManager()->Reset_RK4_Step();
-
-			
-			// TODO: Update all the particles using original copy of last frame
-
-			// TODO: Generate contact info
-
-			// TODO: resolve contacts (need to take care of this in RK4)
 		}
 
 		bGamePaused = true;

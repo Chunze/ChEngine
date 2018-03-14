@@ -14,6 +14,11 @@ CollisionSpringFG::CollisionSpringFG(Particle* _anchorPoint, glm::vec3 _directio
 
 }
 
+CollisionSpringFG::~CollisionSpringFG()
+{
+	delete Anchor;
+}
+
 void CollisionSpringFG::UpdateForce(Particle* particle, float duration)
 {
 	glm::vec3 springForceDir, springForce, dampingForce;

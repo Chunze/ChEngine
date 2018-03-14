@@ -10,6 +10,8 @@
 
 using namespace glm;
 
+const float BoundaryLineColor = 0.7f;
+
 Renderer::Renderer(GameContext gameContext)
 	: BaseClass(gameContext)
 {
@@ -98,21 +100,6 @@ void Renderer::InitLighting()
 
 void Renderer::InitShaders()
 {
-	/*
-	simpleShader = new Shader("vertexShader.glsl", "FragmentShader.glsl");
-	simpleShader->Use();
-
-	texture_0 = new Texture("Textures/container.jpg");
-
-	glActiveTexture(GL_TEXTURE1);
-	texture_1 = new Texture("Textures/awesomeface.png", true, true);
-
-	// setting texture unit
-	simpleShader->SetUniformInt("texture1", 0);
-	simpleShader->SetUniformInt("texture2", 1);
-	*/
-
-
 	simpleShader = new Shader("vertexShader.glsl", "LightingShader.frag");
 	simpleShader->Use();
 	//simpleShader->SetUniformVector("objectColor", 1.0f, 0.5f, 0.31f);
@@ -202,7 +189,6 @@ void Renderer::CalculateTransforms()
 	glm::mat4 projection;
 	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
-	// TODO: update the transform in c++ instead of in shader
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
 	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
@@ -289,7 +275,8 @@ void Renderer::Draw()
 		if (!drawCall.bIsDebug)
 		{
 			glm::mat4 temp;
-			model = glm::translate(temp, cubePositions[1]);
+			model = glm::translate(temp, cubePositions[0]);
+			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
 			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
 		}
 		else
@@ -314,23 +301,6 @@ void Renderer::Draw()
 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
 		drawCall.DisableAttributePointer();
 	}
-
-	//simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
-	
-	// TODO: keep track of how many attributes, and clean up accordingly 
-// 	glEnableVertexAttribArray(0);
-// 	glEnableVertexAttribArray(1);
-// 	glEnableVertexAttribArray(2);
-// 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-// 	glBindVertexArray(VAO);
-// 	simpleShader->Use();
-// 	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
-// 
-// 	model = glm::mat4();
-// 	model = glm::translate(model, cubePositions[2]);
-// 	lampShader->Use();
-// 	lampShader->SetUniformMatrix4("model", false, value_ptr(model));
-// 	glDrawArrays(GL_TRIANGLES, 0, num_vertex);
 }
 
 void Renderer::CleanupDraw()
@@ -354,6 +324,54 @@ void Renderer::InitDrawDebug()
 		0.0f, 5.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 		0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 1.0f,
+
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
+
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
 	};
 
 	//glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);

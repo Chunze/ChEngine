@@ -38,6 +38,8 @@ protected:
 	std::vector<int> vertexIndies;
 	int m_drawListIndex = -1;
 
+	void UpdateVertex();
+	float Vertices[4032];
 private:
 	int debug;
 };

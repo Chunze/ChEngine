@@ -10,6 +10,8 @@ public:
 
 	CollisionSpringFG(Particle* _anchorPoint, glm::vec3 _direction, float _sprintConstant = 10, float _damping = 0.0f);
 
+	~CollisionSpringFG();
+
 	virtual void UpdateForce(Particle* particle, float duration);
 
 	/** Anchor point **/
