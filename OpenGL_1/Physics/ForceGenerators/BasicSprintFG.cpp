@@ -27,3 +27,8 @@ void BasicSprintFG::UpdateForce(Particle* particle, float duration)
 
 	particle->addForce(force);
 }
+
+void BasicSprintFG::Destroy()
+{
+	delete other;
+}

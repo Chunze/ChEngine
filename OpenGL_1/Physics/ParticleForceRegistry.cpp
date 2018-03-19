@@ -1,5 +1,6 @@
 #include "ParticleForceRegistry.h"
 #include "ForceGenerator.h"
+#include "Particle.h"
 
 ParticleForceRegistry::ParticleForceRegistry()
 {
@@ -27,6 +28,10 @@ void ParticleForceRegistry::Remove(Particle* particle, ForceGenerator* FG)
 
 void ParticleForceRegistry::Clear()
 {
+	for (auto registration : registrations)
+	{
+		registration.DestroyFG();
+	}
 	registrations.clear();
 }
 
@@ -36,4 +41,9 @@ void ParticleForceRegistry::UpdateForces(float duration)
 	{
 		registration.FG->UpdateForce(registration.particle, duration);
 	}
+}
+
+void ParticleForceRegistry::ParticleForceRegistration::DestroyFG()
+{
+	delete FG;
 }

@@ -187,6 +187,10 @@ void JelloWorld::CheckBoundary(class Particle* CurrentParticle)
 	{
 		m_gameContext.GetPhysicsManager()->GenerateCollisionInfo(CurrentParticle, Anchor, OutwardDir, m_kCollision, m_dCollision);
 	}
+	else
+	{
+		delete Anchor;
+	}
 }
 
 glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const

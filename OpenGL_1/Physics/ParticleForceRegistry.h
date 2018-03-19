@@ -2,6 +2,7 @@
 #define PARTICLE_FORCE_REGISTRY_H
 #pragma once
 
+#include <memory>
 #include <vector>
 
 class Particle;
@@ -43,14 +44,10 @@ protected:
 			: particle(_particle), FG(_FG)
 		{}
 
-		~ParticleForceRegistration()
-		{
-			// TODO: call FG's destructor
-		}
+		void DestroyFG();
 
 		Particle* particle;
 		ForceGenerator* FG;
-
 	};
 
 	std::vector<ParticleForceRegistration> registrations;

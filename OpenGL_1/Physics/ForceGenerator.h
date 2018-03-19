@@ -11,6 +11,13 @@ public:
 	* and update the force applied to the given particle.
 	*/
 	virtual void UpdateForce(Particle* particle, float duration) = 0;
+
+	virtual void Destroy() {};
+
+	virtual ~ForceGenerator() = 0
+	{
+
+	}
 };
 
 #endif
