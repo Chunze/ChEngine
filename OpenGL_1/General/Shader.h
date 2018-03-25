@@ -23,6 +23,8 @@ public:
 	void SetUniformMatrix4(const std::string &name, bool bNeedTranspose, float* value);
 
 	unsigned int shaderProgramID;
+
+	bool IsValid();
 };
 
 #endif

@@ -122,3 +122,8 @@ void Shader::SetUniformMatrix4(const std::string &name, bool bNeedTranspose, flo
 	CheckCurrentProgram();
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, bNeedTranspose, value);
 }
+
+bool Shader::IsValid()
+{
+	return shaderProgramID != 0;
+}

@@ -31,6 +31,7 @@ void ParticleForceRegistry::Clear()
 	for (auto registration : registrations)
 	{
 		registration.DestroyFG();
+		//delete &registration;
 	}
 	registrations.clear();
 }

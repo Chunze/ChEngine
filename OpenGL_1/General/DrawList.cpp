@@ -14,11 +14,17 @@ void DrawList::AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic)
 	bHasNewData = true;
 
 	// vertex array
-	glGenVertexArrays(1, &elementToAdd.vertexArrayObject);
+	if (elementToAdd.vertexArrayObject == 0)
+	{
+		glGenVertexArrays(1, &elementToAdd.vertexArrayObject);
+	}
 	glBindVertexArray(elementToAdd.vertexArrayObject);
 
 	// vertex buffer and populate data
-	glGenBuffers(1, &elementToAdd.vertexBufferObject);
+	if (elementToAdd.vertexBufferObject == 0)
+	{
+		glGenBuffers(1, &elementToAdd.vertexBufferObject);
+	}
 	glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
 	glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
 

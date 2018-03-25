@@ -43,7 +43,7 @@ protected:
 	void UpdateVertex();
 	float Vertices[4032];
 
-	// For wireframe mode
+	// For wire frame mode
 	void UpdateParticleRenderInfo();
 	float ParticlePoints[3072];
 

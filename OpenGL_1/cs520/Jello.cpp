@@ -68,41 +68,38 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 	if (Mode == 0)
 	{
 		// Triangle mode
-		delete shader;
-		shader = new Shader("JelloVS.vert", "JelloFS.frag");
+		if (!e.shader.IsValid())
+		{
+			e.shader = *(new Shader("JelloVS.vert", "JelloFS.frag"));
+		}
 
 		UpdateVertex();
 		e.vertexBuffer = Vertices;
 		e.VBsize_inByte = 4032 * sizeof(float);
 		e.drawingPrimitive = DrawingPrimitives::TRIANGLE_STRIP;
 
-		e.shader = *shader;
 		e.attributeSizes.push_back(3);
 		e.attributeSizes.push_back(3);
 		e.vertextInfoSize = 6;
 		m_gameContext.GetDrawList()->AddToDrawQ(e);
-		//m_drawListIndex = AddElementToDrawList(e, m_drawListIndex);
-
-		drawListElementValid = true;
 	}
 	else
 	{
-		delete shader;
-		shader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
+		if (!ParticleRender.shader.IsValid())
+		{
+			ParticleRender.shader = *(new Shader("DebugDrawShader.vert", "DebugDrawShader.frag"));
+		}
 		// wire frame mode
 		UpdateParticleRenderInfo();
 		ParticleRender.vertexBuffer = ParticlePoints;
-		e.VBsize_inByte = 3072 * sizeof(float);
+		ParticleRender.VBsize_inByte = 3072 * sizeof(float);
 
-		e.drawingPrimitive = DrawingPrimitives::POINTS;
-
-		e.shader = *shader;
+		ParticleRender.drawingPrimitive = DrawingPrimitives::POINTS;
 		
-		e.attributeSizes.push_back(3);
-		e.attributeSizes.push_back(3);
-		e.vertextInfoSize = 6;
-		m_gameContext.GetDrawList()->AddToDrawQ(e);
-		drawListElementValid = true;
+		ParticleRender.attributeSizes.push_back(3);
+		ParticleRender.attributeSizes.push_back(3);
+		ParticleRender.vertextInfoSize = 6;
+		m_gameContext.GetDrawList()->AddToDrawQ(ParticleRender);
 	}
 }
 

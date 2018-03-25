@@ -44,7 +44,6 @@ public:
 	void Update(float deltaTime);
 
 	void Draw();
-	void CleanupDraw();
 	void InitDrawDebug();
 	void CleanupDebugDraw();
 	void DrawDebug();

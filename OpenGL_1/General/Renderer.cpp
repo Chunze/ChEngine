@@ -24,14 +24,12 @@ void Renderer::Initialize()
 
 	InitVertexArray(true);
 
-	float* vertices = GetVertexData(vertextBufferSize);
-	InitVertexBuffer(vertices, vertextBufferSize);
-	InitElementBuffer(NULL);
+	//float* vertices = GetVertexData(vertextBufferSize);
+	//InitVertexBuffer(vertices, vertextBufferSize);
+	//InitElementBuffer(NULL);
 
-	InitShaders();
+//	InitShaders();
 	InitDrawDebug();
-
-	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
 
 	mainCamera = new Camera();
 }
@@ -228,8 +226,6 @@ void Renderer::Update(float deltaTime)
 
 	mainCamera->Update(deltaTime);
 
-	
-
 	Draw();
 
 	//DrawDebug();
@@ -280,8 +276,6 @@ void Renderer::Draw()
 			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
 			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
 		}
-		glPointSize(drawCall.PointSize);
-		glLineWidth(drawCall.LineWidth);
 
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
@@ -302,14 +296,15 @@ void Renderer::Draw()
 		drawQueue->m_DynamicElements.pop();
 	}
 
-	drawQueue->m_StaticElements.push(DebugDrawElement);
+	m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
 
 	while (!drawQueue->m_StaticElements.empty())
 	{
 		auto drawCall = drawQueue->m_StaticElements.front();
 
 		drawCall.GetRenderReady();
-
+		glPointSize(drawCall.PointSize);
+		glLineWidth(drawCall.LineWidth);
 		glm::mat4 temp;
 		model = glm::translate(temp, cubePositions[0]);
 		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
@@ -325,58 +320,6 @@ void Renderer::Draw()
 		drawQueue->m_StaticElements.pop();
 	}
 
-	// draw drawlist
-// 	for (auto drawCall : drawList.m_DynamicElements)
-// 	{
-// 		drawCall.GetRenderReady();
-// 		if (!drawCall.bIsDebug)
-// 		{
-// 			glm::mat4 temp;
-// 			model = glm::translate(temp, cubePositions[0]);
-// 			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
-// 			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
-// 			glPointSize(drawCall.PointSize);
-// 			glLineWidth(drawCall.LineWidth);
-// 		}
-// 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
-// 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
-// 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
-// 		drawCall.shader.SetUniformVector("material.specular", 0.5f, 0.5f, 0.5f);
-// 		drawCall.shader.SetUniformFloat("material.shininess", 32.0f);
-// 		//simpleShader->SetUniformVector("lightColor", 1.0f);
-// 		drawCall.shader.SetUniformVector("light.ambient", 0.2f, 0.2f, 0.2f);
-// 		drawCall.shader.SetUniformVector("light.diffuse", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
-// 		drawCall.shader.SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
-// 		drawCall.shader.SetUniformVector("light.position", value_ptr(m_lightPosition));
-// 
-// 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
-// 
-// 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
-// 		drawCall.DisableAttributePointer();
-// 	}
-
-// 	for (auto drawCall : drawList.m_StaticElements)
-// 	{
-// 		drawCall.GetRenderReady();
-// 
-// 		glm::mat4 temp;
-// 		model = glm::translate(temp, cubePositions[0]);
-// 		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
-// 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
-// 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
-// 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
-// 
-// 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
-// 
-// 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
-// 		drawCall.DisableAttributePointer();
-// 	}
-}
-
-void Renderer::CleanupDraw()
-{
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
 }
 
 void Renderer::InitDrawDebug()

@@ -21,6 +21,8 @@ enum class DrawingPrimitives
 
 struct DrawListElement
 {
+	DrawListElement() {}
+
 	DrawingPrimitives drawingPrimitive;
 
 	float* vertexBuffer;
