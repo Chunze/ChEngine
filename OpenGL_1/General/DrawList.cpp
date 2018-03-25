@@ -9,70 +9,45 @@ DrawList::DrawList(GameContext gameContext)
 
 }
 
-int DrawList::Add(DrawListElement elementToAdd, int index, bool bIsDynamic)
+void DrawList::AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic)
 {
-	
-	int size;
+	bHasNewData = true;
 
-	if (index <= 0)
+	// vertex array
+	glGenVertexArrays(1, &elementToAdd.vertexArrayObject);
+	glBindVertexArray(elementToAdd.vertexArrayObject);
+
+	// vertex buffer and populate data
+	glGenBuffers(1, &elementToAdd.vertexBufferObject);
+	glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
+	glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
+
+	size_t index = 0;
+	int offset = 0;
+	for (int attributeSize : elementToAdd.attributeSizes)
 	{
-		bHasNewData = true;
+		int attribute = elementToAdd.attributeSizes[index];
 
-		// vertex array
-		glGenVertexArrays(1, &elementToAdd.vertexArrayObject);
-		glBindVertexArray(elementToAdd.vertexArrayObject);
+		glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, elementToAdd.vertextInfoSize * sizeof(float), (void*)offset);
+		offset += attributeSize * sizeof(float);
+		++index;
+	}
 
-		// vertex buffer and populate data
-		glGenBuffers(1, &elementToAdd.vertexBufferObject);
-		glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
-
-		size_t index = 0;
-		int offset = 0;
-		for (int attributeSize : elementToAdd.attributeSizes)
-		{
-			int attribute = elementToAdd.attributeSizes[index];
-
-			glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, elementToAdd.vertextInfoSize * sizeof(float), (void*)offset);
-			offset += attributeSize * sizeof(float);
-			++index;
-		}
-
-		elementToAdd.numOfVertices = elementToAdd.VBsize_inByte / (elementToAdd.vertextInfoSize * sizeof(float));
-		if (bIsDynamic)
-		{
-			size = m_DynamicElements.size();
-			m_DynamicElements.push_back(elementToAdd);
-		}
-		else
-		{
-			size = m_StaticElements.size();
-			m_StaticElements.push_back(elementToAdd);
-		}
+	elementToAdd.numOfVertices = elementToAdd.VBsize_inByte / (elementToAdd.vertextInfoSize * sizeof(float));
+	if (bIsDynamic)
+	{
+		m_DynamicElements.push(elementToAdd);
 	}
 	else
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
+		m_StaticElements.push(elementToAdd);
 	}
-
-	return size;
 	
-}
-
-void DrawList::UpdateElement(int index, float* newVB, int VBsize_byte)
-{
-	DrawListElement* elementToUpdate = &m_DynamicElements[index];
-	elementToUpdate->VBsize_inByte = VBsize_byte;
-	elementToUpdate->vertexBuffer = newVB;
-	elementToUpdate->numOfVertices = elementToUpdate->VBsize_inByte / (elementToUpdate->vertextInfoSize * sizeof(float));
-	glBindBuffer(GL_ARRAY_BUFFER, elementToUpdate->vertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, elementToUpdate->VBsize_inByte, elementToUpdate->vertexBuffer, GL_STATIC_DRAW);
 }
 
 void DrawList::Clear()
 {
-	m_DynamicElements.clear();
+	
 }
 
 void DrawListElement::GetRenderReady()
@@ -84,7 +59,7 @@ void DrawListElement::GetRenderReady()
 	}
 	// bind buffers
 	glBindVertexArray(vertexArrayObject);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+	//glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject); 
 	shader.Use();
 }
 

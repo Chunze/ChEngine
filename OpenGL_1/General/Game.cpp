@@ -93,6 +93,11 @@ void Game::GameLoop()
 		}
 
 		deltaTime = 0.0010f;
+		if (bPaused)
+		{
+			deltaTime = 0.0f;
+			//bGamePaused = true;
+		}
 		Update(deltaTime);
 		
 		glfwSwapBuffers(contextWindow);
@@ -181,7 +186,7 @@ void Game::processInput(GLFWwindow* contextWindow)
 			if (_jelloWorld)
 			{
 				_jelloWorld->ToggleDrawingMode();
-				m_gameContext.GetDrawList()->m_DynamicElements.clear();
+				//m_gameContext.GetDrawList()->m_DynamicElements.clear();
 			}
 			//m_gameContext.m_renderer->TogglePolygonMode();
 		}
@@ -190,40 +195,37 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 void Game::Update(float Delta)
 {
-	if (!bGamePaused || !bPaused)
+
+	int IntegrationMode = m_gameContext.GetPhysicsManager()->GetIntegrator();
+	if (IntegrationMode == 0)
 	{
-		int IntegrationMode = m_gameContext.GetPhysicsManager()->GetIntegrator();
-		if (IntegrationMode == 0)
+		// force update
+		m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
+
+		// world update
+		m_gameContext.GetWorld()->Update(Delta);
+
+		// physics update
+		m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
+	}
+	else if (IntegrationMode == 1)
+	{
+
+		while (m_gameContext.GetPhysicsManager()->GetRK4StepCount() <= 4)
 		{
 			// force update
 			m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
-
-			// world update
+			// world update (Particles will check current integrate method, and act accordingly)
 			m_gameContext.GetWorld()->Update(Delta);
-
 			// physics update
 			m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
-		}
-		else if (IntegrationMode == 1)
-		{
-
-			while (m_gameContext.GetPhysicsManager()->GetRK4StepCount() <= 4)
-			{
-				// force update
-				m_gameContext.GetPhysicsManager()->UpdateForces(Delta);
-				// world update (Particles will check current integrate method, and act accordingly)
-				m_gameContext.GetWorld()->Update(Delta);
-				// physics update
-				m_gameContext.GetPhysicsManager()->UpdateContactForces(Delta);
-				// Update RK4 step, very important for the particle to know what stage the update is in
-				m_gameContext.GetPhysicsManager()->Increment_RK4_step();
-			}
-
-			m_gameContext.GetPhysicsManager()->Reset_RK4_Step();
+			// Update RK4 step, very important for the particle to know what stage the update is in
+			m_gameContext.GetPhysicsManager()->Increment_RK4_step();
 		}
 
-		bGamePaused = true;
+		m_gameContext.GetPhysicsManager()->Reset_RK4_Step();
 	}
+
 
 	// render update
 	m_gameContext.m_renderer->Update(deltaTime);

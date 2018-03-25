@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-
+#include <queue>
 #include "BaseClass.h"
 #include "Shader.h"
 
@@ -49,18 +49,15 @@ public:
 	DrawList(GameContext gameContext);
 
 	// This vector gets cleared each frame
-	std::vector<DrawListElement> m_DynamicElements;
+	std::queue<DrawListElement> m_DynamicElements;
 
 	// This vector changes much less frequent
-	std::vector<DrawListElement> m_StaticElements;
+	std::queue<DrawListElement> m_StaticElements;
 
-	int Add(DrawListElement elementToAdd, int index, bool bIsDynamic = true);
+	void AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic = true);
 	
 	void Clear();
 	bool IsHaveNewData() { return bHasNewData; };
-
-	// will be overloaded
-	void UpdateElement(int index, float* newVB, int VBsize_byte);
 
 protected:
 

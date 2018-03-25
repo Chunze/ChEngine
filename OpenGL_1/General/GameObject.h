@@ -19,5 +19,5 @@ public:
 protected:
 	Shader* shader;
 
-	inline int AddElementToDrawList(DrawListElement e, int index) { return m_gameContext.GetDrawList()->Add(e, index); }
+	//inline int AddElementToDrawList(DrawListElement e, int index) { return m_gameContext.GetDrawList()->AddToDrawQ(e, index); }
 };

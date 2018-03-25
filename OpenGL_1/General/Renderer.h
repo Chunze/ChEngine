@@ -12,6 +12,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "DrawList.h"
 
 using namespace std;
 
@@ -75,6 +76,8 @@ public:
 	int vertexInfoSize;
 
 	int num_vertex;
+
+	DrawListElement DebugDrawElement;
 
 	glm::vec3 m_lightPosition;
 

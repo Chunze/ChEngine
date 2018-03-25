@@ -76,22 +76,11 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 		e.VBsize_inByte = 4032 * sizeof(float);
 		e.drawingPrimitive = DrawingPrimitives::TRIANGLE_STRIP;
 
-		if (drawListElementValid)
-		{
-			m_gameContext.GetDrawList()->UpdateElement(m_drawListIndex, e.vertexBuffer, e.VBsize_inByte);
-			return;
-		}
-		else
-		{
-			m_drawListIndex = -1;
-			e.attributeSizes.clear();
-		}
-
 		e.shader = *shader;
 		e.attributeSizes.push_back(3);
 		e.attributeSizes.push_back(3);
 		e.vertextInfoSize = 6;
-		m_drawListIndex = m_gameContext.GetDrawList()->Add(e, m_drawListIndex);
+		m_gameContext.GetDrawList()->AddToDrawQ(e);
 		//m_drawListIndex = AddElementToDrawList(e, m_drawListIndex);
 
 		drawListElementValid = true;
@@ -100,30 +89,19 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 	{
 		delete shader;
 		shader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
-		// wireframe mode
+		// wire frame mode
 		UpdateParticleRenderInfo();
 		ParticleRender.vertexBuffer = ParticlePoints;
 		e.VBsize_inByte = 3072 * sizeof(float);
 
 		e.drawingPrimitive = DrawingPrimitives::POINTS;
 
-
-		if (drawListElementValid)
-		{
-			m_gameContext.GetDrawList()->UpdateElement(m_drawListIndex, e.vertexBuffer, e.VBsize_inByte);
-			return;
-		}
-		else
-		{
-			m_drawListIndex = -1;
-			e.attributeSizes.clear();
-		}
 		e.shader = *shader;
 		
 		e.attributeSizes.push_back(3);
 		e.attributeSizes.push_back(3);
 		e.vertextInfoSize = 6;
-		m_drawListIndex = m_gameContext.GetDrawList()->Add(e, m_drawListIndex);
+		m_gameContext.GetDrawList()->AddToDrawQ(e);
 		drawListElementValid = true;
 	}
 }
@@ -132,8 +110,12 @@ void Jello::Update(float Delta)
 {
 	//std::cout << m_particles[0][0][1].m_position.x << ", " << m_particles[0][0][1].m_position.y << ", " << m_particles[0][0][1].m_position.z << std::endl;
 	// add to drawlist
-	int RenderMode = static_cast<JelloWorld*>(GetWorld())->RenderMode;
-	CreateAndAddDrawListElement(RenderMode);
+
+	if (m_gameContext.GetPhysicsManager()->GetRK4StepCount() == 4)
+	{
+		int RenderMode = static_cast<JelloWorld*>(GetWorld())->RenderMode;
+		CreateAndAddDrawListElement(RenderMode);
+	}
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -212,14 +194,14 @@ void Jello::UpdateVertex()
 		return r;
 	};
 
-	int i, j, k, ip, jp, kp;
+	int i, j;
 	point r1, r2, r3;
 	/* normals buffer and counter for Gourad shading*/
 	point normal[8][8];
 	int counter[8][8];
 
 	int face;
-	float faceFactor, length;
+	float faceFactor;
 
 	if (fabs(m_particles[0][0][0].m_position.x) > 30)
 	{

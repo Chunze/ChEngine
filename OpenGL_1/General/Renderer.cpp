@@ -6,7 +6,7 @@
 
 #include "../stb_image.h"
 
-#include "DrawList.h"
+
 
 using namespace glm;
 
@@ -29,10 +29,9 @@ void Renderer::Initialize()
 	InitElementBuffer(NULL);
 
 	InitShaders();
+	InitDrawDebug();
 
 	num_vertex = vertextBufferSize / (vertexInfoSize * sizeof(float));
-
-	InitDrawDebug();
 
 	mainCamera = new Camera();
 }
@@ -229,6 +228,8 @@ void Renderer::Update(float deltaTime)
 
 	mainCamera->Update(deltaTime);
 
+	
+
 	Draw();
 
 	//DrawDebug();
@@ -246,7 +247,7 @@ void Renderer::Draw()
 	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
 
-	DrawList drawList = *m_gameContext.GetDrawList();
+	DrawList* drawQueue = m_gameContext.GetDrawList();
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -268,19 +269,20 @@ void Renderer::Draw()
 	glm::mat4 model;
 	model = glm::translate(model, cubePositions[1]);
 
-	// draw drawlist
-	for (auto drawCall : drawList.m_DynamicElements)
+	while (!drawQueue->m_DynamicElements.empty())
 	{
+		auto drawCall = drawQueue->m_DynamicElements.front();
 		drawCall.GetRenderReady();
-		if (!drawCall.bIsDebug)
+
 		{
 			glm::mat4 temp;
 			model = glm::translate(temp, cubePositions[0]);
 			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
 			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
-			glPointSize(drawCall.PointSize);
-			glLineWidth(drawCall.LineWidth);
 		}
+		glPointSize(drawCall.PointSize);
+		glLineWidth(drawCall.LineWidth);
+
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
@@ -296,10 +298,16 @@ void Renderer::Draw()
 
 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
 		drawCall.DisableAttributePointer();
+
+		drawQueue->m_DynamicElements.pop();
 	}
 
-	for (auto drawCall : drawList.m_StaticElements)
+	drawQueue->m_StaticElements.push(DebugDrawElement);
+
+	while (!drawQueue->m_StaticElements.empty())
 	{
+		auto drawCall = drawQueue->m_StaticElements.front();
+
 		drawCall.GetRenderReady();
 
 		glm::mat4 temp;
@@ -313,7 +321,56 @@ void Renderer::Draw()
 
 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
 		drawCall.DisableAttributePointer();
+
+		drawQueue->m_StaticElements.pop();
 	}
+
+	// draw drawlist
+// 	for (auto drawCall : drawList.m_DynamicElements)
+// 	{
+// 		drawCall.GetRenderReady();
+// 		if (!drawCall.bIsDebug)
+// 		{
+// 			glm::mat4 temp;
+// 			model = glm::translate(temp, cubePositions[0]);
+// 			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
+// 			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+// 			glPointSize(drawCall.PointSize);
+// 			glLineWidth(drawCall.LineWidth);
+// 		}
+// 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
+// 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
+// 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
+// 		drawCall.shader.SetUniformVector("material.specular", 0.5f, 0.5f, 0.5f);
+// 		drawCall.shader.SetUniformFloat("material.shininess", 32.0f);
+// 		//simpleShader->SetUniformVector("lightColor", 1.0f);
+// 		drawCall.shader.SetUniformVector("light.ambient", 0.2f, 0.2f, 0.2f);
+// 		drawCall.shader.SetUniformVector("light.diffuse", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
+// 		drawCall.shader.SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
+// 		drawCall.shader.SetUniformVector("light.position", value_ptr(m_lightPosition));
+// 
+// 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
+// 
+// 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
+// 		drawCall.DisableAttributePointer();
+// 	}
+
+// 	for (auto drawCall : drawList.m_StaticElements)
+// 	{
+// 		drawCall.GetRenderReady();
+// 
+// 		glm::mat4 temp;
+// 		model = glm::translate(temp, cubePositions[0]);
+// 		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+// 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
+// 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
+// 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
+// 
+// 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
+// 
+// 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
+// 		drawCall.DisableAttributePointer();
+// 	}
 }
 
 void Renderer::CleanupDraw()
@@ -324,13 +381,12 @@ void Renderer::CleanupDraw()
 
 void Renderer::InitDrawDebug()
 {
-	
-	glGenVertexArrays(1, &DebugVertextArray);
-	glBindVertexArray(DebugVertextArray);
-	glGenBuffers(1, &DebugVertextBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
-	glLineWidth(3.0f);
-	float axisLineVertices[] = {
+	//glGenVertexArrays(1, &DebugVertextArray);
+	//glBindVertexArray(DebugVertextArray);
+	//glGenBuffers(1, &DebugVertextBuffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
+	//glLineWidth(3.0f);
+	static float axisLineVertices[] = {
 		0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 		5.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
@@ -389,18 +445,19 @@ void Renderer::InitDrawDebug()
 
 	//glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);
 	debugShader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
-	
-	DrawListElement e;
-	e.vertexBuffer = axisLineVertices;
-	e.drawingPrimitive = DrawingPrimitives::LINES;
-	e.shader = *debugShader;
-	e.VBsize_inByte = sizeof(axisLineVertices);
-	e.attributeSizes.push_back(3);
-	e.attributeSizes.push_back(3);
-	e.vertextInfoSize = 6;
-	e.bIsDebug = true;
+	//DebugDrawElement.vertexArrayObject = DebugVertextArray;
+	//DebugDrawElement.vertexBufferObject = DebugVertextBuffer;
+	DebugDrawElement.vertexBuffer = axisLineVertices;
+	DebugDrawElement.drawingPrimitive = DrawingPrimitives::LINES;
+	DebugDrawElement.shader = *debugShader;
+	DebugDrawElement.VBsize_inByte = sizeof(axisLineVertices);
+	DebugDrawElement.attributeSizes.push_back(3);
+	DebugDrawElement.attributeSizes.push_back(3);
+	DebugDrawElement.vertextInfoSize = 6;
+	DebugDrawElement.bIsDebug = true;
+	DebugDrawElement.LineWidth = 3;
 
-	m_gameContext.GetDrawList()->Add(e, -1, false);
+	m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
 
 	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
