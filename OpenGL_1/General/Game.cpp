@@ -109,12 +109,16 @@ void Game::processInput(GLFWwindow* contextWindow)
 
 	if (glfwGetKey(contextWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		bPaused = false;
+		KEY_SPACE_WasPressed = true;
 	}
 
-	if (glfwGetKey(contextWindow, GLFW_KEY_ENTER) == GLFW_PRESS)
+	if (glfwGetKey(contextWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
 	{
-		bPaused = true;
+		if (KEY_SPACE_WasPressed)
+		{
+			KEY_SPACE_WasPressed = false;
+			bPaused = !bPaused;
+		}
 	}
 
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
@@ -163,6 +167,24 @@ void Game::processInput(GLFWwindow* contextWindow)
 	if (glfwGetKey(contextWindow, GLFW_KEY_F5) == GLFW_PRESS)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_PRESS)
+	{
+		KEY_V_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_RELEASE)
+	{
+		if (KEY_V_WasPressed)
+		{
+			KEY_V_WasPressed = false;
+			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
+			if (_jelloWorld)
+			{
+				_jelloWorld->ToggleDrawingMode();
+				m_gameContext.GetDrawList()->m_DynamicElements.clear();
+			}
+			//m_gameContext.m_renderer->TogglePolygonMode();
+		}
 	}
 }
 

@@ -34,7 +34,8 @@ struct DrawListElement
 	// buffers
 	unsigned int vertexBufferObject;
 	unsigned int vertexArrayObject;
-
+	float PointSize = 5.0f;
+	float LineWidth = 1.0f;
 	bool bIsDebug = false;
 
 	void GetRenderReady();
@@ -47,9 +48,13 @@ class DrawList : public BaseClass
 public:
 	DrawList(GameContext gameContext);
 
-	std::vector<DrawListElement> m_elements;
+	// This vector gets cleared each frame
+	std::vector<DrawListElement> m_DynamicElements;
 
-	int Add(DrawListElement elementToAdd, int index);
+	// This vector changes much less frequent
+	std::vector<DrawListElement> m_StaticElements;
+
+	int Add(DrawListElement elementToAdd, int index, bool bIsDynamic = true);
 	
 	void Clear();
 	bool IsHaveNewData() { return bHasNewData; };

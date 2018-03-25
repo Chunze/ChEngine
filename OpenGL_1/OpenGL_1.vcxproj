@@ -80,11 +80,13 @@
     <None Include="LampShader.frag" />
     <None Include="LightingShader.frag" />
     <None Include="VertexShader.glsl" />
+    <None Include="WireJello.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5DA6307B-D552-4A9C-9BB7-C2099DF6DC19}</ProjectGuid>
     <RootNamespace>OpenGL_1</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>ChEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -20,7 +20,13 @@ public:
 	glm::vec3 * m_forceField;	// pointer to the array of values of the force field
 
 
-	int viewingMode;
+	int RenderMode = 0;
+
+	int ShowShearSpring = 0;
+	int ShowBendSpring = 0;
+	int ShowStructuralSpring = 0;
+
+	void ToggleDrawingMode();
 
 	virtual void LoadWorld(const char* fileName);
 	virtual void Update(float Delta);

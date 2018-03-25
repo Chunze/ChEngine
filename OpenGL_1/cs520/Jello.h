@@ -31,14 +31,27 @@ public:
 	virtual void CreateAndAddDrawListElement(int Mode);
 	virtual void Update(float Delta);
 
+	bool drawListElementValid = false;
 protected:
 	DrawListElement e;
-	bool drawListElementValid = false;
-	std::vector<float> GetVertices();
+	DrawListElement ParticleRender;
+	
+
 	int m_drawListIndex = -1;
 
+	// For triangle mode
 	void UpdateVertex();
 	float Vertices[4032];
+
+	// For wireframe mode
+	void UpdateParticleRenderInfo();
+	float ParticlePoints[3072];
+
+	void UpdateStructureSpringRenderInfo();
+
+	void UpdateShearSpringRenderInfo();
+
+	void UpdateBendSpringRenderInfo();
 private:
 	int debug;
 };

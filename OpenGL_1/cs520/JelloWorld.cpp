@@ -19,6 +19,18 @@ JelloWorld::JelloWorld(GameContext gameContext)
 	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0));
 }
 
+void JelloWorld::ToggleDrawingMode()
+{
+	m_jello->drawListElementValid = false;
+	RenderMode = 1 - RenderMode;
+	if (RenderMode == 1)
+	{
+		ShowStructuralSpring = 1;
+		ShowShearSpring = 0;
+		ShowBendSpring = 0;
+	}
+}
+
 void JelloWorld::LoadWorld(const char* fileName)
 {
 	int i, j, k;

@@ -269,7 +269,7 @@ void Renderer::Draw()
 	model = glm::translate(model, cubePositions[1]);
 
 	// draw drawlist
-	for (auto drawCall : drawList.m_elements)
+	for (auto drawCall : drawList.m_DynamicElements)
 	{
 		drawCall.GetRenderReady();
 		if (!drawCall.bIsDebug)
@@ -278,12 +278,8 @@ void Renderer::Draw()
 			model = glm::translate(temp, cubePositions[0]);
 			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
 			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
-		}
-		else
-		{
-			glm::mat4 temp;
-			model = glm::translate(temp, cubePositions[0]);
-			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+			glPointSize(drawCall.PointSize);
+			glLineWidth(drawCall.LineWidth);
 		}
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
@@ -295,6 +291,23 @@ void Renderer::Draw()
 		drawCall.shader.SetUniformVector("light.diffuse", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
 		drawCall.shader.SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
 		drawCall.shader.SetUniformVector("light.position", value_ptr(m_lightPosition));
+
+		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
+
+		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
+		drawCall.DisableAttributePointer();
+	}
+
+	for (auto drawCall : drawList.m_StaticElements)
+	{
+		drawCall.GetRenderReady();
+
+		glm::mat4 temp;
+		model = glm::translate(temp, cubePositions[0]);
+		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
+		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
+		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
 
 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
 
@@ -387,7 +400,7 @@ void Renderer::InitDrawDebug()
 	e.vertextInfoSize = 6;
 	e.bIsDebug = true;
 
-	m_gameContext.GetDrawList()->Add(e, -1);
+	m_gameContext.GetDrawList()->Add(e, -1, false);
 
 	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -408,4 +421,22 @@ void Renderer::DrawDebug()
 	debugShader->Use();
 
 	glDrawArrays(GL_LINES, 0, 6);
+}
+
+void Renderer::JelloRenderModeToggled()
+{
+
+}
+
+void Renderer::TogglePolygonMode()
+{
+	bIsFill = !bIsFill;
+	if (bIsFill)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
 }

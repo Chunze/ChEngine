@@ -9,9 +9,10 @@ DrawList::DrawList(GameContext gameContext)
 
 }
 
-int DrawList::Add(DrawListElement elementToAdd, int index)
+int DrawList::Add(DrawListElement elementToAdd, int index, bool bIsDynamic)
 {
-	int size = m_elements.size();
+	
+	int size;
 
 	if (index <= 0)
 	{
@@ -31,15 +32,23 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 		for (int attributeSize : elementToAdd.attributeSizes)
 		{
 			int attribute = elementToAdd.attributeSizes[index];
-			
+
 			glVertexAttribPointer(index, attribute, GL_FLOAT, GL_FALSE, elementToAdd.vertextInfoSize * sizeof(float), (void*)offset);
 			offset += attributeSize * sizeof(float);
 			++index;
 		}
 
 		elementToAdd.numOfVertices = elementToAdd.VBsize_inByte / (elementToAdd.vertextInfoSize * sizeof(float));
-
-		m_elements.push_back(elementToAdd);
+		if (bIsDynamic)
+		{
+			size = m_DynamicElements.size();
+			m_DynamicElements.push_back(elementToAdd);
+		}
+		else
+		{
+			size = m_StaticElements.size();
+			m_StaticElements.push_back(elementToAdd);
+		}
 	}
 	else
 	{
@@ -48,21 +57,22 @@ int DrawList::Add(DrawListElement elementToAdd, int index)
 	}
 
 	return size;
+	
 }
 
 void DrawList::UpdateElement(int index, float* newVB, int VBsize_byte)
 {
-	DrawListElement* elementToUpdate = &m_elements[index];
+	DrawListElement* elementToUpdate = &m_DynamicElements[index];
 	elementToUpdate->VBsize_inByte = VBsize_byte;
 	elementToUpdate->vertexBuffer = newVB;
+	elementToUpdate->numOfVertices = elementToUpdate->VBsize_inByte / (elementToUpdate->vertextInfoSize * sizeof(float));
 	glBindBuffer(GL_ARRAY_BUFFER, elementToUpdate->vertexBufferObject);
 	glBufferData(GL_ARRAY_BUFFER, elementToUpdate->VBsize_inByte, elementToUpdate->vertexBuffer, GL_STATIC_DRAW);
 }
 
 void DrawList::Clear()
 {
-	bHasNewData = false;
-	m_elements.clear();
+	m_DynamicElements.clear();
 }
 
 void DrawListElement::GetRenderReady()

@@ -74,6 +74,7 @@
     <None Include="LampShader.frag" />
     <None Include="JelloVS.vert" />
     <None Include="JelloFS.frag" />
+    <None Include="WireJello.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\FileManager.h">

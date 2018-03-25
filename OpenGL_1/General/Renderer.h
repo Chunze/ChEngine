@@ -48,6 +48,11 @@ public:
 	void CleanupDebugDraw();
 	void DrawDebug();
 
+	void JelloRenderModeToggled();
+
+	void TogglePolygonMode();
+	bool bIsFill = true;
+
 	unsigned int VBO;				// vertex buffer ID
 	unsigned int VAO;				// vertex array ID
 	unsigned int EBO;				// element buffer ID
