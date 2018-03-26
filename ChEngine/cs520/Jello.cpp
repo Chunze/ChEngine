@@ -48,7 +48,7 @@ Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float si
 
 Jello::~Jello()
 {
-	delete[] m_particles;
+	
 }
 
 void Jello::InitJello()

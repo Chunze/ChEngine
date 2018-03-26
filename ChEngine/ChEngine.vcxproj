@@ -29,6 +29,8 @@
     <ClCompile Include="General\GameContext.cpp" />
     <ClCompile Include="General\GameObject.cpp" />
     <ClCompile Include="General\Mesh.cpp" />
+    <ClCompile Include="General\pic.cpp" />
+    <ClCompile Include="General\ppm.cpp" />
     <ClCompile Include="General\Renderer.cpp" />
     <ClCompile Include="General\FileManager.cpp" />
     <ClCompile Include="General\main.cpp" />
@@ -56,6 +58,7 @@
     <ClInclude Include="General\glm.h" />
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\Mesh.h" />
+    <ClInclude Include="General\pic.h" />
     <ClInclude Include="General\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />
     <ClInclude Include="General\SceneNode.h" />
@@ -84,7 +87,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5DA6307B-D552-4A9C-9BB7-C2099DF6DC19}</ProjectGuid>
-    <RootNamespace>OpenGL_1</RootNamespace>
+    <RootNamespace>ChEngine</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ProjectName>ChEngine</ProjectName>
   </PropertyGroup>
@@ -134,11 +137,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)OpenGL_1\General;$(SolutionDir)OpenGL_1\cs520;$(SolutionDir)OpenGL_1\Physics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)OpenGL_1\General;$(SolutionDir)OpenGL_1\cs520;$(SolutionDir)OpenGL_1\Physics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -146,6 +149,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>

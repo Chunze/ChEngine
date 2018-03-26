@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <fstream>
 #include <iostream>
 
@@ -6,12 +5,12 @@
 #include "Jello.h"
 #include "PhysicsManager.h"
 
-#define BOUND_X_MIN -2
-#define BOUND_Y_MIN -2
-#define BOUND_Z_MIN -2
-#define BOUND_X_MAX 2
-#define BOUND_Y_MAX 2
-#define BOUND_Z_MAX 2
+#define BOUND_X_MIN -2.0f
+#define BOUND_Y_MIN -2.0f
+#define BOUND_Z_MIN -2.0f
+#define BOUND_X_MAX 2.0f
+#define BOUND_Y_MAX 2.0f
+#define BOUND_Z_MAX 2.0f
 
 JelloWorld::JelloWorld(GameContext gameContext)
 	: World(gameContext)

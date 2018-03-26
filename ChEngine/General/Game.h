@@ -14,10 +14,14 @@ public:
 
 	void processInput(GLFWwindow* contextWindow);
 
+	void saveScreenshot(int windowWidth, int windowHeight, char *filename);
+
 	virtual void Update(float Delta);
 
 	float deltaTime = 0.0f;
 	float lastFrameTime = 0.0f;
+	float lastScreenCapture = 0.0f;
+	int ScreenCaptureIndex = 0;
 
 	bool bWasPausedLastFrame = false;
 	bool bPaused = true;

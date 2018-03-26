@@ -59,7 +59,7 @@ void DrawList::Clear()
 void DrawListElement::GetRenderReady()
 {
 	// enable attribute pointers
-	for (int i = 0; i < attributeSizes.size(); i++)
+	for (size_t i = 0; i < attributeSizes.size(); i++)
 	{
 		glEnableVertexAttribArray(i);
 	}
@@ -71,7 +71,7 @@ void DrawListElement::GetRenderReady()
 
 void DrawListElement::DisableAttributePointer()
 {
-	for (int i = 0; i < attributeSizes.size(); i++)
+	for (size_t i = 0; i < attributeSizes.size(); i++)
 	{
 		glDisableVertexAttribArray(i);
 	}

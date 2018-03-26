@@ -1,14 +1,15 @@
 #include <iostream>
 #include <string>
 #include "Game.h"
-
 #include "Jello.h"
+#include "pic.h"
 
 // components and managers for the game
 #include "Renderer.h"
 #include "PhysicsManager.h"
 #include "JelloWorld.h"
 
+#define SCREEN_SHOTS 0
 GameContext* gameContext;
 double mouselastX = 400, mouselastY = 300;
 bool firstMouse = true;
@@ -86,7 +87,7 @@ void Game::InitGame()
 		else if (Homework == "0")
 		{
 			World* world = new JelloWorld(m_gameContext);
-			world->LoadWorld("cs520/rotate.w");
+			world->LoadWorld("cs520/moveLeft.w");
 			m_gameContext.m_world = world;
 		}
 	}
@@ -118,10 +119,31 @@ void Game::GameLoop()
 		processInput(contextWindow);
 
 
-		if (bWasPausedLastFrame && !bPaused)
+		if (bPaused)
 		{
 			deltaTime = 0.0f;
 			bWasPausedLastFrame = false;
+		}
+
+		
+		float TimeSinceLastScreenSave = currentTime - lastScreenCapture;
+
+		float ScreenCaptureRate = 1.0f / 15.0f;
+
+		if (SCREEN_SHOTS && deltaTime != 0.0f && ScreenCaptureIndex < 250 && TimeSinceLastScreenSave > ScreenCaptureRate)
+		{
+			TimeSinceLastScreenSave = currentTime;
+			char fileName[] = "../../cs520_ScreenShots/xxx.ppm";
+			
+			fileName[24] = '0' + (ScreenCaptureIndex / 100);
+			fileName[25] = '0' + ((ScreenCaptureIndex % 100) / 10);
+			fileName[26] = '0' + (ScreenCaptureIndex % 10);
+
+			int WindowWidth, WindowHeight;
+			glfwGetWindowSize(contextWindow, &WindowWidth, &WindowHeight);
+			saveScreenshot(WindowWidth, WindowHeight, fileName);
+
+			ScreenCaptureIndex++;
 		}
 
 		deltaTime = 0.0005f;
@@ -271,6 +293,30 @@ void Game::processInput(GLFWwindow* contextWindow)
 			}
 		}
 	}
+}
+
+void Game::saveScreenshot(int windowWidth, int windowHeight, char *filename)
+{
+	if (filename == NULL)
+		return;
+
+	// Allocate a picture buffer 
+	Pic * in = pic_alloc(windowWidth, windowHeight, 3, NULL);
+
+	//printf("File to save to: %s\n", filename);
+
+	for (int i = windowHeight - 1; i >= 0; i--)
+	{
+		glReadPixels(0, windowHeight - i - 1, windowWidth, 1, GL_RGB, GL_UNSIGNED_BYTE,
+			&in->pix[i*in->nx*in->bpp]);
+	}
+
+	if (ppm_write(filename, in))
+		printf("File saved Successfully\n");
+	else
+		printf("Error in Saving\n");
+
+	pic_free(in);
 }
 
 void Game::Update(float Delta)
