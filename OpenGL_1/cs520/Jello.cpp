@@ -14,7 +14,7 @@
 
 #define NODE(face,i,j) ((Particle* )(m_particles) + pointMap((face),(i),(j)))->m_position
 
-#define PROCESS_NEIGHBOUR(di,dj,dk) \
+#define PROCESS_NEIGHBOUR(di, dj, dk, r, g, b) \
 	ip=i+(di);\
 	jp=j+(dj);\
 	kp=k+(dk);\
@@ -23,12 +23,18 @@
 		&& ((i==0) || (i==7) || (j==0) || (j==7) || (k==0) || (k==7))\
 		&& ((ip==0) || (ip==7) || (jp==0) || (jp==7) || (kp==0) || (kp==7))) \
 	{\
-		resultVector.push_back(m_particle[i][j][k].m_position.x); \
-		resultVector.push_back(m_particle[i][j][k].m_position.y); \
-		resultVector.push_back(m_particle[i][j][k].m_position.z); \
-		resultVector.push_back(m_particle[ip][jp][kp].m_position.x); \
-		resultVector.push_back(m_particle[ip][jp][kp].m_position.y); \
-		resultVector.push_back(m_particle[ip][jp][kp].m_position.z); \
+		SpringRenderInfo.push_back(m_particles[i][j][k].m_position.x); \
+		SpringRenderInfo.push_back(m_particles[i][j][k].m_position.y); \
+		SpringRenderInfo.push_back(m_particles[i][j][k].m_position.z); \
+		SpringRenderInfo.push_back(r); \
+		SpringRenderInfo.push_back(g); \
+		SpringRenderInfo.push_back(b); \
+		SpringRenderInfo.push_back(m_particles[ip][jp][kp].m_position.x); \
+		SpringRenderInfo.push_back(m_particles[ip][jp][kp].m_position.y); \
+		SpringRenderInfo.push_back(m_particles[ip][jp][kp].m_position.z); \
+		SpringRenderInfo.push_back(r); \
+		SpringRenderInfo.push_back(g); \
+		SpringRenderInfo.push_back(b); \
 	}\
 
 Jello::Jello(GameContext gameContext, World* world, glm::vec3 position, float size)
@@ -65,9 +71,8 @@ void Jello::InitJello()
 
 void Jello::CreateAndAddDrawListElement(int Mode)
 {
-	if (Mode == 0)
+	if (Mode == 0) // Triangle mode
 	{
-		// Triangle mode
 		if (!e.shader.IsValid())
 		{
 			e.shader = *(new Shader("JelloVS.vert", "JelloFS.frag"));
@@ -83,36 +88,49 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 		e.vertextInfoSize = 6;
 		m_gameContext.GetDrawList()->AddToDrawQ(e);
 	}
-	else
+	else // wire frame mode
 	{
 		if (!ParticleRender.shader.IsValid())
 		{
 			ParticleRender.shader = *(new Shader("DebugDrawShader.vert", "DebugDrawShader.frag"));
+			SpringRender.shader = ParticleRender.shader;
 		}
-		// wire frame mode
-		UpdateParticleRenderInfo();
-		ParticleRender.vertexBuffer = ParticlePoints;
-		ParticleRender.VBsize_inByte = 3072 * sizeof(float);
-
-		ParticleRender.drawingPrimitive = DrawingPrimitives::POINTS;
 		
+		UpdateParticleRenderInfo();
+		ParticleRender.vertexBuffer = ParticleRenderInfo;
+		ParticleRender.VBsize_inByte = 3072 * sizeof(float);
+		ParticleRender.drawingPrimitive = DrawingPrimitives::POINTS;
 		ParticleRender.attributeSizes.push_back(3);
 		ParticleRender.attributeSizes.push_back(3);
 		ParticleRender.vertextInfoSize = 6;
 		m_gameContext.GetDrawList()->AddToDrawQ(ParticleRender);
+
+		UpdateSpringRenderInfo();
+		if (SpringRenderInfo.size() != 0)
+		{
+			SpringRender.vertexBuffer = &SpringRenderInfo[0];
+			SpringRender.VBsize_inByte = SpringRenderInfo.size() * sizeof(float);
+			SpringRender.drawingPrimitive = DrawingPrimitives::LINES;
+			SpringRender.attributeSizes.push_back(3);
+			SpringRender.attributeSizes.push_back(3);
+			SpringRender.vertextInfoSize = 6;
+			m_gameContext.GetDrawList()->AddToDrawQ(SpringRender);
+		}
 	}
 }
 
 void Jello::Update(float Delta)
 {
-	//std::cout << m_particles[0][0][1].m_position.x << ", " << m_particles[0][0][1].m_position.y << ", " << m_particles[0][0][1].m_position.z << std::endl;
-	// add to drawlist
+	int Mode = m_gameContext.GetPhysicsManager()->GetIntegrator();
 
-	if (m_gameContext.GetPhysicsManager()->GetRK4StepCount() == 4)
+	// add to drawlist
+	if (Mode == 0 || (Mode == 1 && m_gameContext.GetPhysicsManager()->GetRK4StepCount() == 4))
 	{
 		int RenderMode = static_cast<JelloWorld*>(GetWorld())->RenderMode;
 		CreateAndAddDrawListElement(RenderMode);
 	}
+
+	if (Delta == 0.0f) { return; }
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -126,8 +144,6 @@ void Jello::Update(float Delta)
 			}
 		}
 	}
-
-	int Mode = m_gameContext.GetPhysicsManager()->GetIntegrator();
 
 	if (Mode == 0 /* Euler */)
 	{
@@ -330,32 +346,83 @@ void Jello::UpdateParticleRenderInfo()
 		{
 			for (int k = 0; k <= 7; k++)
 			{
+				if (i * j * k * (7 - i) * (7 - j) * (7 - k) != 0) { continue; }
 				// position
-				ParticlePoints[index++] = m_particles[i][j][k].m_position.x;
-				ParticlePoints[index++] = m_particles[i][j][k].m_position.y;
-				ParticlePoints[index++] = m_particles[i][j][k].m_position.z;
+				ParticleRenderInfo[index++] = m_particles[i][j][k].m_position.x;
+				ParticleRenderInfo[index++] = m_particles[i][j][k].m_position.y;
+				ParticleRenderInfo[index++] = m_particles[i][j][k].m_position.z;
 				// color
-				ParticlePoints[index++] = 0.0f;
-				ParticlePoints[index++] = 0.0f;
-				ParticlePoints[index++] = 0.0f;
+				ParticleRenderInfo[index++] = 0.0f;
+				ParticleRenderInfo[index++] = 0.0f;
+				ParticleRenderInfo[index++] = 0.0f;
 			}
 		}
 	}
 }
 
-void Jello::UpdateStructureSpringRenderInfo()
+void Jello::UpdateSpringRenderInfo()
 {
+	SpringRenderInfo.clear();
 
-}
+	int ip, jp, kp;
 
-void Jello::UpdateShearSpringRenderInfo()
-{
+	for (int i = 0; i <= 7; i++)
+	{
+		for (int j = 0; j <= 7; j++)
+		{
+			for (int k = 0; k <= 7; k++)
+			{
+				if (i * j * k * (7 - i) * (7 - j) * (7 - k) != 0) { continue; }
 
-}
+				JelloWorld* _jelloWorld = static_cast<JelloWorld*>(GetWorld());
 
-void Jello::UpdateBendSpringRenderInfo()
-{
+				if (_jelloWorld->ShowStructuralSpring == 1)
+				{
+					float r = 0.0f;
+					float g = 0.0f;
+					float b = 1.0f;
+					PROCESS_NEIGHBOUR(1, 0, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 1, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 0, 1, r, g, b);
+					PROCESS_NEIGHBOUR(-1, 0, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, -1, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 0, -1, r, g, b);
+				}
 
+				if (_jelloWorld->ShowShearSpring == 1)
+				{
+					float r = 0.0f;
+					float g = 1.0f;
+					float b = 0.0f;
+					PROCESS_NEIGHBOUR(1, 1, 0, r, g, b);
+					PROCESS_NEIGHBOUR(-1, 1, 0, r, g, b);
+					PROCESS_NEIGHBOUR(-1, -1, 0, r, g, b);
+					PROCESS_NEIGHBOUR(1, -1, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 1, 1, r, g, b);
+					PROCESS_NEIGHBOUR(0, -1, 1, r, g, b);
+					PROCESS_NEIGHBOUR(0, -1, -1, r, g, b);
+					PROCESS_NEIGHBOUR(0, 1, -1, r, g, b);
+					PROCESS_NEIGHBOUR(1, 0, 1, r, g, b);
+					PROCESS_NEIGHBOUR(-1, 0, 1, r, g, b);
+					PROCESS_NEIGHBOUR(-1, 0, -1, r, g, b);
+					PROCESS_NEIGHBOUR(1, 0, -1, r, g, b);
+				}
+
+				if (_jelloWorld->ShowBendSpring == 1)
+				{
+					float r = 1.0f;
+					float g = 0.0f;
+					float b = 0.0f;
+					PROCESS_NEIGHBOUR(2, 0, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 2, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 0, 2, r, g, b);
+					PROCESS_NEIGHBOUR(-2, 0, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, -2, 0, r, g, b);
+					PROCESS_NEIGHBOUR(0, 0, -2, r, g, b);
+				}
+			}
+		}
+	}
 }
 
 void Jello::CreateSprings()

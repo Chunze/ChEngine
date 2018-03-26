@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <string>
 #include "Game.h"
 
 #include "Jello.h"
@@ -42,23 +42,53 @@ Game::Game(GameContext* gameContext)
 
 void Game::InitGame()
 {
+	cout << "Initializing game...\n";
 	// creating components and managers for the game
 	{
 		DrawList* drawList = new DrawList(m_gameContext);
 		m_gameContext.m_drawList = drawList;
 	}
 	{
+		cout << "Initializing renderer...\n";
 		Renderer* renderer = new Renderer(m_gameContext);
 		m_gameContext.m_renderer = renderer;
 	}
 	{
+		cout << "Initializing physics manager...\n";
 		PhysicsManager* physicsManager = new PhysicsManager(m_gameContext);
 		m_gameContext.m_physicsManager = physicsManager;
 	}
 	{
-		World* world = new JelloWorld(m_gameContext);
-		world->LoadWorld("cs520/jello.w");
-		m_gameContext.m_world = world;
+		cout << "Enter homework number (HW1, HW2)...\n";
+		std::string Homework;
+		cin >> Homework;
+		if (Homework == "HW1")
+		{
+			World* world = new JelloWorld(m_gameContext);
+			cout << "Enter Jello World file path (cs520/...)...\n";
+			std::string WorldFile;
+			cin >> WorldFile;
+
+			
+			while (!world->LoadWorld(WorldFile.c_str()))
+			{
+				cout << "Invalid input... Enter Jello World file path (cs520/...)...\n";
+				cin >> WorldFile;
+			}
+
+			cout << "Loading world...\n";
+			m_gameContext.m_world = world;
+		}
+		else if (Homework == "HW2")
+		{
+
+		}
+		else if (Homework == "0")
+		{
+			World* world = new JelloWorld(m_gameContext);
+			world->LoadWorld("cs520/rotate.w");
+			m_gameContext.m_world = world;
+		}
 	}
 }
 
@@ -73,6 +103,8 @@ void Game::GameLoop()
 		bWasPausedLastFrame = bPaused;
 		float currentTime = (float)glfwGetTime();
 		deltaTime = currentTime - lastFrameTime;
+
+		FPS = 1 / deltaTime;
 
 		// First frame
 		if (lastFrameTime == 0.0f)
@@ -92,7 +124,7 @@ void Game::GameLoop()
 			bWasPausedLastFrame = false;
 		}
 
-		deltaTime = 0.0010f;
+		deltaTime = 0.0005f;
 		if (bPaused)
 		{
 			deltaTime = 0.0f;
@@ -186,9 +218,57 @@ void Game::processInput(GLFWwindow* contextWindow)
 			if (_jelloWorld)
 			{
 				_jelloWorld->ToggleDrawingMode();
-				//m_gameContext.GetDrawList()->m_DynamicElements.clear();
 			}
-			//m_gameContext.m_renderer->TogglePolygonMode();
+		}
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_X) == GLFW_PRESS)
+	{
+		KEY_X_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_X) == GLFW_RELEASE)
+	{
+		if (KEY_X_WasPressed)
+		{
+			KEY_X_WasPressed = false;
+			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
+			if (_jelloWorld)
+			{
+				_jelloWorld->ToggleStructuralSpring();
+			}
+		}
+	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_H) == GLFW_PRESS)
+	{
+		KEY_H_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_H) == GLFW_RELEASE)
+	{
+		if (KEY_H_WasPressed)
+		{
+			KEY_H_WasPressed = false;
+			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
+			if (_jelloWorld)
+			{
+				_jelloWorld->ToggleShearSpring();
+			}
+		}
+	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_B) == GLFW_PRESS)
+	{
+		KEY_B_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_B) == GLFW_RELEASE)
+	{
+		if (KEY_B_WasPressed)
+		{
+			KEY_B_WasPressed = false;
+			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
+			if (_jelloWorld)
+			{
+				_jelloWorld->ToggleBendSpring();
+			}
 		}
 	}
 }

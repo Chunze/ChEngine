@@ -31,7 +31,31 @@ void JelloWorld::ToggleDrawingMode()
 	}
 }
 
-void JelloWorld::LoadWorld(const char* fileName)
+void JelloWorld::ToggleStructuralSpring()
+{
+	if (RenderMode == 1)
+	{
+		ShowStructuralSpring = 1 - ShowStructuralSpring;
+	}
+}
+
+void JelloWorld::ToggleShearSpring()
+{
+	if (RenderMode == 1)
+	{
+		ShowShearSpring = 1 - ShowShearSpring;
+	}
+}
+
+void JelloWorld::ToggleBendSpring()
+{
+	if (RenderMode == 1)
+	{
+		ShowBendSpring = 1 - ShowBendSpring;
+	}
+}
+
+bool JelloWorld::LoadWorld(const char* fileName)
 {
 	int i, j, k;
 	FILE * file;
@@ -39,7 +63,7 @@ void JelloWorld::LoadWorld(const char* fileName)
 	fopen_s(&file, fileName, "r");
 	if (file == NULL) {
 		printf("can't open file\n");
-		exit(1);
+		return false;
 	}
 
 	/* read integrator algorithm */
@@ -85,9 +109,7 @@ void JelloWorld::LoadWorld(const char* fileName)
 						&m_forceField[i * m_resolution * m_resolution + j * m_resolution + k].x,
 						&m_forceField[i * m_resolution * m_resolution + j * m_resolution + k].y,
 						&m_forceField[i * m_resolution * m_resolution + j * m_resolution + k].z);
-	float as = 0;
-	float ad = 0;
-	float af = 0;
+
 	/* read initial point positions */
 	for (i = 0; i <= 7; i++)
 	{
@@ -98,7 +120,6 @@ void JelloWorld::LoadWorld(const char* fileName)
 					&m_jello->m_particles[i][j][k].m_position.x, 
 					&m_jello->m_particles[i][j][k].m_position.y,
 					&m_jello->m_particles[i][j][k].m_position.z);
-//fscanf_s(file, "%f %f %f\n", &as, &ad, &af);
 		}
 	}
 
@@ -118,6 +139,7 @@ void JelloWorld::LoadWorld(const char* fileName)
 	}
 
 	fclose(file);
+	return true;
 }
 
 void JelloWorld::Update(float Delta)

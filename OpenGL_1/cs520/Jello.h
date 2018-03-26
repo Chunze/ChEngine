@@ -35,7 +35,7 @@ public:
 protected:
 	DrawListElement e;
 	DrawListElement ParticleRender;
-	
+	DrawListElement SpringRender;
 
 	int m_drawListIndex = -1;
 
@@ -45,13 +45,11 @@ protected:
 
 	// For wire frame mode
 	void UpdateParticleRenderInfo();
-	float ParticlePoints[3072];
+	float ParticleRenderInfo[1776];
 
-	void UpdateStructureSpringRenderInfo();
+	void UpdateSpringRenderInfo();
+	std::vector<float> SpringRenderInfo;
 
-	void UpdateShearSpringRenderInfo();
-
-	void UpdateBendSpringRenderInfo();
 private:
 	int debug;
 };

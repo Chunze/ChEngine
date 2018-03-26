@@ -12,7 +12,7 @@ public:
 		: BaseClass(gameContext)
 	{}
 
-	virtual void LoadWorld(const char* fileName) = 0;
+	virtual bool LoadWorld(const char* fileName) = 0;
 	virtual void Update(float Delta) = 0;
 
 	//std::vector<GameObject> m_gameObjects;

@@ -23,9 +23,10 @@ public:
 	bool bPaused = true;
 	bool bGamePaused = false;
 
+	float FPS;
 private:
 	bool KEY_V_WasPressed = false;
-	bool KEY_S_WasPressed = false;
+	bool KEY_X_WasPressed = false;
 	bool KEY_H_WasPressed = false;
 	bool KEY_B_WasPressed = false;
 	bool KEY_SPACE_WasPressed = false;

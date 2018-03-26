@@ -269,7 +269,8 @@ void Renderer::Draw()
 	{
 		auto drawCall = drawQueue->m_DynamicElements.front();
 		drawCall.GetRenderReady();
-
+		glPointSize(drawCall.PointSize);
+		glLineWidth(drawCall.LineWidth);
 		{
 			glm::mat4 temp;
 			model = glm::translate(temp, cubePositions[0]);

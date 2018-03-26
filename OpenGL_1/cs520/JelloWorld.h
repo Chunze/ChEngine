@@ -27,8 +27,11 @@ public:
 	int ShowStructuralSpring = 0;
 
 	void ToggleDrawingMode();
+	void ToggleStructuralSpring();
+	void ToggleShearSpring();
+	void ToggleBendSpring();
 
-	virtual void LoadWorld(const char* fileName);
+	virtual bool LoadWorld(const char* fileName);
 	virtual void Update(float Delta);
 
 	// checking the jello against the boundary, generate collision spring if out of bound
