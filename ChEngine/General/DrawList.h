@@ -44,6 +44,26 @@ struct DrawListElement
 	void DisableAttributePointer();
 };
 
+struct OnScreenTextElement
+{
+	OnScreenTextElement() {}
+
+	OnScreenTextElement(std::string textToRender, float X, float Y, float Scale, glm::vec3 Color)
+		: Text(textToRender),
+		x(X),
+		y(Y),
+		scale(Scale),
+		color(Color)
+	{}
+
+	Shader shader;
+	std::string Text;
+	float x;		// on screen position x
+	float y;		// on screen position y
+	float scale;	// font size
+	glm::vec3 color;
+};
+
 
 class DrawList : public BaseClass
 {
@@ -56,7 +76,11 @@ public:
 	// This vector changes much less frequent
 	std::queue<DrawListElement> m_StaticElements;
 
+	std::queue<OnScreenTextElement> m_OnScreenTexts;
+
 	void AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic = true);
+
+	void AddOnScreenText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 	
 	void Clear();
 	bool IsHaveNewData() { return bHasNewData; };

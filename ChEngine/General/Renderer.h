@@ -1,12 +1,12 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include <iostream>
 #include <string>
+#include <map>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include "BaseClass.h"
 #include "Shader.h"
@@ -15,6 +15,14 @@
 #include "DrawList.h"
 
 using namespace std;
+
+struct OnScreenChar
+{
+	GLuint TextureID;   // ID handle of the glyph texture
+	glm::ivec2 Size;    // Size of glyph
+	glm::ivec2 Bearing; // Offset from baseline to left/top of glyph
+	GLuint Advance;		// Horizontal offset to advance to next glyph
+};
 
 class Renderer : public BaseClass
 {
@@ -33,6 +41,8 @@ public:
 
 	void InitShaders();
 
+	void InitFreeType();
+
 	float* GetVertexData(int &size);
 
 	void CalculateTransforms();
@@ -47,6 +57,7 @@ public:
 	void InitDrawDebug();
 	void CleanupDebugDraw();
 	void DrawDebug();
+	void SetBackgroundColor(float r, float g, float b);
 
 	void JelloRenderModeToggled();
 
@@ -81,6 +92,16 @@ public:
 	glm::vec3 m_lightPosition;
 
 	glm::vec3 cubePositions[10];
+
+	float Background_R = 0.0f;
+	float Background_G = 0.0f;
+	float Background_B = 0.0f;
+
+	unsigned int OnScreenTextVertexBuffer;				
+	unsigned int OnScreenTextVertexArray;
+	std::map<GLchar, OnScreenChar> OnScreenChars;
+	Shader* OnScreenTextShader;
+	void RenderOnScreenText(OnScreenTextElement TextToRender);
 
 	~Renderer()
 	{

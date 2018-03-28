@@ -81,6 +81,8 @@
     <None Include="JelloVS.vert" />
     <None Include="JelloFS.frag" />
     <None Include="WireJello.vert" />
+    <None Include="OnScreenText.vert" />
+    <None Include="OnScreenText.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\FileManager.h">

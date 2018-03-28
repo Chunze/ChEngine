@@ -82,6 +82,8 @@
     <None Include="JelloVS.vert" />
     <None Include="LampShader.frag" />
     <None Include="LightingShader.frag" />
+    <None Include="OnScreenText.frag" />
+    <None Include="OnScreenText.vert" />
     <None Include="VertexShader.glsl" />
     <None Include="WireJello.vert" />
   </ItemGroup>
@@ -152,7 +154,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

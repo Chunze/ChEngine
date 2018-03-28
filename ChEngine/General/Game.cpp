@@ -44,6 +44,12 @@ Game::Game(GameContext* gameContext)
 void Game::InitGame()
 {
 	cout << "Initializing game...\n";
+
+	{
+		m_gameContext.m_Game = this;
+		glfwGetWindowSize(m_gameContext.GetWindow(), &WindowWidth, &WindowHeight);
+	}
+
 	// creating components and managers for the game
 	{
 		DrawList* drawList = new DrawList(m_gameContext);
@@ -65,11 +71,12 @@ void Game::InitGame()
 		cin >> Homework;
 		if (Homework == "HW1")
 		{
+			m_gameContext.m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
+
 			World* world = new JelloWorld(m_gameContext);
 			cout << "Enter Jello World file path (cs520/...)...\n";
 			std::string WorldFile;
 			cin >> WorldFile;
-
 			
 			while (!world->LoadWorld(WorldFile.c_str()))
 			{
@@ -82,10 +89,11 @@ void Game::InitGame()
 		}
 		else if (Homework == "HW2")
 		{
-
+			m_gameContext.m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
 		}
 		else if (Homework == "0")
 		{
+			m_gameContext.m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
 			World* world = new JelloWorld(m_gameContext);
 			world->LoadWorld("cs520/moveLeft.w");
 			m_gameContext.m_world = world;
@@ -105,7 +113,15 @@ void Game::GameLoop()
 		float currentTime = (float)glfwGetTime();
 		deltaTime = currentTime - lastFrameTime;
 
-		FPS = 1 / deltaTime;
+		if (ShowFPS)
+		{
+			FPS = 1 / deltaTime;
+			char buf[10];
+			sprintf(buf, "%.2f", FPS);
+			std::string fps = std::string(buf);
+
+			m_gameContext.GetDrawList()->AddOnScreenText("FPS: " + fps, 25.0f, 25.0f, 1.0f, glm::vec3(0.9, 0.9, 0.9));
+		}
 
 		// First frame
 		if (lastFrameTime == 0.0f)
@@ -138,9 +154,7 @@ void Game::GameLoop()
 			fileName[24] = '0' + (ScreenCaptureIndex / 100);
 			fileName[25] = '0' + ((ScreenCaptureIndex % 100) / 10);
 			fileName[26] = '0' + (ScreenCaptureIndex % 10);
-
-			int WindowWidth, WindowHeight;
-			glfwGetWindowSize(contextWindow, &WindowWidth, &WindowHeight);
+			
 			saveScreenshot(WindowWidth, WindowHeight, fileName);
 
 			ScreenCaptureIndex++;
@@ -227,6 +241,54 @@ void Game::processInput(GLFWwindow* contextWindow)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_B) == GLFW_PRESS)
+	{
+		KEY_B_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_B) == GLFW_RELEASE)
+	{
+		if (KEY_B_WasPressed)
+		{
+			KEY_B_WasPressed = false;
+			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
+			if (_jelloWorld)
+			{
+				_jelloWorld->ToggleBendSpring();
+			}
+		}
+	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_H) == GLFW_PRESS)
+	{
+		KEY_H_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_H) == GLFW_RELEASE)
+	{
+		if (KEY_H_WasPressed)
+		{
+			KEY_H_WasPressed = false;
+			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
+			if (_jelloWorld)
+			{
+				_jelloWorld->ToggleShearSpring();
+			}
+		}
+	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		KEY_L_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_L) == GLFW_RELEASE)
+	{
+		if (KEY_L_WasPressed)
+		{
+			KEY_L_WasPressed = false;
+			ShowFPS = !ShowFPS;
+		}
+	}
+
 	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_PRESS)
 	{
 		KEY_V_WasPressed = true;
@@ -256,40 +318,6 @@ void Game::processInput(GLFWwindow* contextWindow)
 			if (_jelloWorld)
 			{
 				_jelloWorld->ToggleStructuralSpring();
-			}
-		}
-	}
-
-	if (glfwGetKey(contextWindow, GLFW_KEY_H) == GLFW_PRESS)
-	{
-		KEY_H_WasPressed = true;
-	}
-	if (glfwGetKey(contextWindow, GLFW_KEY_H) == GLFW_RELEASE)
-	{
-		if (KEY_H_WasPressed)
-		{
-			KEY_H_WasPressed = false;
-			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
-			if (_jelloWorld)
-			{
-				_jelloWorld->ToggleShearSpring();
-			}
-		}
-	}
-
-	if (glfwGetKey(contextWindow, GLFW_KEY_B) == GLFW_PRESS)
-	{
-		KEY_B_WasPressed = true;
-	}
-	if (glfwGetKey(contextWindow, GLFW_KEY_B) == GLFW_RELEASE)
-	{
-		if (KEY_B_WasPressed)
-		{
-			KEY_B_WasPressed = false;
-			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext.GetWorld());
-			if (_jelloWorld)
-			{
-				_jelloWorld->ToggleBendSpring();
 			}
 		}
 	}

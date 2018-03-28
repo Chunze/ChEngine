@@ -2,6 +2,8 @@
 #define GAME_H
 
 #include "BaseClass.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class Game : public BaseClass
 {
@@ -27,12 +29,20 @@ public:
 	bool bPaused = true;
 	bool bGamePaused = false;
 
+	int WindowWidth;
+	int WindowHeight;
 	float FPS;
+
+	bool ShowFPS = false;
 private:
+
+	bool KEY_B_WasPressed = false;
+	bool KEY_H_WasPressed = false;
+	bool KEY_L_WasPressed = false;
 	bool KEY_V_WasPressed = false;
 	bool KEY_X_WasPressed = false;
-	bool KEY_H_WasPressed = false;
-	bool KEY_B_WasPressed = false;
+	
+	
 	bool KEY_SPACE_WasPressed = false;
 };
 

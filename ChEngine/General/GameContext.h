@@ -6,6 +6,7 @@ class Renderer;
 class PhysicsManager;
 class World;
 class DrawList;
+class Game;
 
 class GameContext
 {
@@ -17,6 +18,7 @@ public:
 	Renderer* m_renderer;
 	PhysicsManager* m_physicsManager;
 	DrawList* m_drawList;
+	Game* m_Game;
 
 	// getters
 	inline Renderer* GetRenderer() { return m_renderer; }
@@ -24,6 +26,7 @@ public:
 	inline PhysicsManager* GetPhysicsManager() { return m_physicsManager; }
 	inline World* GetWorld() { return m_world; }
 	inline DrawList* GetDrawList() { return m_drawList; }
+	inline Game* GetGame() { return m_Game; }
 };
 
 #endif
