@@ -2,8 +2,9 @@
 #define WORLD_H
 #pragma once
 #include "BaseClass.h"
-#include "GameObject.h"
-#include <vector>
+#include "DrawList.h"
+#include "Camera.h"
+#include "Renderer.h"
 
 class World : public BaseClass
 {
@@ -16,6 +17,10 @@ public:
 	virtual void Update(float Delta) = 0;
 
 	//std::vector<GameObject> m_gameObjects;
+
+protected:
+	Camera* m_Camera;
+	virtual void InitCamera() = 0;
 };
 
 #endif

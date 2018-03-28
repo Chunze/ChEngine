@@ -25,6 +25,8 @@ public:
 	int ShowShearSpring = 0;
 	int ShowBendSpring = 0;
 	int ShowStructuralSpring = 0;
+	DrawListElement DebugDrawElement;
+	Shader* debugShader;
 
 	void ToggleDrawingMode();
 	void ToggleStructuralSpring();
@@ -42,4 +44,14 @@ public:
 	glm::vec3 GetForceInForceField(glm::vec3 position) const;
 
 	Jello* GetJello() { return m_jello; }
+
+protected:
+
+	virtual void InitCamera() override;
+
+private:
+
+	void InitDebugElement();
+	
+	float BoundaryLineColor = 0.7f;
 };

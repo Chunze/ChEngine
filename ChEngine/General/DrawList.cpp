@@ -65,13 +65,15 @@ void DrawList::Clear()
 
 void DrawListElement::GetRenderReady()
 {
+	// bind buffers
+	glBindVertexArray(vertexArrayObject);
+
 	// enable attribute pointers
 	for (size_t i = 0; i < attributeSizes.size(); i++)
 	{
 		glEnableVertexAttribArray(i);
 	}
-	// bind buffers
-	glBindVertexArray(vertexArrayObject);
+	
 	//glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject); 
 	shader.Use();
 }

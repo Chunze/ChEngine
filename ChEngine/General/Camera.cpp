@@ -5,17 +5,34 @@
 
 Camera::Camera()
 {
-	// start position
-	m_position = glm::vec3(4.0f, 4.0f, 4.0f);
 
-	// Look at vector
-	glm::vec3 LookatPt = glm::vec3(0.0f, 0.0f, 0.0f);		// looking at the origin
+}
+
+Camera::Camera(CameraType type, float fovy, float aspect, float zNear, float zFar)
+{
+
+	m_type = type;
+	if (type == CameraType::Camera_3D)
+	{
+		m_perpective = glm::perspective(fovy, aspect, zNear, zFar);
+	}
+	else if (type == CameraType::Camera_2D)
+	{
+		m_perpective = glm::ortho(fovy, aspect, zNear, zFar);
+	}
+}
+
+void Camera::SetupCamera(glm::vec3 position, glm::vec3 lookat, glm::vec3 up)
+{
+	m_position = position;
+
+	glm::vec3 LookatPt = lookat;
 	m_forward = glm::normalize(LookatPt - m_position);
 
-	// up vector
-	m_up = glm::vec3(0.0f, 1.0f, 0.0f);
+	m_up = up;
 
 	m_view = lookAt(m_position, m_position + m_forward, m_up);
+
 
 	// initializing pitch and yaw based on forward, so that rotating the camera works fine.
 	pitch = glm::degrees(glm::asin(m_forward.y));

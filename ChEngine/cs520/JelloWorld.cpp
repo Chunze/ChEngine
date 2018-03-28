@@ -16,6 +16,8 @@ JelloWorld::JelloWorld(GameContext gameContext)
 	: World(gameContext)
 {
 	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0));
+	InitDebugElement();
+	InitCamera();
 }
 
 void JelloWorld::ToggleDrawingMode()
@@ -144,6 +146,7 @@ bool JelloWorld::LoadWorld(const char* fileName)
 void JelloWorld::Update(float Delta)
 {
 	m_jello->Update(Delta);
+	m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
 	CheckBoundary();
 }
 
@@ -287,5 +290,89 @@ glm::vec3 JelloWorld::GetForceInForceField(glm::vec3 position) const
 	glm::vec3 interp_xyz = ((float)zCeiling - resZ) * interp_xy_1 + (resZ - (float)zFloor) * interp_xy_2;
 
 	return interp_xyz;
+}
+
+void JelloWorld::InitDebugElement()
+{
+	static float axisLineVertices[] = {
+		0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		5.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 5.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 1.0f,
+
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
+
+		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+
+		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
+	};
+
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);
+	debugShader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
+	//DebugDrawElement.vertexArrayObject = DebugVertextArray;
+	//DebugDrawElement.vertexBufferObject = DebugVertextBuffer;
+	DebugDrawElement.vertexBuffer = axisLineVertices;
+	DebugDrawElement.drawingPrimitive = DrawingPrimitives::LINES;
+	DebugDrawElement.shader = *debugShader;
+	DebugDrawElement.VBsize_inByte = sizeof(axisLineVertices);
+	DebugDrawElement.attributeSizes.push_back(3);
+	DebugDrawElement.attributeSizes.push_back(3);
+	DebugDrawElement.vertextInfoSize = 6;
+	DebugDrawElement.bIsDebug = true;
+	DebugDrawElement.LineWidth = 3;
+
+	//m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
+}
+
+void JelloWorld::InitCamera()
+{
+	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	m_Camera->SetupCamera(glm::vec3(3.0f, 4.0f, 4.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	m_gameContext.GetRenderer()->SetActiveCamera(m_Camera);
 }
 

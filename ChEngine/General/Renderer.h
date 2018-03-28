@@ -54,14 +54,10 @@ public:
 	void Update(float deltaTime);
 
 	void Draw();
-	void InitDrawDebug();
-	void CleanupDebugDraw();
-	void DrawDebug();
 	void SetBackgroundColor(float r, float g, float b);
 
-	void JelloRenderModeToggled();
+	void SetActiveCamera(Camera* camera);
 
-	void TogglePolygonMode();
 	bool bIsFill = true;
 
 	unsigned int VBO;				// vertex buffer ID
@@ -86,8 +82,6 @@ public:
 	int vertexInfoSize;
 
 	int num_vertex;
-
-	DrawListElement DebugDrawElement;
 
 	glm::vec3 m_lightPosition;
 

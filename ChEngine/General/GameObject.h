@@ -2,7 +2,6 @@
 #include "World.h"
 #include "BaseClass.h"
 #include "DrawList.h"
-#include "Shader.h"
 
 class GameObject : public BaseClass
 {

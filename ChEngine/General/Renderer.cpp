@@ -5,10 +5,6 @@
 #include "Game.h"
 #include "../stb_image.h"
 
-
-
-using namespace glm;
-
 const float BoundaryLineColor = 0.7f;
 
 Renderer::Renderer(GameContext gameContext)
@@ -19,18 +15,9 @@ Renderer::Renderer(GameContext gameContext)
 
 void Renderer::Initialize()
 {
-	m_lightPosition = vec3(0.0f, 6.0f, 0.0f);
+	m_lightPosition = glm::vec3(0.0f, 6.0f, 0.0f);
 
-	InitVertexArray(true);
-
-	//float* vertices = GetVertexData(vertextBufferSize);
-	//InitVertexBuffer(vertices, vertextBufferSize);
-	//InitElementBuffer(NULL);
 	InitFreeType();
-//	InitShaders();
-	InitDrawDebug();
-
-	mainCamera = new Camera();
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -261,7 +248,7 @@ void Renderer::CalculateTransforms()
 
 	/*		NDC			*/
 	glm::mat4 projection;
-	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	projection = mainCamera->m_perpective;
 
 	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
 	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
@@ -317,30 +304,12 @@ void Renderer::Draw()
 
 	/*		NDC			*/
 	glm::mat4 projection;
-	projection = perspective(radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-
+	projection = mainCamera->m_perpective;
 
 	DrawList* drawQueue = m_gameContext.GetDrawList();
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	glm::vec3 cubePositions[] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(0.0f,  1.0f, 1.0f),
-		glm::vec3(0.0f, 6.0f, 0.0f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
-	};
-
-
 	glm::mat4 model;
-	model = glm::translate(model, cubePositions[1]);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
@@ -377,8 +346,6 @@ void Renderer::Draw()
 		drawQueue->m_DynamicElements.pop();
 	}
 
-	m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
-
 	while (!drawQueue->m_StaticElements.empty())
 	{
 		auto drawCall = drawQueue->m_StaticElements.front();
@@ -413,107 +380,6 @@ void Renderer::Draw()
 
 }
 
-void Renderer::InitDrawDebug()
-{
-	//glGenVertexArrays(1, &DebugVertextArray);
-	//glBindVertexArray(DebugVertextArray);
-	//glGenBuffers(1, &DebugVertextBuffer);
-	//glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
-	//glLineWidth(3.0f);
-	static float axisLineVertices[] = {
-		0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		5.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 5.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 1.0f,
-
-		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
-		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-
-		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-
-		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-
-		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-
-		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
-
-		2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor,BoundaryLineColor,
-		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-
-		2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-
-		-2.0f, -2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, -2.0f, 2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-		-2.0f, 2.0f, -2.0f, BoundaryLineColor, BoundaryLineColor, BoundaryLineColor,
-	};
-
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(axisLineVertices), axisLineVertices, GL_STATIC_DRAW);
-	debugShader = new Shader("DebugDrawShader.vert", "DebugDrawShader.frag");
-	//DebugDrawElement.vertexArrayObject = DebugVertextArray;
-	//DebugDrawElement.vertexBufferObject = DebugVertextBuffer;
-	DebugDrawElement.vertexBuffer = axisLineVertices;
-	DebugDrawElement.drawingPrimitive = DrawingPrimitives::LINES;
-	DebugDrawElement.shader = *debugShader;
-	DebugDrawElement.VBsize_inByte = sizeof(axisLineVertices);
-	DebugDrawElement.attributeSizes.push_back(3);
-	DebugDrawElement.attributeSizes.push_back(3);
-	DebugDrawElement.vertextInfoSize = 6;
-	DebugDrawElement.bIsDebug = true;
-	DebugDrawElement.LineWidth = 3;
-
-	m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
-
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-}
-
-void Renderer::CleanupDebugDraw()
-{
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-}
-
-void Renderer::DrawDebug()
-{
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, DebugVertextBuffer);
-	glBindVertexArray(DebugVertextArray);
-	debugShader->Use();
-
-	glDrawArrays(GL_LINES, 0, 6);
-}
-
 void Renderer::SetBackgroundColor(float r, float g, float b)
 {
 	Background_R = r;
@@ -521,22 +387,9 @@ void Renderer::SetBackgroundColor(float r, float g, float b)
 	Background_B = b;
 }
 
-void Renderer::JelloRenderModeToggled()
+void Renderer::SetActiveCamera(Camera* camera)
 {
-
-}
-
-void Renderer::TogglePolygonMode()
-{
-	bIsFill = !bIsFill;
-	if (bIsFill)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-	else
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
+	mainCamera = camera;
 }
 
 void Renderer::RenderOnScreenText(OnScreenTextElement TextToRender)

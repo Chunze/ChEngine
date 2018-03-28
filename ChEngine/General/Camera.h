@@ -1,13 +1,21 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "glm.h"
+
+enum class CameraType
+{
+	Camera_3D,
+	Camera_2D
+};
 
 class Camera
 {
 public:
 	Camera();
+
+	Camera(CameraType type, float fovy_left, float aspect_right, float zNear_bottom, float zFar_top);
+
+	CameraType m_type;
 
 	glm::vec3 m_position;
 
@@ -18,8 +26,11 @@ public:
 	glm::vec3 m_flyDirection;
 
 	glm::mat4 m_view;
+	glm::mat4 m_perpective;
 
 	float flySpeed = 20.0f;
+
+	void SetupCamera(glm::vec3 position, glm::vec3 lookat, glm::vec3 up);
 
 	float pitch;
 	float yaw;
