@@ -68,7 +68,7 @@ struct OnScreenTextElement
 class DrawList : public BaseClass
 {
 public:
-	DrawList(GameContext gameContext);
+	DrawList(GameContext* gameContext);
 
 	// This vector gets cleared each frame
 	std::queue<DrawListElement> m_DynamicElements;

@@ -13,6 +13,8 @@ class Camera
 public:
 	Camera();
 
+	// Type can be 3D or 2D, if 3D, next 4 floats will be fovy, aspect, zNear, and zFar;
+	// If 2D, next 4 floats will be left, right, bottom, and top 
 	Camera(CameraType type, float fovy_left, float aspect_right, float zNear_bottom, float zFar_top);
 
 	CameraType m_type;

@@ -9,9 +9,14 @@
 class World : public BaseClass
 {
 public:
-	World(GameContext gameContext)
+	World(GameContext* gameContext)
 		: BaseClass(gameContext)
 	{}
+
+	virtual ~World() = 0
+	{
+
+	}
 
 	virtual bool LoadWorld(const char* fileName) = 0;
 	virtual void Update(float Delta) = 0;

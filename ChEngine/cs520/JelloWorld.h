@@ -5,7 +5,9 @@
 class JelloWorld : public World
 {
 public:
-	JelloWorld(GameContext gameContext);
+	JelloWorld(GameContext* gameContext);
+
+	~JelloWorld() override;
 
 	class Jello* m_jello;
 
@@ -48,6 +50,7 @@ public:
 protected:
 
 	virtual void InitCamera() override;
+	void InitInputHandler();
 
 private:
 

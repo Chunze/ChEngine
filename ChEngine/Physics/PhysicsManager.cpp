@@ -2,7 +2,7 @@
 #include "JelloWorld.h"
 #include "ForceGenerators/CollisionSpringFG.h"
 
-PhysicsManager::PhysicsManager(GameContext gameContext)
+PhysicsManager::PhysicsManager(GameContext* gameContext)
 	: BaseClass(gameContext)
 {
 

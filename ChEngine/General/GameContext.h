@@ -7,6 +7,7 @@ class PhysicsManager;
 class World;
 class DrawList;
 class Game;
+class InputHandler;
 
 class GameContext
 {
@@ -19,6 +20,7 @@ public:
 	PhysicsManager* m_physicsManager;
 	DrawList* m_drawList;
 	Game* m_Game;
+	InputHandler* m_InputHandler;
 
 	// getters
 	inline Renderer* GetRenderer() { return m_renderer; }
@@ -27,6 +29,7 @@ public:
 	inline World* GetWorld() { return m_world; }
 	inline DrawList* GetDrawList() { return m_drawList; }
 	inline Game* GetGame() { return m_Game; }
+	inline InputHandler* GetInputHandler() { return m_InputHandler; }
 };
 
 #endif

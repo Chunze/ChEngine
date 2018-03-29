@@ -4,6 +4,7 @@
 #include "JelloWorld.h"
 #include "Jello.h"
 #include "PhysicsManager.h"
+#include "JelloWorldInputHandler.h"
 
 #define BOUND_X_MIN -2.0f
 #define BOUND_Y_MIN -2.0f
@@ -12,12 +13,20 @@
 #define BOUND_Y_MAX 2.0f
 #define BOUND_Z_MAX 2.0f
 
-JelloWorld::JelloWorld(GameContext gameContext)
+JelloWorld::JelloWorld(GameContext* gameContext)
 	: World(gameContext)
 {
 	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0));
 	InitDebugElement();
 	InitCamera();
+	InitInputHandler();
+}
+
+JelloWorld::~JelloWorld()
+{
+	delete m_jello;
+	delete m_Camera;
+	delete debugShader;
 }
 
 void JelloWorld::ToggleDrawingMode()
@@ -71,11 +80,11 @@ bool JelloWorld::LoadWorld(const char* fileName)
 	fscanf(file, "%s\n", &m_intergrator);
 	if (m_intergrator[0] == 'E')
 	{
-		m_gameContext.GetPhysicsManager()->SetIntegrator(0);
+		m_gameContext->GetPhysicsManager()->SetIntegrator(0);
 	}
 	else if (m_intergrator[0] == 'R')
 	{
-		m_gameContext.GetPhysicsManager()->SetIntegrator(1);
+		m_gameContext->GetPhysicsManager()->SetIntegrator(1);
 	}
 
 	/* read timestep size and render */
@@ -146,7 +155,7 @@ bool JelloWorld::LoadWorld(const char* fileName)
 void JelloWorld::Update(float Delta)
 {
 	m_jello->Update(Delta);
-	m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
+	m_gameContext->GetDrawList()->AddToDrawQ(DebugDrawElement, false);
 	CheckBoundary();
 }
 
@@ -221,7 +230,7 @@ void JelloWorld::CheckBoundary(class Particle* CurrentParticle)
 
 	if (bOutOfBound)
 	{
-		m_gameContext.GetPhysicsManager()->GenerateCollisionInfo(CurrentParticle, Anchor, OutwardDir, m_kCollision, m_dCollision);
+		m_gameContext->GetPhysicsManager()->GenerateCollisionInfo(CurrentParticle, Anchor, OutwardDir, m_kCollision, m_dCollision);
 	}
 	else
 	{
@@ -365,7 +374,7 @@ void JelloWorld::InitDebugElement()
 	DebugDrawElement.bIsDebug = true;
 	DebugDrawElement.LineWidth = 3;
 
-	//m_gameContext.GetDrawList()->AddToDrawQ(DebugDrawElement, false);
+	//m_gameContext->GetDrawList()->AddToDrawQ(DebugDrawElement, false);
 }
 
 void JelloWorld::InitCamera()
@@ -373,6 +382,11 @@ void JelloWorld::InitCamera()
 	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 	m_Camera->SetupCamera(glm::vec3(3.0f, 4.0f, 4.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	m_gameContext.GetRenderer()->SetActiveCamera(m_Camera);
+	m_gameContext->GetRenderer()->SetActiveCamera(m_Camera);
+}
+
+void JelloWorld::InitInputHandler()
+{
+	m_gameContext->m_InputHandler = new JelloWorldInputHandler(m_gameContext);
 }
 

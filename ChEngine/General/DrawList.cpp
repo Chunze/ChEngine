@@ -3,7 +3,7 @@
 
 #include "DrawList.h"
 
-DrawList::DrawList(GameContext gameContext)
+DrawList::DrawList(GameContext* gameContext)
 	: BaseClass(gameContext)
 {
 

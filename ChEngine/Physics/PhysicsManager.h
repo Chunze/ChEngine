@@ -14,7 +14,7 @@ class PhysicsManager : public BaseClass
 {
 public:
 
-	PhysicsManager(GameContext gameContext);
+	PhysicsManager(GameContext* gameContext);
 
 	ParticleForceRegistry m_particleForceRegistry;
 

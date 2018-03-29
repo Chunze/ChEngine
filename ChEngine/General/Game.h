@@ -5,6 +5,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+struct GLFWwindow;
+class InputHandler;
+
 class Game : public BaseClass
 {
 public:
@@ -34,6 +37,10 @@ public:
 	float FPS;
 
 	bool ShowFPS = false;
+
+protected:
+	InputHandler* m_InputHandler;
+
 private:
 
 	bool KEY_B_WasPressed = false;

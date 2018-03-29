@@ -23,11 +23,13 @@
     <ClCompile Include="..\stb_image.cpp" />
     <ClCompile Include="cs520\Jello.cpp" />
     <ClCompile Include="cs520\JelloWorld.cpp" />
+    <ClCompile Include="cs520\JelloWorldInputHandler.cpp" />
     <ClCompile Include="General\Camera.cpp" />
     <ClCompile Include="General\DrawList.cpp" />
     <ClCompile Include="General\Game.cpp" />
     <ClCompile Include="General\GameContext.cpp" />
     <ClCompile Include="General\GameObject.cpp" />
+    <ClCompile Include="General\InputHandler.cpp" />
     <ClCompile Include="General\Mesh.cpp" />
     <ClCompile Include="General\pic.cpp" />
     <ClCompile Include="General\ppm.cpp" />
@@ -49,6 +51,7 @@
     <ClInclude Include="..\stb_image.h" />
     <ClInclude Include="cs520\Jello.h" />
     <ClInclude Include="cs520\JelloWorld.h" />
+    <ClInclude Include="cs520\JelloWorldInputHandler.h" />
     <ClInclude Include="General\BaseClass.h" />
     <ClInclude Include="General\Camera.h" />
     <ClInclude Include="General\DrawList.h" />
@@ -56,6 +59,7 @@
     <ClInclude Include="General\GameContext.h" />
     <ClInclude Include="General\GameObject.h" />
     <ClInclude Include="General\glm.h" />
+    <ClInclude Include="General\InputHandler.h" />
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="General\pic.h" />

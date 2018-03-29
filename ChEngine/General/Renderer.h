@@ -27,7 +27,7 @@ struct OnScreenChar
 class Renderer : public BaseClass
 {
 public:
-	Renderer(GameContext gameContext);
+	Renderer(GameContext* gameContext);
 
 	void Initialize();
 

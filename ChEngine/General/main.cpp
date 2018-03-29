@@ -19,23 +19,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow *window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, true);
-	}
-	else if (glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-	else if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-}
-
-
 int main()
 {
 	// initialize GLFW
@@ -68,13 +51,13 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// create game context
-	GameContext* gameContext = new GameContext(window);
+	GameContext gameContext(window);
 
 	// create game instance
-	Game* game = new Game(gameContext);
-	game->InitGame();
+	Game game(&gameContext);
+	game.InitGame();
 
-	game->GameLoop();
+	game.GameLoop();
 
 	// clean up memory
 	glfwTerminate();

@@ -5,9 +5,14 @@
 class BaseClass
 {
 public:
-	BaseClass(GameContext gameContext)
+	BaseClass(GameContext* gameContext)
 		: m_gameContext(gameContext)
 	{}
 
-	GameContext m_gameContext;
+	~BaseClass()
+	{
+
+	}
+
+	GameContext* m_gameContext;
 };

@@ -7,7 +7,7 @@
 
 const float BoundaryLineColor = 0.7f;
 
-Renderer::Renderer(GameContext gameContext)
+Renderer::Renderer(GameContext* gameContext)
 	: BaseClass(gameContext)
 {
 	Initialize();
@@ -112,7 +112,7 @@ void Renderer::InitFreeType()
 {
 	OnScreenTextShader = new Shader("OnScreenText.vert", "OnScreenText.frag");
 
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_gameContext.GetGame()->WindowWidth), 0.0f, static_cast<float>(m_gameContext.GetGame()->WindowHeight));
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_gameContext->GetGame()->WindowWidth), 0.0f, static_cast<float>(m_gameContext->GetGame()->WindowHeight));
 	OnScreenTextShader->SetUniformMatrix4("projection", false, glm::value_ptr(projection));
 
 	FT_Library ft;
@@ -306,7 +306,7 @@ void Renderer::Draw()
 	glm::mat4 projection;
 	projection = mainCamera->m_perpective;
 
-	DrawList* drawQueue = m_gameContext.GetDrawList();
+	DrawList* drawQueue = m_gameContext->GetDrawList();
 
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
