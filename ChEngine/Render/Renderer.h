@@ -14,7 +14,7 @@
 #include "Camera.h"
 #include "DrawList.h"
 
-using namespace std;
+class Light;
 
 struct OnScreenChar
 {
@@ -31,21 +31,7 @@ public:
 
 	void Initialize();
 
-	void InitVertexArray(bool bBindThisVAO);
-
-	void InitVertexBuffer(float* vertices, int size);
-
-	void InitElementBuffer(unsigned int* indices);
-
-	void InitLighting();
-
-	void InitShaders();
-
 	void InitFreeType();
-
-	float* GetVertexData(int &size);
-
-	void CalculateTransforms();
 
 	void FlyCameraForward(float value);
 	void FlyCameraRight(float value);
@@ -60,30 +46,11 @@ public:
 
 	bool bIsFill = true;
 
-	unsigned int VBO;				// vertex buffer ID
-	unsigned int VAO;				// vertex array ID
-	unsigned int EBO;				// element buffer ID
-	unsigned int LightVAO;
-	unsigned int DebugVertextBuffer;
-	unsigned int DebugVertextArray;
-
-	Shader* lampShader;
-	Shader* simpleShader;
-	Shader* debugShader;
-	Texture* texture_0;
-	Texture* texture_1;
-
 	Camera* mainCamera;
 
-	bool bVertexShaderCompiled = false;
-	bool bFragShaderCompiled = false;
+	Light* SimpleLight = nullptr;
 
-	int vertextBufferSize;
-	int vertexInfoSize;
-
-	int num_vertex;
-
-	glm::vec3 m_lightPosition;
+	void SetLight(Light* LightToSet);
 
 	glm::vec3 cubePositions[10];
 

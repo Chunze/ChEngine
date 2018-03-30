@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Game.h"
+#include "Light.h"
 #include "../stb_image.h"
 
 const float BoundaryLineColor = 0.7f;
@@ -15,97 +16,8 @@ Renderer::Renderer(GameContext* gameContext)
 
 void Renderer::Initialize()
 {
-	m_lightPosition = glm::vec3(0.0f, 6.0f, 0.0f);
-
 	InitFreeType();
 	glEnable(GL_DEPTH_TEST);
-}
-
-void Renderer::InitVertexArray(bool bBindThisVAO)
-{
-	glGenVertexArrays(1, &VAO);
-
-	if (bBindThisVAO)
-	{
-		glBindVertexArray(VAO);
-	}
-}
-
-void Renderer::InitVertexBuffer(float* vertices, int size)
-{
-	// create vertex buffer object
-	glGenBuffers(1, &VBO);
-
-	// bind the VBO to GL_ARRAY_BUFFER target
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	// configure data of the target buffer: setting vertices, and draw method
-	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-
-	// specify how OpenGL should interpret the vertex buffer data
-
-	vertexInfoSize = 8;
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexInfoSize * sizeof(float), (void*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexInfoSize * sizeof(float), (void*)(3 * sizeof(float)));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexInfoSize * sizeof(float), (void*)(6 * sizeof(float)));
-
-	
-
-// 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-// 	glEnableVertexAttribArray(2);
-}
-
-void Renderer::InitElementBuffer(unsigned int* indices)
-{
-	unsigned int indices_[] = {
-		0, 1, 3,   // first triangle
-		1, 2, 3    // second triangle
-	};
-
-	glGenBuffers(1, &EBO);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_), indices_, GL_STATIC_DRAW);
-
-}
-
-void Renderer::InitLighting()
-{
-	unsigned int lightVAO;
-	glGenVertexArrays(1, &lightVAO);
-	glBindVertexArray(lightVAO);
-	// we only need to bind to the VBO, the container's VBO's data already contains the correct data.
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	// set the vertex attributes (only position data for our lamp)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-}
-
-void Renderer::InitShaders()
-{
-	simpleShader = new Shader("vertexShader.glsl", "LightingShader.frag");
-	simpleShader->Use();
-	//simpleShader->SetUniformVector("objectColor", 1.0f, 0.5f, 0.31f);
-	//simpleShader->SetUniformVector("material.ambient", 1.0f, 0.5f, 0.31f);
-	//simpleShader->SetUniformVector("material.diffuse", 1.0f, 0.5f, 0.31f);
-	simpleShader->SetUniformVector("material.specular", 0.5f, 0.5f, 0.5f);
-	simpleShader->SetUniformFloat("material.shininess", 32.0f);
-	//simpleShader->SetUniformVector("lightColor", 1.0f);
-	simpleShader->SetUniformVector("light.ambient", 0.2f, 0.2f, 0.2f);
-	simpleShader->SetUniformVector("light.diffuse", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
-	simpleShader->SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
-	simpleShader->SetUniformVector("light.position", value_ptr(m_lightPosition));
-
-	glActiveTexture(GL_TEXTURE0);
-	texture_0 = new Texture("Textures/container2.png");
-	glActiveTexture(GL_TEXTURE1);
-	texture_1 = new Texture("Textures/container2_specular.png");
-
-	simpleShader->SetUniformInt("material.diffuse", 0);
-	simpleShader->SetUniformInt("material.specular", 1);
-
-	lampShader = new Shader("vertexShader.glsl", "LampShader.frag");
 }
 
 void Renderer::InitFreeType()
@@ -185,85 +97,6 @@ void Renderer::InitFreeType()
 	glBindVertexArray(0);
 }
 
-float* Renderer::GetVertexData(int &size)
-{
-	static float vertices[] = {
-		// positions          // normals           // texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-	};
-
-	size = sizeof(vertices);
-
-	return vertices;
-}
-
-void Renderer::CalculateTransforms()
-{
-	/*		Model		*/
-	glm::mat4 model;
-
-	/*		camera		*/
-	glm::mat4 view;
-	view = mainCamera->m_view;
-
-	/*		NDC			*/
-	glm::mat4 projection;
-	projection = mainCamera->m_perpective;
-
-	simpleShader->SetUniformMatrix4("model", false, value_ptr(model));
-	simpleShader->SetUniformMatrix4("view", false, value_ptr(view));
-	simpleShader->SetUniformMatrix4("projection", false, value_ptr(projection));
-	simpleShader->SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
-
-	lampShader->SetUniformMatrix4("model", false, value_ptr(model));
-	lampShader->SetUniformMatrix4("view", false, value_ptr(view));
-	lampShader->SetUniformMatrix4("projection", false, value_ptr(projection));
-
-	debugShader->SetUniformMatrix4("model", false, value_ptr(model));
-	debugShader->SetUniformMatrix4("view", false, value_ptr(view));
-	debugShader->SetUniformMatrix4("projection", false, value_ptr(projection));
-}
-
 void Renderer::FlyCameraForward(float value)
 {
 	mainCamera->FlyCameraForward(value);
@@ -281,10 +114,6 @@ void Renderer::FlyCameraUp(float value)
 
 void Renderer::Update(float deltaTime)
 {
-	//CalculateTransforms();
-
-	
-
 	glClearColor(Background_R, Background_G, Background_B, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -292,8 +121,6 @@ void Renderer::Update(float deltaTime)
 
 	Draw();
 
-	//DrawDebug();
-	//CleanupDebugDraw();
 }
 
 void Renderer::Draw()
@@ -330,13 +157,18 @@ void Renderer::Draw()
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));
-		drawCall.shader.SetUniformVector("material.specular", 0.5f, 0.5f, 0.5f);
-		drawCall.shader.SetUniformFloat("material.shininess", 32.0f);
-		//simpleShader->SetUniformVector("lightColor", 1.0f);
-		drawCall.shader.SetUniformVector("light.ambient", 0.2f, 0.2f, 0.2f);
-		drawCall.shader.SetUniformVector("light.diffuse", 0.5f, 0.5f, 0.5f); // darken the light a bit to fit the scene
-		drawCall.shader.SetUniformVector("light.specular", 1.0f, 1.0f, 1.0f);
-		drawCall.shader.SetUniformVector("light.position", value_ptr(m_lightPosition));
+
+		if (SimpleLight != nullptr)
+		{
+			glm::vec3 position = SimpleLight->m_position;
+			glm::vec3 ambient = SimpleLight->m_ambient;
+			glm::vec3 diffuse = SimpleLight->m_diffuse;
+			glm::vec3 specular = SimpleLight->m_specular;
+			drawCall.shader.SetUniformVector("light.ambient", ambient.x, ambient.y, ambient.z);
+			drawCall.shader.SetUniformVector("light.diffuse", diffuse.x, diffuse.y, diffuse.z); // darken the light a bit to fit the scene
+			drawCall.shader.SetUniformVector("light.specular", specular.x, specular.y, specular.z);
+			drawCall.shader.SetUniformVector("light.position", value_ptr(position));
+		}
 
 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
 
@@ -392,6 +224,11 @@ void Renderer::SetActiveCamera(Camera* camera)
 	mainCamera = camera;
 }
 
+void Renderer::SetLight(Light* LightToSet)
+{
+	SimpleLight = LightToSet;
+}
+
 void Renderer::RenderOnScreenText(OnScreenTextElement TextToRender)
 {
 	glm::vec3 color = TextToRender.color;
@@ -431,7 +268,7 @@ void Renderer::RenderOnScreenText(OnScreenTextElement TextToRender)
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 		// Update content of VBO memory
 		glBindBuffer(GL_ARRAY_BUFFER, OnScreenTextVertexBuffer);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

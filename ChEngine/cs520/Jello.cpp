@@ -117,6 +117,9 @@ void Jello::CreateAndAddDrawListElement(int Mode)
 			m_gameContext->GetDrawList()->AddToDrawQ(SpringRender);
 		}
 	}
+
+	e.shader.SetUniformVector("material.specular", 0.5f, 0.5f, 0.5f);
+	e.shader.SetUniformFloat("material.shininess", 32.0f);
 }
 
 void Jello::Update(float Delta)

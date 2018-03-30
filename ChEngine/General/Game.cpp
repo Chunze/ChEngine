@@ -44,7 +44,7 @@ Game::Game(GameContext* gameContext)
 
 void Game::InitGame()
 {
-	cout << "Initializing game...\n";
+	std::cout << "Initializing game...\n";
 
 	{
 		m_gameContext->m_Game = this;
@@ -57,35 +57,35 @@ void Game::InitGame()
 		m_gameContext->m_drawList = drawList;
 	}
 	{
-		cout << "Initializing renderer...\n";
+		std::cout << "Initializing renderer...\n";
 		Renderer* renderer = new Renderer(m_gameContext);
 		m_gameContext->m_renderer = renderer;
 	}
 	{
-		cout << "Initializing physics manager...\n";
+		std::cout << "Initializing physics manager...\n";
 		PhysicsManager* physicsManager = new PhysicsManager(m_gameContext);
 		m_gameContext->m_physicsManager = physicsManager;
 	}
 	{
-		cout << "Enter homework number (1, 2)...\n";
+		std::cout << "Enter homework number (1, 2)...\n";
 		std::string Homework;
-		cin >> Homework;
+		std::cin >> Homework;
 		if (Homework == "1")
 		{
 			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
 
 			World* world = new JelloWorld(m_gameContext);
-			cout << "Enter Jello World file path (cs520/...)...\n";
+			std::cout << "Enter Jello World file path (cs520/...)...\n";
 			std::string WorldFile;
-			cin >> WorldFile;
+			std::cin >> WorldFile;
 			
 			while (!world->LoadWorld(WorldFile.c_str()))
 			{
-				cout << "Invalid input... Enter Jello World file path (cs520/...)...\n";
-				cin >> WorldFile;
+				std::cout << "Invalid input... Enter Jello World file path (cs520/...)...\n";
+				std::cin >> WorldFile;
 			}
 
-			cout << "Loading world...\n";
+			std::cout << "Loading world...\n";
 			m_gameContext->m_world = world;
 		}
 		else if (Homework == "2")

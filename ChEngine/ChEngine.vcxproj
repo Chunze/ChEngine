@@ -33,13 +33,14 @@
     <ClCompile Include="General\Mesh.cpp" />
     <ClCompile Include="General\pic.cpp" />
     <ClCompile Include="General\ppm.cpp" />
-    <ClCompile Include="General\Renderer.cpp" />
+    <ClCompile Include="Render\Light.cpp" />
+    <ClCompile Include="Render\Renderer.cpp" />
     <ClCompile Include="General\FileManager.cpp" />
     <ClCompile Include="General\main.cpp" />
     <ClCompile Include="General\SceneNode.cpp" />
-    <ClCompile Include="General\Shader.cpp" />
+    <ClCompile Include="Render\Shader.cpp" />
     <ClCompile Include="General\ShaderManager.cpp" />
-    <ClCompile Include="General\Texture.cpp" />
+    <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="General\World.cpp" />
     <ClCompile Include="Physics\ForceGenerators\BasicSprintFG.cpp" />
     <ClCompile Include="Physics\ForceGenerators\CollisionSpringFG.cpp" />
@@ -63,12 +64,13 @@
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="General\pic.h" />
-    <ClInclude Include="General\Renderer.h" />
+    <ClInclude Include="Render\Light.h" />
+    <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />
     <ClInclude Include="General\SceneNode.h" />
-    <ClInclude Include="General\Shader.h" />
+    <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="General\ShaderManager.h" />
-    <ClInclude Include="General\Texture.h" />
+    <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="General\World.h" />
     <ClInclude Include="Physics\ForceGenerator.h" />
     <ClInclude Include="Physics\ForceGenerators\BasicSprintFG.h" />
@@ -143,7 +145,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Render;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -21,6 +21,7 @@ public:
 	int m_resolution;			// resolution for the 3d grid specifying the external force field; value of 0 means that there is no force field
 	glm::vec3 * m_forceField;	// pointer to the array of values of the force field
 
+	glm::vec3 m_lightPosition = glm::vec3(0.0f, 6.0f, 0.0f);
 
 	int RenderMode = 0;
 
@@ -29,6 +30,7 @@ public:
 	int ShowStructuralSpring = 0;
 	DrawListElement DebugDrawElement;
 	Shader* debugShader;
+	Light* m_light;
 
 	void ToggleDrawingMode();
 	void ToggleStructuralSpring();
@@ -51,10 +53,9 @@ protected:
 
 	virtual void InitCamera() override;
 	void InitInputHandler();
+	void InitDebugElement();
+	void InitLight();
 
 private:
-
-	void InitDebugElement();
-	
 	float BoundaryLineColor = 0.7f;
 };

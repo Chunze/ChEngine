@@ -5,6 +5,7 @@
 #include "Jello.h"
 #include "PhysicsManager.h"
 #include "JelloWorldInputHandler.h"
+#include "Light.h"
 
 #define BOUND_X_MIN -2.0f
 #define BOUND_Y_MIN -2.0f
@@ -20,6 +21,7 @@ JelloWorld::JelloWorld(GameContext* gameContext)
 	InitDebugElement();
 	InitCamera();
 	InitInputHandler();
+	InitLight();
 }
 
 JelloWorld::~JelloWorld()
@@ -375,6 +377,16 @@ void JelloWorld::InitDebugElement()
 	DebugDrawElement.LineWidth = 3;
 
 	//m_gameContext->GetDrawList()->AddToDrawQ(DebugDrawElement, false);
+}
+
+void JelloWorld::InitLight()
+{
+	m_light = new Light();
+	m_light->m_position = glm::vec3(0.0f, 6.0f, 0.0f);
+	m_light->m_ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+	m_light->m_diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+	m_light->m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	m_gameContext->GetRenderer()->SetLight(m_light);
 }
 
 void JelloWorld::InitCamera()
