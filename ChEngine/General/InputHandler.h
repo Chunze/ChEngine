@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseClass.h"
 #include "Renderer.h"
+#include "Game.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -15,6 +16,7 @@ public:
 	virtual void ProcessInput(GLFWwindow* contextWindow) = 0;
 
 protected:
+	bool MOUSE_LEFT_WasPressed = false;
 
 	bool KEY_B_WasPressed = false;
 	bool KEY_H_WasPressed = false;

@@ -14,11 +14,6 @@ void InitGLFW(int MajorVersion, int MinorVersion, int Profile) {
 
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
 int main()
 {
 	// initialize GLFW
@@ -46,9 +41,6 @@ int main()
 
 	// specify the actual window for the rendering
 	glViewport(0, 0, 640, 480);
-
-	// add callback function for resizing the window
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// create game context
 	GameContext gameContext(window);

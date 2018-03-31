@@ -9,7 +9,7 @@ public:
 	GameObject(GameContext* gameContext, World* world);
 	World* m_world;
 
-	virtual void CreateAndAddDrawListElement(int Mode) = 0;
+	virtual void CreateAndAddDrawListElement(int Mode) {};
 
 	virtual void Update(float Delta) {}
 
@@ -17,6 +17,8 @@ public:
 
 protected:
 	Shader* shader;
+
+	bool bUpdateEnabled = true;
 
 	//inline int AddElementToDrawList(DrawListElement e, int index) { return m_gameContext->GetDrawList()->AddToDrawQ(e, index); }
 };

@@ -5,6 +5,7 @@
 #include "DrawList.h"
 #include "Camera.h"
 #include "Renderer.h"
+#include "Game.h"
 
 class World : public BaseClass
 {
@@ -18,7 +19,7 @@ public:
 
 	}
 
-	virtual bool LoadWorld(const char* fileName) = 0;
+	virtual bool LoadWorld(const char* fileName) { return false; }
 	virtual void Update(float Delta) = 0;
 
 	//std::vector<GameObject> m_gameObjects;

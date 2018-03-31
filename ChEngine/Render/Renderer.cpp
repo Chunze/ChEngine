@@ -24,9 +24,6 @@ void Renderer::InitFreeType()
 {
 	OnScreenTextShader = new Shader("OnScreenText.vert", "OnScreenText.frag");
 
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_gameContext->GetGame()->WindowWidth), 0.0f, static_cast<float>(m_gameContext->GetGame()->WindowHeight));
-	OnScreenTextShader->SetUniformMatrix4("projection", false, glm::value_ptr(projection));
-
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
 	{
@@ -178,6 +175,9 @@ void Renderer::Draw()
 		drawQueue->m_DynamicElements.pop();
 	}
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	while (!drawQueue->m_StaticElements.empty())
 	{
 		auto drawCall = drawQueue->m_StaticElements.front();
@@ -206,6 +206,10 @@ void Renderer::Draw()
 	while (!drawQueue->m_OnScreenTexts.empty())
 	{
 		auto textToRender = drawQueue->m_OnScreenTexts.front();
+
+		glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(m_gameContext->GetGame()->WindowWidth), 0.0f, static_cast<float>(m_gameContext->GetGame()->WindowHeight));
+		OnScreenTextShader->SetUniformMatrix4("projection", false, glm::value_ptr(projection));
+
 		RenderOnScreenText(textToRender);
 		drawQueue->m_OnScreenTexts.pop();
 	}

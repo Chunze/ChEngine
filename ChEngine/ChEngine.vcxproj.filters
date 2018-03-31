@@ -21,9 +21,6 @@
     <ClCompile Include="General\GameContext.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="cs520\Jello.cpp">
-      <Filter>cs520</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Particle.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
@@ -43,9 +40,6 @@
     <ClCompile Include="General\SceneNode.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="cs520\JelloWorld.cpp">
-      <Filter>cs520</Filter>
-    </ClCompile>
     <ClCompile Include="General\GameObject.cpp">
       <Filter>General</Filter>
     </ClCompile>
@@ -64,9 +58,6 @@
     <ClCompile Include="General\InputHandler.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="cs520\JelloWorldInputHandler.cpp">
-      <Filter>cs520</Filter>
-    </ClCompile>
     <ClCompile Include="Render\Renderer.cpp">
       <Filter>Render</Filter>
     </ClCompile>
@@ -78,6 +69,27 @@
     </ClCompile>
     <ClCompile Include="Render\Light.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\Jello.cpp">
+      <Filter>cs520\HW1</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\JelloWorld.cpp">
+      <Filter>cs520\HW1</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\JelloWorldInputHandler.cpp">
+      <Filter>cs520\HW1</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\HW2\HW2InputHandler.cpp">
+      <Filter>cs520\HW2</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\HW2\ParticleAttractor.cpp">
+      <Filter>cs520\HW2</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\HW2\ParticleWorld.cpp">
+      <Filter>cs520\HW2</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem\ParticleSystem.cpp">
+      <Filter>ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +104,8 @@
     <None Include="WireJello.vert" />
     <None Include="OnScreenText.vert" />
     <None Include="OnScreenText.frag" />
+    <None Include="ScreenSpaceParticle.vert" />
+    <None Include="ScreenSpaceParticle.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\FileManager.h">
@@ -112,9 +126,6 @@
     </ClInclude>
     <ClInclude Include="General\GameContext.h">
       <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="cs520\Jello.h">
-      <Filter>cs520</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Particle.h">
       <Filter>Physics</Filter>
@@ -144,9 +155,6 @@
     <ClInclude Include="General\SceneNode.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="cs520\JelloWorld.h">
-      <Filter>cs520</Filter>
-    </ClInclude>
     <ClInclude Include="General\GameObject.h">
       <Filter>General</Filter>
     </ClInclude>
@@ -165,9 +173,6 @@
     <ClInclude Include="General\InputHandler.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="cs520\JelloWorldInputHandler.h">
-      <Filter>cs520</Filter>
-    </ClInclude>
     <ClInclude Include="Render\Renderer.h">
       <Filter>Render</Filter>
     </ClInclude>
@@ -179,6 +184,27 @@
     </ClInclude>
     <ClInclude Include="Render\Light.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\JelloWorldInputHandler.h">
+      <Filter>cs520\HW1</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\Jello.h">
+      <Filter>cs520\HW1</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\JelloWorld.h">
+      <Filter>cs520\HW1</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW2\HW2InputHandler.h">
+      <Filter>cs520\HW2</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW2\ParticleAttractor.h">
+      <Filter>cs520\HW2</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW2\ParticleWorld.h">
+      <Filter>cs520\HW2</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem\ParticleSystem.h">
+      <Filter>ParticleSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +222,15 @@
     </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{c957b322-0a29-4d93-a88a-0e0b40edae03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs520\HW1">
+      <UniqueIdentifier>{3feba147-a39f-4ebb-8064-040aeed525e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs520\HW2">
+      <UniqueIdentifier>{85c13920-2263-486f-b2f6-145a4a8e681e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleSystem">
+      <UniqueIdentifier>{aad5303f-efd1-4a72-90e0-1f800c236605}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

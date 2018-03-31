@@ -48,4 +48,6 @@ public:
 	void Rotate(float deltaPitch, float deltaYaw);
 
 	void Update(float deltaTime);
+
+	void UpdatePerspective(float f1, float f2, float f3, float f4);
 };

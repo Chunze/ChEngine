@@ -1,5 +1,4 @@
 #include "JelloWorldInputHandler.h"
-#include "Game.h"
 #include "JelloWorld.h"
 
 GameContext* _gameContext;

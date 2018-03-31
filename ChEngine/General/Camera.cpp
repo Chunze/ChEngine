@@ -108,3 +108,15 @@ void Camera::Update(float deltaTime)
 
 	m_flyDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 }
+
+void Camera::UpdatePerspective(float f1, float f2, float f3, float f4)
+{
+// 	if (m_type == CameraType::Camera_3D)
+// 	{
+// 		m_perpective = glm::perspective(f1, f2, f3, f4);
+// 	}
+	if (m_type == CameraType::Camera_2D)
+	{
+		m_perpective = glm::ortho(f1, f2, f3, f4);
+	}
+}

@@ -8,12 +8,15 @@
 #include "Renderer.h"
 #include "PhysicsManager.h"
 #include "JelloWorld.h"
+#include "ParticleWorld.h"
 #include "InputHandler.h"
 
 #define SCREEN_SHOTS 0
 GameContext* gameContext;
 double mouselastX = 400, mouselastY = 300;
 bool firstMouse = true;
+int* WindowWidth_callback;
+int* WindowHeight_callback;
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -36,8 +39,14 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	gameContext->m_renderer->mainCamera->Rotate(offsetY, offsetX);
 }
 
-Game::Game(GameContext* gameContext)
-	: BaseClass(gameContext)
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+	glfwGetWindowSize(gameContext->GetWindow(), WindowWidth_callback, WindowHeight_callback);
+}
+
+Game::Game(GameContext* _gameContext)
+	: BaseClass(_gameContext)
 {
 	
 }
@@ -45,6 +54,12 @@ Game::Game(GameContext* gameContext)
 void Game::InitGame()
 {
 	std::cout << "Initializing game...\n";
+
+	// add callback function for resizing the window
+	WindowWidth_callback = &WindowWidth;
+	WindowHeight_callback = &WindowHeight;
+	glfwSetFramebufferSizeCallback(m_gameContext->GetWindow(), framebuffer_size_callback);
+	gameContext = m_gameContext;
 
 	{
 		m_gameContext->m_Game = this;
@@ -91,6 +106,12 @@ void Game::InitGame()
 		else if (Homework == "2")
 		{
 			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
+			std::cout << "Enter number of particles...\n";
+			int ParticleNum;
+			std::cin >> ParticleNum;
+
+			World* world = new ParticleWorld(m_gameContext, ParticleNum);
+			m_gameContext->m_world = world;
 		}
 		else if (Homework == "0")
 		{
@@ -104,11 +125,7 @@ void Game::InitGame()
 
 void Game::GameLoop()
 {
-	GLFWwindow* contextWindow = m_gameContext->m_contextWindow;
-	gameContext = m_gameContext;
-	
-
-	while (!glfwWindowShouldClose(contextWindow))
+	while (!glfwWindowShouldClose(m_gameContext->GetWindow()))
 	{
 		bWasPausedLastFrame = bPaused;
 		float currentTime = (float)glfwGetTime();
@@ -133,7 +150,7 @@ void Game::GameLoop()
 		lastFrameTime = currentTime;
 
 		// input
-		processInput(contextWindow);
+		processInput(m_gameContext->GetWindow());
 
 
 		if (bPaused)
@@ -169,7 +186,7 @@ void Game::GameLoop()
 		}
 		Update(deltaTime);
 		
-		glfwSwapBuffers(contextWindow);
+		glfwSwapBuffers(m_gameContext->GetWindow());
 		glfwPollEvents();
 	}
 }
