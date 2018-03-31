@@ -9,3 +9,9 @@ ParticleAttractor::ParticleAttractor(GameContext* gameContext, World* world, glm
 	std::cout << "attractor created: x = " << Position.x << ", y = " << Position.y << std::endl;
 }
 
+void ParticleAttractor::SetPosition(int x, int y)
+{
+	Position.x = x;
+	Position.y = y;
+}
+

@@ -9,5 +9,7 @@ public:
 
 	glm::vec2 Position;
 
+	void SetPosition(int x, int y);
+
 	bool bIsActive = true;
 };

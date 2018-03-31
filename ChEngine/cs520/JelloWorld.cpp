@@ -90,7 +90,7 @@ bool JelloWorld::LoadWorld(const char* fileName)
 	}
 
 	/* read timestep size and render */
-	fscanf_s(file, "%f %d\n", &m_dt, &m_n);
+	fscanf_s(file, "%f %d\n", &m_customDelta, &m_n);
 
 	/* read physical parameters */
 	fscanf_s(file, "%f %f %f %f\n",

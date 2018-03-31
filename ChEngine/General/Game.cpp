@@ -112,12 +112,19 @@ void Game::InitGame()
 
 			World* world = new ParticleWorld(m_gameContext, ParticleNum);
 			m_gameContext->m_world = world;
+
+			static_cast<ParticleWorld*>(world)->UpdateDynamicAttractor(WindowWidth, WindowHeight);
 		}
 		else if (Homework == "0")
 		{
-			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
-			World* world = new JelloWorld(m_gameContext);
-			world->LoadWorld("cs520/moveLeft.w");
+// 			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
+// 			World* world = new JelloWorld(m_gameContext);
+// 			world->LoadWorld("cs520/moveLeft.w");
+
+			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
+			World* world = new ParticleWorld(m_gameContext, 10000);
+
+
 			m_gameContext->m_world = world;
 		}
 	}
@@ -152,14 +159,6 @@ void Game::GameLoop()
 		// input
 		processInput(m_gameContext->GetWindow());
 
-
-		if (bPaused)
-		{
-			deltaTime = 0.0f;
-			bWasPausedLastFrame = false;
-		}
-
-		
 		float TimeSinceLastScreenSave = currentTime - lastScreenCapture;
 
 		float ScreenCaptureRate = 1.0f / 15.0f;
@@ -178,11 +177,15 @@ void Game::GameLoop()
 			ScreenCaptureIndex++;
 		}
 
-		deltaTime = 0.0005f;
+		if (m_gameContext->GetWorld() && m_gameContext->GetWorld()->m_customDelta > 0.0f)
+		{
+			deltaTime = m_gameContext->GetWorld()->m_customDelta;
+		}
+
 		if (bPaused)
 		{
 			deltaTime = 0.0f;
-			//bGamePaused = true;
+			bWasPausedLastFrame = false;
 		}
 		Update(deltaTime);
 		

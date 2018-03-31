@@ -11,6 +11,10 @@ ParticleWorld::ParticleWorld(GameContext* gameContext, int _particleNum)
 	InitCamera();
 	InitInputHandler();
 	InitParticleSystem();
+
+	m_DynamicAttractor = new ParticleAttractor(gameContext, this, glm::vec2(100, 100));
+	Attractors.push_back(m_DynamicAttractor);
+	
 }
 
 void ParticleWorld::Update(float Delta)
@@ -22,6 +26,11 @@ void ParticleWorld::CreateAttractor(int x, int y)
 {
 	ParticleAttractor* NewAttractor = new ParticleAttractor(m_gameContext, this, glm::vec2(x, y));
 	Attractors.push_back(NewAttractor);
+}
+
+void ParticleWorld::UpdateDynamicAttractor(int x, int y)
+{
+	m_DynamicAttractor->SetPosition(x, y);
 }
 
 void ParticleWorld::InitCamera()

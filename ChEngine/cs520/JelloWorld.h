@@ -12,7 +12,6 @@ public:
 	class Jello* m_jello;
 
 	char m_intergrator[10];		// "RK4" or "Euler"
-	float m_dt;					// timestep, e.g.. 0.001
 	int m_n;					// display only every nth timestep
 	int m_incPlanePresent;		// Is the inclined plane present? 1 = YES, 0 = NO
 	float a, b, c, d;			// inclined plane has equation a * x + b * y + c * z + d = 0;

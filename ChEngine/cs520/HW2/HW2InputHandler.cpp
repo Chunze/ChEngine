@@ -15,6 +15,16 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 		glfwSetWindowShouldClose(contextWindow, true);
 	}
 
+	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		//get cursor position
+		double xpos, ypos;
+
+		GetCursorPosition(contextWindow, &xpos, &ypos);
+
+		static_cast<ParticleWorld*>(m_gameContext->GetWorld())->UpdateDynamicAttractor(xpos, ypos);
+	}
+
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		MOUSE_LEFT_WasPressed = true;
@@ -28,11 +38,9 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 
 			//get cursor position
 			double xpos, ypos;
-			glfwGetCursorPos(contextWindow, &xpos, &ypos);
 
-			int WindowHeight = m_gameContext->GetGame()->WindowHeight;
-
-			ypos = (double)WindowHeight - ypos;
+			GetCursorPosition(contextWindow, &xpos, &ypos);
+			
 			// create attractor
 			static_cast<ParticleWorld*>(m_gameContext->GetWorld())->CreateAttractor(static_cast<int>(xpos), static_cast<int>(ypos));
 		}
@@ -51,4 +59,26 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 			m_gameContext->GetGame()->bPaused = !m_gameContext->GetGame()->bPaused;
 		}
 	}
+
+	if (glfwGetKey(contextWindow, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		KEY_L_WasPressed = true;
+	}
+	if (glfwGetKey(contextWindow, GLFW_KEY_L) == GLFW_RELEASE)
+	{
+		if (KEY_L_WasPressed)
+		{
+			KEY_L_WasPressed = false;
+			m_gameContext->GetGame()->ShowFPS = !m_gameContext->GetGame()->ShowFPS;
+		}
+	}
+}
+
+void HW2InputHandler::GetCursorPosition(GLFWwindow* window, double* x, double* y)
+{
+	glfwGetCursorPos(window, x, y);
+
+	int WindowHeight = m_gameContext->GetGame()->WindowHeight;
+
+	*y = (double)WindowHeight - *y;
 }

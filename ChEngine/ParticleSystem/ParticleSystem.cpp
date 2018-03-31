@@ -1,4 +1,7 @@
+#include <vector>
 #include "ParticleSystem.h"
+#include "ParticleAttractor.h"
+#include "ParticleWorld.h"
 #include "glm.h"
 #include "Game.h"
 
@@ -19,6 +22,7 @@ ParticleSystem::~ParticleSystem()
 void ParticleSystem::Update(float Delta)
 {
 	UpdateParticles(Delta);
+	UpdateVertexBuffer();
 	m_gameContext->GetDrawList()->AddToDrawQ(e, false);
 }
 
@@ -60,18 +64,42 @@ void ParticleSystem::Initialize(int Num_Particles)
 
 void ParticleSystem::UpdateParticles(float Delta)
 {
-	a += Delta;
-	float s = sin(10*a);
+	std::vector<ParticleAttractor*> Attractors = static_cast<ParticleWorld*>(GetWorld())->Attractors;
+	glm::vec2 acc = glm::vec2(0.0f);
+	glm::vec2 diff = glm::vec2(0.0f);
+	float diffSqNorm, theta;
 
-	int index = 0;
+	float attractionCoef = 28000.0f;
+	float DragCoef = 0.96f;
+
 	for (int i = 0; i < ParticleTotalNumber; i++)
 	{
-		VertexBuffer[index++] = particlePositions[i].x + s;
-		VertexBuffer[index++] = particlePositions[i].y;
-		VertexBuffer[index++] = particleColors[i].x;
-		VertexBuffer[index++] = particleColors[i].y;
-		VertexBuffer[index++] = particleColors[i].z;
+		for (auto attractor : Attractors)
+		{
+			if (!attractor->bIsActive) { continue; }
+
+			diff = attractor->Position - particlePositions[i];
+			diffSqNorm = diff.x * diff.x + diff.y * diff.y;
+			if (diffSqNorm < 0.1f)
+			{
+				theta = static_cast<float>(rand()) / (static_cast <float> (RAND_MAX / 6.28318530718f));
+				theta *= 180.f;
+				diff.x = cos(theta);
+				diff.y = sin(theta);
+				diffSqNorm = 1;
+			}
+
+			acc += (attractionCoef / diffSqNorm) * diff;
+		}
+
+		particleVelocities[i] += Delta * acc;
+		particlePositions[i] += Delta * particleVelocities[i];
+		particleVelocities[i] *= DragCoef;
+
+		acc.x = 0.0f;
+		acc.y = 0.0f;
 	}
+	
 }
 
 void ParticleSystem::UpdateVertexBuffer()

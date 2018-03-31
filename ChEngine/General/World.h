@@ -22,6 +22,8 @@ public:
 	virtual bool LoadWorld(const char* fileName) { return false; }
 	virtual void Update(float Delta) = 0;
 
+	float m_customDelta = -1.0f;
+
 	//std::vector<GameObject> m_gameObjects;
 
 protected:

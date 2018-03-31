@@ -14,7 +14,11 @@ public:
 
 	std::vector<ParticleAttractor*> Attractors;
 
+	ParticleAttractor* m_DynamicAttractor;
+
 	void CreateAttractor(int x, int y);
+
+	void UpdateDynamicAttractor(int x, int y);
 
 	int ParticleNum = 1;
 
@@ -22,6 +26,7 @@ protected:
 	void InitCamera() override;
 	void InitInputHandler();
 	void InitParticleSystem();
+
 
 	ParticleSystem* m_particleSystem;
 };
