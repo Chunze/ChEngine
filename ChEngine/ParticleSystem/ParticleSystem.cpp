@@ -65,6 +65,7 @@ void ParticleSystem::Initialize(int Num_Particles)
 void ParticleSystem::UpdateParticles(float Delta)
 {
 	std::vector<ParticleAttractor*> Attractors = static_cast<ParticleWorld*>(GetWorld())->Attractors;
+	ParticleAttractor* DynamincAttractor = static_cast<ParticleWorld*>(GetWorld())->m_DynamicAttractor;
 	glm::vec3 color = glm::vec3(0.0f);
 	glm::vec2 acc = glm::vec2(0.0f);
 	glm::vec2 diff = glm::vec2(0.0f);
@@ -79,6 +80,24 @@ void ParticleSystem::UpdateParticles(float Delta)
 			if (!attractor->bIsActive) { continue; }
 
 			diff = attractor->Position - particlePositions[i];
+			diffSqNorm = diff.x * diff.x + diff.y * diff.y;
+
+			if (diffSqNorm < 0.1f)
+			{
+				theta = static_cast<float>(rand()) / (static_cast <float> (RAND_MAX / 6.28318530718f));
+				theta *= 180.f;
+				diff.x = cos(theta);
+				diff.y = sin(theta);
+				diffSqNorm = 1;
+			}
+
+			acc += (attractionCoef / diffSqNorm) * diff;
+		}
+
+		{
+			if (!DynamincAttractor->bIsActive) { continue; }
+
+			diff = DynamincAttractor->Position - particlePositions[i];
 			diffSqNorm = diff.x * diff.x + diff.y * diff.y;
 
 			if (diffSqNorm < 0.1f)

@@ -17,6 +17,8 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
+		MOUSE_LEFT_WasPressed = true;
+
 		//get cursor position
 		double xpos, ypos;
 
@@ -25,16 +27,26 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 		static_cast<ParticleWorld*>(m_gameContext->GetWorld())->UpdateDynamicAttractor(xpos, ypos);
 	}
 
-	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-	{
-		MOUSE_LEFT_WasPressed = true;
-	}
-
-	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
 	{
 		if (MOUSE_LEFT_WasPressed)
 		{
 			MOUSE_LEFT_WasPressed = false;
+
+			static_cast<ParticleWorld*>(m_gameContext->GetWorld())->LeftClicked();
+		}
+	}
+
+	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
+		MOUSE_RIGHT_WasPressed = true;
+	}
+
+	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+	{
+		if (MOUSE_RIGHT_WasPressed)
+		{
+			MOUSE_RIGHT_WasPressed = false;
 
 			//get cursor position
 			double xpos, ypos;

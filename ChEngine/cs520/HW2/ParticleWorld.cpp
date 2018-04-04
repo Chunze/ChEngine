@@ -24,13 +24,31 @@ void ParticleWorld::Update(float Delta)
 
 void ParticleWorld::CreateAttractor(int x, int y)
 {
+	if (Attractors.size() >= MaxAttractorNum)
+	{
+		Attractors[AttractorToBeModified]->SetPosition(x, y);
+		AttractorToBeModified = (AttractorToBeModified + 1) % MaxAttractorNum;
+	}
 	ParticleAttractor* NewAttractor = new ParticleAttractor(m_gameContext, this, glm::vec2(x, y));
 	Attractors.push_back(NewAttractor);
+
+	// reset number of left clicks
+	NumLeftClicks = 0;
 }
 
 void ParticleWorld::UpdateDynamicAttractor(int x, int y)
 {
 	m_DynamicAttractor->SetPosition(x, y);
+}
+
+void ParticleWorld::LeftClicked()
+{
+	NumLeftClicks++;
+	if (NumLeftClicks >= 3)
+	{
+		NumLeftClicks = 0;
+		ClearAttractors();
+	}
 }
 
 void ParticleWorld::InitCamera()
@@ -50,4 +68,10 @@ void ParticleWorld::InitParticleSystem()
 {
 	m_particleSystem = new ParticleSystem(m_gameContext, this);
 	m_particleSystem->Initialize(ParticleNum);
+}
+
+void ParticleWorld::ClearAttractors()
+{
+	Attractors.clear();
+	AttractorToBeModified = 0;
 }

@@ -113,6 +113,8 @@ void Game::InitGame()
 			World* world = new ParticleWorld(m_gameContext, ParticleNum);
 			m_gameContext->m_world = world;
 
+			bPaused = false;
+
 			static_cast<ParticleWorld*>(world)->UpdateDynamicAttractor(WindowWidth, WindowHeight);
 		}
 		else if (Homework == "0")
@@ -124,6 +126,7 @@ void Game::InitGame()
 			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
 			World* world = new ParticleWorld(m_gameContext, 10000);
 
+			bPaused = false;
 
 			m_gameContext->m_world = world;
 		}

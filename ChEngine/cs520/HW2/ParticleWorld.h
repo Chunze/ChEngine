@@ -20,13 +20,21 @@ public:
 
 	void UpdateDynamicAttractor(int x, int y);
 
+	void LeftClicked();
+
 	int ParticleNum = 1;
 
+	
 protected:
 	void InitCamera() override;
 	void InitInputHandler();
 	void InitParticleSystem();
 
+	void ClearAttractors();
 
+	int NumLeftClicks = 0;
+
+	int MaxAttractorNum = 4;
+	int AttractorToBeModified = 0;
 	ParticleSystem* m_particleSystem;
 };

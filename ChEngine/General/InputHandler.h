@@ -17,6 +17,7 @@ public:
 
 protected:
 	bool MOUSE_LEFT_WasPressed = false;
+	bool MOUSE_RIGHT_WasPressed = false;
 
 	bool KEY_B_WasPressed = false;
 	bool KEY_H_WasPressed = false;
