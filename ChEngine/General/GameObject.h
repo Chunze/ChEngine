@@ -18,6 +18,8 @@ public:
 protected:
 	Shader* shader;
 
+	DrawListElement e;
+
 	bool bUpdateEnabled = true;
 
 	//inline int AddElementToDrawList(DrawListElement e, int index) { return m_gameContext->GetDrawList()->AddToDrawQ(e, index); }

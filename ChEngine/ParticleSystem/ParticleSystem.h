@@ -20,8 +20,6 @@ public:
 
 	float* VertexBuffer;
 
-	DrawListElement e;
-
 	void Initialize(int Num_Particles);
 
 	void UpdateParticles(float Delta);

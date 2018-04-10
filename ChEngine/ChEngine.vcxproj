@@ -24,6 +24,9 @@
     <ClCompile Include="cs520\HW2\HW2InputHandler.cpp" />
     <ClCompile Include="cs520\HW2\ParticleAttractor.cpp" />
     <ClCompile Include="cs520\HW2\ParticleWorld.cpp" />
+    <ClCompile Include="cs520\HW3\BoneStructs.cpp" />
+    <ClCompile Include="cs520\HW3\IKWorld.cpp" />
+    <ClCompile Include="cs520\HW3\TailSkel.cpp" />
     <ClCompile Include="cs520\Jello.cpp" />
     <ClCompile Include="cs520\JelloWorld.cpp" />
     <ClCompile Include="cs520\JelloWorldInputHandler.cpp" />
@@ -36,6 +39,7 @@
     <ClCompile Include="General\Mesh.cpp" />
     <ClCompile Include="General\pic.cpp" />
     <ClCompile Include="General\ppm.cpp" />
+    <ClCompile Include="Math\MatrixMxN.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Render\Light.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
@@ -57,6 +61,9 @@
     <ClInclude Include="cs520\HW2\HW2InputHandler.h" />
     <ClInclude Include="cs520\HW2\ParticleAttractor.h" />
     <ClInclude Include="cs520\HW2\ParticleWorld.h" />
+    <ClInclude Include="cs520\HW3\BoneStructs.h" />
+    <ClInclude Include="cs520\HW3\IKWorld.h" />
+    <ClInclude Include="cs520\HW3\TailSkel.h" />
     <ClInclude Include="cs520\Jello.h" />
     <ClInclude Include="cs520\JelloWorld.h" />
     <ClInclude Include="cs520\JelloWorldInputHandler.h" />
@@ -71,6 +78,8 @@
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="General\pic.h" />
+    <ClInclude Include="Math\MathStatics.h" />
+    <ClInclude Include="Math\MatrixMxN.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Render\Light.h" />
     <ClInclude Include="Render\Renderer.h" />
@@ -155,11 +164,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(IncludePath);$(SolutionDir)ChEngine\Math</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

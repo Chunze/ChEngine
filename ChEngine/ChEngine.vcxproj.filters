@@ -91,6 +91,18 @@
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp">
       <Filter>ParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Math\MatrixMxN.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\HW3\IKWorld.cpp">
+      <Filter>cs520\HW3</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\HW3\BoneStructs.cpp">
+      <Filter>cs520\HW3</Filter>
+    </ClCompile>
+    <ClCompile Include="cs520\HW3\TailSkel.cpp">
+      <Filter>cs520\HW3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -206,6 +218,21 @@
     <ClInclude Include="ParticleSystem\ParticleSystem.h">
       <Filter>ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Math\MatrixMxN.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW3\IKWorld.h">
+      <Filter>cs520\HW3</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW3\BoneStructs.h">
+      <Filter>cs520\HW3</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW3\TailSkel.h">
+      <Filter>cs520\HW3</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathStatics.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -231,6 +258,12 @@
     </Filter>
     <Filter Include="ParticleSystem">
       <UniqueIdentifier>{aad5303f-efd1-4a72-90e0-1f800c236605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{a1b3c734-316f-4fc4-80ea-a5cfc288cbc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs520\HW3">
+      <UniqueIdentifier>{9cced202-bf02-44cd-8867-bf3f932b0bf1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

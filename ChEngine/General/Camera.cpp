@@ -5,7 +5,7 @@
 
 Camera::Camera()
 {
-
+	m_flyDirection = glm::vec3(0.0f);
 }
 
 Camera::Camera(CameraType type, float fovy, float aspect, float zNear, float zFar)

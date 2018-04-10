@@ -10,6 +10,7 @@
 #include "JelloWorld.h"
 #include "ParticleWorld.h"
 #include "InputHandler.h"
+#include "HW3/IKWorld.h"
 
 #define SCREEN_SHOTS 0
 GameContext* gameContext;
@@ -116,6 +117,14 @@ void Game::InitGame()
 			bPaused = false;
 
 			static_cast<ParticleWorld*>(world)->UpdateDynamicAttractor(WindowWidth, WindowHeight);
+		}
+		else if (Homework == "3")
+		{
+			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
+
+			World* world = new IKWorld(m_gameContext);
+			m_gameContext->m_world = world;
+			bPaused = false;
 		}
 		else if (Homework == "0")
 		{
