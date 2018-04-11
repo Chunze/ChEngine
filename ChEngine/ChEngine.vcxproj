@@ -25,6 +25,7 @@
     <ClCompile Include="cs520\HW2\ParticleAttractor.cpp" />
     <ClCompile Include="cs520\HW2\ParticleWorld.cpp" />
     <ClCompile Include="cs520\HW3\BoneStructs.cpp" />
+    <ClCompile Include="cs520\HW3\HW3InputHandler.cpp" />
     <ClCompile Include="cs520\HW3\IKWorld.cpp" />
     <ClCompile Include="cs520\HW3\TailSkel.cpp" />
     <ClCompile Include="cs520\Jello.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="cs520\HW2\ParticleAttractor.h" />
     <ClInclude Include="cs520\HW2\ParticleWorld.h" />
     <ClInclude Include="cs520\HW3\BoneStructs.h" />
+    <ClInclude Include="cs520\HW3\HW3InputHandler.h" />
     <ClInclude Include="cs520\HW3\IKWorld.h" />
     <ClInclude Include="cs520\HW3\TailSkel.h" />
     <ClInclude Include="cs520\Jello.h" />

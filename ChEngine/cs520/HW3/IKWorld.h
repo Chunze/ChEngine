@@ -12,6 +12,7 @@ public:
 
 	virtual void InitCamera() override;
 
+	void InputHandler();
 
 	class TailSkel* Tail;
 };

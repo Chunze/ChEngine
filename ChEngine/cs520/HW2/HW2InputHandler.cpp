@@ -10,10 +10,7 @@ HW2InputHandler::HW2InputHandler(GameContext* gameContext)
 
 void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 {
-	if (glfwGetKey(contextWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(contextWindow, true);
-	}
+	InputHandler::ProcessInput(contextWindow);
 
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
@@ -69,19 +66,6 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 		{
 			KEY_SPACE_WasPressed = false;
 			m_gameContext->GetGame()->bPaused = !m_gameContext->GetGame()->bPaused;
-		}
-	}
-
-	if (glfwGetKey(contextWindow, GLFW_KEY_L) == GLFW_PRESS)
-	{
-		KEY_L_WasPressed = true;
-	}
-	if (glfwGetKey(contextWindow, GLFW_KEY_L) == GLFW_RELEASE)
-	{
-		if (KEY_L_WasPressed)
-		{
-			KEY_L_WasPressed = false;
-			m_gameContext->GetGame()->ShowFPS = !m_gameContext->GetGame()->ShowFPS;
 		}
 	}
 }

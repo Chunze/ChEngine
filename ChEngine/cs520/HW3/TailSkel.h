@@ -20,6 +20,14 @@ public:
 /*	float* GetBoneVerticies();*/
 
 	std::vector<Bone> Structure;
+
+	void RotateBone(size_t index, float degree);
+
+	void TranslateBone(size_t index, glm::vec2 translation);
+
+	void UpdateVertexBuffer();
+
+	float* VertexBuffer;
 };
 
 #endif

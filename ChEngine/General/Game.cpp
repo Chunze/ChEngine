@@ -84,8 +84,11 @@ void Game::InitGame()
 	}
 	{
 		std::cout << "Enter homework number (1, 2)...\n";
-		std::string Homework;
-		std::cin >> Homework;
+		std::string Homework = "3";
+		//std::cin >> Homework;
+
+
+
 		if (Homework == "1")
 		{
 			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);

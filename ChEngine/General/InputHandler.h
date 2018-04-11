@@ -13,7 +13,7 @@ public:
 		: BaseClass(gameContext)
 	{}
 
-	virtual void ProcessInput(GLFWwindow* contextWindow) = 0;
+	virtual void ProcessInput(GLFWwindow* contextWindow);
 
 protected:
 	bool MOUSE_LEFT_WasPressed = false;

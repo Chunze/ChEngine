@@ -103,6 +103,9 @@
     <ClCompile Include="cs520\HW3\TailSkel.cpp">
       <Filter>cs520\HW3</Filter>
     </ClCompile>
+    <ClCompile Include="cs520\HW3\HW3InputHandler.cpp">
+      <Filter>cs520\HW3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="Math\MathStatics.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="cs520\HW3\HW3InputHandler.h">
+      <Filter>cs520\HW3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

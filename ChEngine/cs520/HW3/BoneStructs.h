@@ -6,19 +6,16 @@
 struct Bone
 {
 	Bone();
-	~Bone()
-	{
-		delete Parent;
-		delete Child;
-	}
 
-	float length = 40.0f;
+	float length = 50.0f;
 
 	glm::vec2 Position_World;
 	glm::vec2 Direction_Local;
 	glm::vec2 Direction_World;
 
 	glm::vec2 Direction_Tangent;
+
+	bool bIsRoot = false;
 
 	Bone* Parent = nullptr;
 	Bone* Child = nullptr;
@@ -31,7 +28,11 @@ struct Bone
 	glm::vec2 GetEndLocation_World();
 	float* UpdateVerticies();
 
-	float vert[15];
+	void TranslateBone(glm::vec2 translation);
+
+	void RotateBone(float degree);
+
+	static const int VertexBufferSize = 15;
 };
 
 #endif
