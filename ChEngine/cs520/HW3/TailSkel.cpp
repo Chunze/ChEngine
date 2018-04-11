@@ -83,6 +83,12 @@ void TailSkel::SetupBones(glm::vec2 Root_Position, std::vector<float> AnglesFrom
 	}
 }
 
+glm::vec2 TailSkel::GetEndEffectorPos()
+{
+	assert(Structure.size() > 0);
+	return Structure[Structure.size() - 1].GetEndLocation_World();
+}
+
 void TailSkel::RotateBone(size_t index, float degree)
 {
 	if (index > Structure.size())

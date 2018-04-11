@@ -14,6 +14,8 @@ public:
 
 	void InputHandler();
 
+	void IKSolver_CCD(float x, float y, float accept_distance, int mode = 0);
+
 	class TailSkel* Tail;
 };
 

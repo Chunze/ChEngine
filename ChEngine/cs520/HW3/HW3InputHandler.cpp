@@ -25,5 +25,32 @@ void HW3InputHandler::ProcessInput(GLFWwindow* contextWindow)
 			static_cast<IKWorld*>(m_gameContext->GetWorld())->Tail->TranslateBone(0, glm::vec2(15, 15));
 		}
 	}
+
+	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		MOUSE_LEFT_WasPressed = true;
+	}
+
+	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	{
+		if (MOUSE_LEFT_WasPressed)
+		{
+			MOUSE_LEFT_WasPressed = false;
+
+			//get cursor position
+			double xpos, ypos;
+			GetCursorPosition(contextWindow, &xpos, &ypos);
+
+			static_cast<IKWorld*>(m_gameContext->GetWorld())->IKSolver_CCD(xpos, ypos, 10);
+		}
+	}
 }
 
+void HW3InputHandler::GetCursorPosition(GLFWwindow* window, double* x, double* y)
+{
+	glfwGetCursorPos(window, x, y);
+
+	int WindowHeight = m_gameContext->GetGame()->WindowHeight;
+
+	*y = (double)WindowHeight - *y;
+}

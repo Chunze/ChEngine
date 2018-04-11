@@ -21,6 +21,8 @@ public:
 
 	std::vector<Bone> Structure;
 
+	glm::vec2 GetEndEffectorPos();
+
 	void RotateBone(size_t index, float degree);
 
 	void TranslateBone(size_t index, glm::vec2 translation);

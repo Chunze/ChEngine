@@ -84,17 +84,12 @@ void Bone::TranslateBone(glm::vec2 translation)
 
 void Bone::RotateBone(float degree)
 {
-	while (degree >= 360.0f)
-	{
-		degree -= 360.0f;
-	}
+	Math::ClampAngle0To360(degree);
 
 	Orientation += degree;
 	
-	while (Orientation >= 360.0f)
-	{
-		Orientation -= 360.0f;
-	}
+	Math::ClampAngle0To360(Orientation);
+
 
 	RotationMatrix_Local = Math::Get2DRotationMat(Orientation);
 	Direction_Local = Direction_Local * Math::Get2DRotationMat(degree);

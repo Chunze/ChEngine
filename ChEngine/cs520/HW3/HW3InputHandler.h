@@ -8,4 +8,5 @@ public:
 	HW3InputHandler(GameContext* gameContext);
 
 	virtual void ProcessInput(GLFWwindow* contextWindow) override;
+	void GetCursorPosition(GLFWwindow* window, double* x, double* y);
 };
