@@ -63,12 +63,16 @@ namespace Math {
 
 	static float GetAngleInDegree(const float sine, const float cosine)
 	{
-		float sq_sum = sine * sine + cosine * cosine;
+		// Need to clamp the value, there might be rounding error which causes cosine to be out of [-1.0, 1.0]
+		float _cosine = cosine;
+		Clamp(_cosine, -1.0f, 1.0f);
+
+		float sq_sum = sine * sine + _cosine * _cosine;
 
 		assert(abs(sq_sum - 1.0f) < SMALL_NUMBER);
 
 		// result of glm::acos is [0, PI]
-		float result = glm::acos(cosine) * 180.0f / PI;
+		float result = glm::acos(_cosine) * 180.0f / PI;
 
 		if (sine < 0)
 		{

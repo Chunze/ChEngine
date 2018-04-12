@@ -20,8 +20,8 @@ void Bone::Setup(float local_orientation/* = 0.0f*/)
 	{
 		Direction_World = Parent->Direction_World * RotationMatrix_Local;
 		Direction_Tangent = Direction_World * Math::Get2DRotationMat(90.0f);
-		glm::normalize(Direction_World);
-		glm::normalize(Direction_Tangent);
+		Direction_World = glm::normalize(Direction_World);
+		Direction_Tangent = glm::normalize(Direction_Tangent);
 
 		Position_World = Parent->GetEndLocation_World();
 	}
@@ -90,7 +90,6 @@ void Bone::RotateBone(float degree)
 	
 	Math::ClampAngle0To360(Orientation);
 
-
 	RotationMatrix_Local = Math::Get2DRotationMat(Orientation);
 	Direction_Local = Direction_Local * Math::Get2DRotationMat(degree);
 
@@ -98,8 +97,8 @@ void Bone::RotateBone(float degree)
 	{
 		Direction_World = Parent->Direction_World * RotationMatrix_Local;
 		Direction_Tangent = Direction_World * Math::Get2DRotationMat(90.0f);
-		glm::normalize(Direction_World);
-		glm::normalize(Direction_Tangent);
+		Direction_World = glm::normalize(Direction_World);
+		Direction_Tangent = glm::normalize(Direction_Tangent);
 	}
 	else
 	{
@@ -113,8 +112,8 @@ void Bone::RotateBone(float degree)
 		ChildBone->Position_World = ChildBone->Parent->GetEndLocation_World();
 		ChildBone->Direction_World = ChildBone->Parent->Direction_World * ChildBone->RotationMatrix_Local;
 		ChildBone->Direction_Tangent = ChildBone->Direction_World * Math::Get2DRotationMat(90.0f);
-		glm::normalize(ChildBone->Direction_World);
-		glm::normalize(ChildBone->Direction_Tangent);
+		ChildBone->Direction_World = glm::normalize(ChildBone->Direction_World);
+		ChildBone->Direction_Tangent = glm::normalize(ChildBone->Direction_Tangent);
 
 		ChildBone = ChildBone->Child;
 	}

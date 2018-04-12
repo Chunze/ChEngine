@@ -20,7 +20,7 @@ int main()
 	InitGLFW(3, 3, GLFW_OPENGL_CORE_PROFILE);
 
 	// create window object
-	GLFWwindow* window = glfwCreateWindow(640, 480, "OpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "ChEngine", NULL, NULL);
 
 	if (window == NULL)
 	{
