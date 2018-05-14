@@ -12,6 +12,8 @@ public:
 
 	virtual void InitCamera() override;
 
+	void InitBones(int NumOfBones);
+
 	void InputHandler();
 
 	void IKSolver_CCD_Fast(float x, float y, float accept_distance);

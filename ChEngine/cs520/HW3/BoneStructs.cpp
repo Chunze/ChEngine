@@ -7,7 +7,7 @@ Bone::Bone()
 	Direction_Local = glm::vec2(1.0f, 0.0f) * RotationMatrix_Local;
 	Direction_World = glm::vec2(1.0f, 0.0f);
 	Direction_Tangent = glm::vec2(0.0f, 1.0f);
-	Position_World = glm::vec2(200.0f, 200.0f);
+	Position_World = glm::vec2(320.0f, 240.0f);
 }
 
 void Bone::Setup(float local_orientation/* = 0.0f*/)

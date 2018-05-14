@@ -83,7 +83,7 @@ void Game::InitGame()
 		m_gameContext->m_physicsManager = physicsManager;
 	}
 	{
-		std::cout << "Enter homework number (1, 2)...\n";
+		std::cout << "This is homework 3: 2D IK - enter number of bones...\n";
 		std::string Homework = "3";
 		//std::cin >> Homework;
 
@@ -126,6 +126,13 @@ void Game::InitGame()
 			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
 
 			World* world = new IKWorld(m_gameContext);
+
+			int NumOfBones;
+
+			std::cin >> NumOfBones;
+
+			static_cast<IKWorld*>(world)->InitBones(NumOfBones);
+
 			m_gameContext->m_world = world;
 			bPaused = false;
 		}
