@@ -32,6 +32,7 @@
     <ClCompile Include="cs520\JelloWorld.cpp" />
     <ClCompile Include="cs520\JelloWorldInputHandler.cpp" />
     <ClCompile Include="General\Camera.cpp" />
+    <ClCompile Include="General\Component.cpp" />
     <ClCompile Include="General\DrawList.cpp" />
     <ClCompile Include="General\Game.cpp" />
     <ClCompile Include="General\GameContext.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="General\Mesh.cpp" />
     <ClCompile Include="General\pic.cpp" />
     <ClCompile Include="General\ppm.cpp" />
+    <ClCompile Include="General\PrimitiveComponent.cpp" />
     <ClCompile Include="Math\MatrixMxN.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Render\Light.cpp" />
@@ -71,6 +73,7 @@
     <ClInclude Include="cs520\JelloWorldInputHandler.h" />
     <ClInclude Include="General\BaseClass.h" />
     <ClInclude Include="General\Camera.h" />
+    <ClInclude Include="General\Component.h" />
     <ClInclude Include="General\DrawList.h" />
     <ClInclude Include="General\Game.h" />
     <ClInclude Include="General\GameContext.h" />
@@ -80,6 +83,7 @@
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="General\pic.h" />
+    <ClInclude Include="General\PrimitiveComponent.h" />
     <ClInclude Include="Math\MathStatics.h" />
     <ClInclude Include="Math\MatrixMxN.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />

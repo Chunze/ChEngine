@@ -24,7 +24,6 @@
     <ClCompile Include="Physics\Particle.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="General\Mesh.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
@@ -106,6 +105,13 @@
     <ClCompile Include="cs520\HW3\HW3InputHandler.cpp">
       <Filter>cs520\HW3</Filter>
     </ClCompile>
+    <ClCompile Include="General\Mesh.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\PrimitiveComponent.cpp" />
+    <ClCompile Include="General\Component.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -148,7 +154,6 @@
     <ClInclude Include="Physics\PhyxConstants.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="Physics\PhysicsManager.h">
       <Filter>Physics</Filter>
     </ClInclude>
@@ -238,6 +243,13 @@
     </ClInclude>
     <ClInclude Include="cs520\HW3\HW3InputHandler.h">
       <Filter>cs520\HW3</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Mesh.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\PrimitiveComponent.h" />
+    <ClInclude Include="General\Component.h">
+      <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
