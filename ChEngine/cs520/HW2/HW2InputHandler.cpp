@@ -21,7 +21,7 @@ void HW2InputHandler::ProcessInput(GLFWwindow* contextWindow)
 
 		GetCursorPosition(contextWindow, &xpos, &ypos);
 
-		static_cast<ParticleWorld*>(m_gameContext->GetWorld())->UpdateDynamicAttractor(xpos, ypos);
+		static_cast<ParticleWorld*>(m_gameContext->GetWorld())->UpdateDynamicAttractor((int)xpos, (int)ypos);
 	}
 
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)

@@ -5,9 +5,6 @@
 
 namespace Math {
 
-#define SMALL_NUMBER	1e-6
-#define PI				3.14159265359
-
 	static void ClampAngle0To360(float& angle)
 	{
 		while (angle >= 360.0f)

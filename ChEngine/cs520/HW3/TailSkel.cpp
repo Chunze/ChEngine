@@ -73,7 +73,7 @@ void TailSkel::SetupBones(glm::vec2 Root_Position, std::vector<float> AnglesFrom
 
 	Structure[0].Position_World = Root_Position;
 
-	int NumOfBones = Structure.size();
+	size_t NumOfBones = Structure.size();
 	for (size_t i = 0; i <= AnglesFromRoot.size(); i++)
 	{
 		if (i <= NumOfBones)

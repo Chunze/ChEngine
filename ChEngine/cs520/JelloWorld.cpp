@@ -17,7 +17,7 @@
 JelloWorld::JelloWorld(GameContext* gameContext)
 	: World(gameContext)
 {
-	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0));
+	m_jello = new Jello(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0f));
 	InitDebugElement();
 	InitCamera();
 	InitInputHandler();

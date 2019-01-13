@@ -38,11 +38,12 @@
     <ClCompile Include="General\GameContext.cpp" />
     <ClCompile Include="General\GameObject.cpp" />
     <ClCompile Include="General\InputHandler.cpp" />
-    <ClCompile Include="General\Mesh.cpp" />
     <ClCompile Include="General\pic.cpp" />
     <ClCompile Include="General\ppm.cpp" />
     <ClCompile Include="General\PrimitiveComponent.cpp" />
     <ClCompile Include="Math\MatrixMxN.cpp" />
+    <ClCompile Include="Mesh\Model.cpp" />
+    <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Render\Light.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
@@ -81,11 +82,12 @@
     <ClInclude Include="General\glm.h" />
     <ClInclude Include="General\InputHandler.h" />
     <ClInclude Include="General\main.h" />
-    <ClInclude Include="General\Mesh.h" />
     <ClInclude Include="General\pic.h" />
     <ClInclude Include="General\PrimitiveComponent.h" />
     <ClInclude Include="Math\MathStatics.h" />
     <ClInclude Include="Math\MatrixMxN.h" />
+    <ClInclude Include="Mesh\Model.h" />
+    <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Render\Light.h" />
     <ClInclude Include="Render\Renderer.h" />
@@ -101,7 +103,6 @@
     <ClInclude Include="Physics\Particle.h" />
     <ClInclude Include="Physics\ParticleForceRegistry.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
-    <ClInclude Include="Physics\PhyxConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DebugDrawShader.frag" />

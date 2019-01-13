@@ -105,12 +105,15 @@
     <ClCompile Include="cs520\HW3\HW3InputHandler.cpp">
       <Filter>cs520\HW3</Filter>
     </ClCompile>
-    <ClCompile Include="General\Mesh.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
     <ClCompile Include="General\PrimitiveComponent.cpp" />
     <ClCompile Include="General\Component.cpp">
       <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh\Model.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="General\Mesh.cpp">
+      <Filter>Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +152,6 @@
       <Filter>General</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Particle.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhyxConstants.h">
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PhysicsManager.h">
@@ -244,12 +244,15 @@
     <ClInclude Include="cs520\HW3\HW3InputHandler.h">
       <Filter>cs520\HW3</Filter>
     </ClInclude>
-    <ClInclude Include="General\Mesh.h">
-      <Filter>General</Filter>
-    </ClInclude>
     <ClInclude Include="General\PrimitiveComponent.h" />
     <ClInclude Include="General\Component.h">
       <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh\Model.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Mesh.h">
+      <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +285,9 @@
     </Filter>
     <Filter Include="cs520\HW3">
       <UniqueIdentifier>{9cced202-bf02-44cd-8867-bf3f932b0bf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{35648f1d-82e3-4582-b699-af05964e2c7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

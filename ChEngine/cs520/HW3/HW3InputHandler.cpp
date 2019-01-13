@@ -41,7 +41,7 @@ void HW3InputHandler::ProcessInput(GLFWwindow* contextWindow)
 			double xpos, ypos;
 			GetCursorPosition(contextWindow, &xpos, &ypos);
 
-			static_cast<IKWorld*>(m_gameContext->GetWorld())->Start_IK_Solver_CCD(xpos, ypos, 10, 1);
+			static_cast<IKWorld*>(m_gameContext->GetWorld())->Start_IK_Solver_CCD((float)xpos, (float)ypos, 10, 1);
 		}
 	}
 }

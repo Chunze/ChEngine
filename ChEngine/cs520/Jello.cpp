@@ -38,7 +38,7 @@
 	}\
 
 Jello::Jello(GameContext* gameContext, World* world, glm::vec3 position, float size)
-	: GameObject(gameContext, world),
+	: GameObject(gameContext, world, position),
 	  m_position(position),
 	  m_size(size)
 {

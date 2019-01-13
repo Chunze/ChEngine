@@ -5,6 +5,8 @@
 class BaseClass
 {
 public:
+	BaseClass() {}
+
 	BaseClass(GameContext* gameContext)
 		: m_gameContext(gameContext)
 	{}

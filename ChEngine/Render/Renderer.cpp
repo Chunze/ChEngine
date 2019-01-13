@@ -144,12 +144,7 @@ void Renderer::Draw()
 		drawCall.GetRenderReady();
 		glPointSize(drawCall.PointSize);
 		glLineWidth(drawCall.LineWidth);
-		{
-			glm::mat4 temp;
-			model = glm::translate(temp, cubePositions[0]);
-			//model = glm::rotate(model, 70.f, glm::vec3(1, 2, 3));
-			drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
-		}
+		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(drawCall.worldTransform));
 
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
@@ -185,9 +180,7 @@ void Renderer::Draw()
 		drawCall.GetRenderReady();
 		glPointSize(drawCall.PointSize);
 		glLineWidth(drawCall.LineWidth);
-		glm::mat4 temp;
-		model = glm::translate(temp, cubePositions[0]);
-		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(model));
+		drawCall.shader.SetUniformMatrix4("model", false, value_ptr(drawCall.worldTransform));
 		drawCall.shader.SetUniformMatrix4("view", false, value_ptr(view));
 		drawCall.shader.SetUniformMatrix4("projection", false, value_ptr(projection));
 		drawCall.shader.SetUniformVector("viewPos", value_ptr(mainCamera->m_position));

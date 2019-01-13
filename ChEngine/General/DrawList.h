@@ -40,6 +40,13 @@ struct DrawListElement
 	float LineWidth = 1.0f;
 	bool bIsDebug = false;
 
+	// scene
+	glm::mat4 worldTransform;
+
+	// texture
+	bool bHasTexture = false;
+	std::string TextureDir;
+
 	void GetRenderReady();
 	void DisableAttributePointer();
 };

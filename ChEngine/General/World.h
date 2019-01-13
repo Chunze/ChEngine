@@ -1,11 +1,14 @@
 #ifndef WORLD_H
 #define WORLD_H
 #pragma once
+#include <vector>
 #include "BaseClass.h"
 #include "DrawList.h"
 #include "Camera.h"
 #include "Renderer.h"
 #include "Game.h"
+
+class GameObject;
 
 class World : public BaseClass
 {
@@ -24,11 +27,11 @@ public:
 
 	float m_customDelta = -1.0f;
 
-	//std::vector<GameObject> m_gameObjects;
-
 protected:
+	std::vector<GameObject*> m_gameObjects;
 	Camera* m_Camera;
 	virtual void InitCamera() = 0;
+	virtual void RenderWorld();
 };
 
 #endif
