@@ -8,6 +8,7 @@
 
 Texture::Texture(const char* TexturePath, bool bFlipVertical)
 {
+	m_FilePath = std::string(TexturePath);
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 

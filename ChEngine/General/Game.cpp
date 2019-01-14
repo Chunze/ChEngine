@@ -9,6 +9,7 @@
 #include "PhysicsManager.h"
 #include "JelloWorld.h"
 #include "ParticleWorld.h"
+#include "SimpleWorld.h"
 #include "InputHandler.h"
 #include "HW3/IKWorld.h"
 
@@ -83,8 +84,8 @@ void Game::InitGame()
 		m_gameContext->m_physicsManager = physicsManager;
 	}
 	{
-		std::cout << "This is homework 3: 2D IK - enter number of bones...\n";
-		std::string Homework = "3";
+		//std::cout << "This is homework 3: 2D IK - enter number of bones...\n";
+		std::string Homework = "0";
 		//std::cin >> Homework;
 
 
@@ -138,12 +139,8 @@ void Game::InitGame()
 		}
 		else if (Homework == "0")
 		{
-// 			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
-// 			World* world = new JelloWorld(m_gameContext);
-// 			world->LoadWorld("cs520/moveLeft.w");
-
 			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
-			World* world = new ParticleWorld(m_gameContext, 10000);
+			World* world = new SimpleWorld(m_gameContext);
 
 			bPaused = false;
 
@@ -283,7 +280,7 @@ void Game::Update(float Delta)
 		m_gameContext->GetPhysicsManager()->Reset_RK4_Step();
 	}
 
-
+	m_gameContext->GetWorld()->RenderWorld();
 	// render update
 	m_gameContext->m_renderer->Update(deltaTime);
 }

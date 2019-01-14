@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
-#include "World.h"
 #include "BaseClass.h"
 #include "DrawList.h"
 #include "Component.h"
+
+class World;
 
 class GameObject : public BaseClass
 {
@@ -21,6 +22,8 @@ public:
 	glm::mat4 GetWorldTransform() { return m_WorldTransform; }
 
 	void SetLocation(glm::vec3 NewLocation);
+
+	void AddComponent(Component* ComponentToAdd);
 
 protected:
 	World* m_world;

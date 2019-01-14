@@ -9,7 +9,7 @@
 #include "PrimitiveComponent.h"
 
 class Mesh;
-struct Texture;
+class Texture;
 
 class Model : public PrimitiveComponent
 {

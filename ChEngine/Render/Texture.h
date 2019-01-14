@@ -1,6 +1,8 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <string>
+
 class Texture
 {
 public:
@@ -13,6 +15,13 @@ public:
 	int width, height, nrChannels;
 
 	unsigned int textureID;
+	std::string m_Type;
+
+	std::string GetFilePath() { return m_FilePath; }
+
+protected:
+	std::string m_FilePath;
+	
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include <ostream>
+#include <iostream>
 
 #include "ParticleAttractor.h"
 

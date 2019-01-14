@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Renderer.h"
 #include "Game.h"
+#include "GameObject.h"
 
 class GameObject;
 
@@ -23,7 +24,8 @@ public:
 	}
 
 	virtual bool LoadWorld(const char* fileName) { return false; }
-	virtual void Update(float Delta) = 0;
+	virtual void Update(float Delta);
+	virtual void RenderWorld();
 
 	float m_customDelta = -1.0f;
 
@@ -31,7 +33,6 @@ protected:
 	std::vector<GameObject*> m_gameObjects;
 	Camera* m_Camera;
 	virtual void InitCamera() = 0;
-	virtual void RenderWorld();
 };
 
 #endif

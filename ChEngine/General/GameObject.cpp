@@ -21,7 +21,19 @@ void GameObject::RenderObject()
 
 void GameObject::SetLocation(glm::vec3 NewLocation)
 {
-	m_WorldTransform[4] = glm::vec4(NewLocation, 0);
+	m_WorldTransform[3] = glm::vec4(NewLocation, 0);
+}
+
+void GameObject::AddComponent(Component* ComponentToAdd)
+{
+	for (Component* component : m_Components)
+	{
+		if (ComponentToAdd == component)
+		{
+			return;
+		}
+	}
+	m_Components.push_back(ComponentToAdd);
 }
 
 void GameObject::CreateAndAddDrawListElement(int Mode)

@@ -2,6 +2,7 @@
 #include "glm.h"
 #include "DrawList.h"
 #include "PrimitiveComponent.h"
+#include "Texture.h"
 
 #include <string>
 #include <vector>
@@ -14,11 +15,11 @@ struct Vertex {
 	glm::vec2 TexCoords;
 };
 
-struct Texture {
-	unsigned int id;
-	std::string type;
-	std::string path;
-};
+// struct Texture {
+// 	unsigned int id;
+// 	std::string type;
+// 	std::string path;
+// };
 
 class Mesh : public PrimitiveComponent
 {
