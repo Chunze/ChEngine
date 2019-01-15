@@ -14,7 +14,9 @@ public:
 	void InitLight();
 	void InitDebugElement();
 
+
 private:
+	void InitInputHandler();
 	float BoundaryLineColor = 0.7f;
 	DrawListElement DebugDrawElement;
 	Shader* debugShader;

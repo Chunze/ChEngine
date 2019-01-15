@@ -1,6 +1,7 @@
 #include "SimpleWorld.h"
 #include "Light.h"
 #include "Model.h"
+#include "JelloWorldInputHandler.h"
 
 
 SimpleWorld::SimpleWorld(GameContext* gameContext)
@@ -10,6 +11,7 @@ SimpleWorld::SimpleWorld(GameContext* gameContext)
 	InitWorld();
 	InitDebugElement();
 	InitLight();
+	InitInputHandler();
 }
 
 
@@ -25,7 +27,7 @@ void SimpleWorld::Update(float Delta)
 void SimpleWorld::InitWorld()
 {
 	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(1.0f, 0.0f, 0.0f));
-	Model* newModel = new Model(m_gameContext, "SimpleWorld/model_1/scene.fbx");
+	Model* newModel = new Model(m_gameContext, "SimpleWorld/nanosuit/nanosuit.obj");
 
 	gameObject->AddComponent(newModel);
 	m_gameObjects.push_back(gameObject);
@@ -34,7 +36,7 @@ void SimpleWorld::InitWorld()
 void SimpleWorld::InitCamera()
 {
 	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	m_Camera->SetupCamera(glm::vec3(3.0f, 4.0f, 4.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_Camera->SetupCamera(glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	m_gameContext->GetRenderer()->SetActiveCamera(m_Camera);
 }
@@ -70,4 +72,9 @@ void SimpleWorld::InitDebugElement()
 	DebugDrawElement.vertextInfoSize = 6;
 	DebugDrawElement.bIsDebug = true;
 	DebugDrawElement.LineWidth = 3;
+}
+
+void SimpleWorld::InitInputHandler()
+{
+	m_gameContext->m_InputHandler = new JelloWorldInputHandler(m_gameContext);
 }

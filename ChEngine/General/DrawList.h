@@ -3,7 +3,7 @@
 #include <queue>
 #include "BaseClass.h"
 #include "Shader.h"
-
+#include "Texture.h"
 
 enum class DrawingPrimitives
 {
@@ -33,6 +33,9 @@ struct DrawListElement
 	std::vector<int> attributeSizes;
 
 	Shader shader;
+	std::vector<Texture> textures;
+
+
 	// buffers
 	unsigned int vertexBufferObject;
 	unsigned int vertexArrayObject;

@@ -36,6 +36,8 @@ public:
 	std::vector<unsigned int> m_Indices;
 	std::vector<Texture> m_Textures;
 
+	Shader* m_Shader;
+
 	void AddDrawListElement() override;
 
 };

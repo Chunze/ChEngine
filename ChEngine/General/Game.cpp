@@ -139,7 +139,7 @@ void Game::InitGame()
 		}
 		else if (Homework == "0")
 		{
-			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
+			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
 			World* world = new SimpleWorld(m_gameContext);
 
 			bPaused = false;

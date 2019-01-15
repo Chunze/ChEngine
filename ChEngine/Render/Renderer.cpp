@@ -162,6 +162,41 @@ void Renderer::Draw()
 			drawCall.shader.SetUniformVector("light.position", value_ptr(position));
 		}
 
+		unsigned int DiffuseCounter = 1;
+		unsigned int SpecularCounter = 1;
+		unsigned int NormalCounter = 1;
+		unsigned int HeightCounter = 1;
+
+		for (size_t TextureSlot = 0; TextureSlot < drawCall.textures.size(); TextureSlot++)
+		{
+			Texture texture = drawCall.textures[TextureSlot];
+			std::string TextureType = texture.m_Type;
+			glActiveTexture(GL_TEXTURE0 + TextureSlot);
+
+			std::string Counter;
+
+			if (TextureType == str_TEXTURE_DIFFUSE)
+			{
+				Counter = std::to_string(DiffuseCounter++);
+			}
+			else if (TextureType == str_TEXTURE_SPECULAR)
+			{
+				Counter = std::to_string(SpecularCounter++);
+			}
+// 			else if (TextureType == str_TEXTURE_NORMAL)
+// 			{
+// 				Counter = std::to_string(NormalCounter++);
+// 			}
+// 			else if (TextureType == str_TEXTURE_HEIGHT)
+// 			{
+// 				Counter = std::to_string(HeightCounter++);
+// 			}
+
+			drawCall.shader.SetUniformInt(TextureType + Counter, TextureSlot);
+
+			glBindTexture(GL_TEXTURE_2D, texture.textureID);
+		}
+
 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
 
 		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);

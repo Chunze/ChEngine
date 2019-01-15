@@ -1,5 +1,6 @@
 #pragma once
 #include "GameContext.h"
+#include "GlobalStringDefinition.h"
 #include "glm.h"
 
 class BaseClass

@@ -94,12 +94,25 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+		// Loading diffuse maps
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material,
-			aiTextureType_DIFFUSE, "texture_diffuse");
+			aiTextureType_DIFFUSE, str_TEXTURE_DIFFUSE);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
+		// Loading specular maps
 		std::vector<Texture> specularMaps = loadMaterialTextures(material,
-			aiTextureType_SPECULAR, "texture_specular");
+			aiTextureType_SPECULAR, str_TEXTURE_SPECULAR);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+		// loading normal maps
+		std::vector<Texture> normalMaps = loadMaterialTextures(material,
+			aiTextureType_NORMALS, str_TEXTURE_NORMAL);
+		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+
+		// loading height maps
+		std::vector<Texture> heightMaps = loadMaterialTextures(material,
+			aiTextureType_HEIGHT, str_TEXTURE_HEIGHT);
+		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 	}
 
 	return Mesh(m_gameContext, vertices, indices, textures);
@@ -115,7 +128,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
 		bool skip = false;
 		for (unsigned int j = 0; j < m_TextureLoaded.size(); j++)
 		{
-			if (std::strcmp(m_TextureLoaded[j].GetFilePath().data(), str.C_Str()) == 0)
+			if (std::strcmp(m_TextureLoaded[j].GetFileName().data(), str.C_Str()) == 0)
 			{
 				textures.push_back(m_TextureLoaded[j]);
 				skip = true;
@@ -125,10 +138,10 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
 		if (!skip)
 		{   
 			// if texture hasn't been loaded already, load it
-			Texture texture(str.C_Str());
-			texture.m_Type = typeName;
-			textures.push_back(texture);
-			m_TextureLoaded.push_back(texture); // add to loaded textures
+			Texture* texture = new Texture(std::string(str.C_Str()), m_Directory);
+			texture->m_Type = typeName;
+			textures.push_back(*texture);
+			m_TextureLoaded.push_back(*texture); // add to loaded textures
 		}
 	}
 	return textures;

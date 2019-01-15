@@ -112,9 +112,11 @@
     <ClCompile Include="Mesh\Model.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="SimpleWorld\SimpleWorld.cpp">
       <Filter>SimpleWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh\Mesh.cpp">
+      <Filter>Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +133,12 @@
     <None Include="OnScreenText.frag" />
     <None Include="ScreenSpaceParticle.vert" />
     <None Include="ScreenSpaceParticle.frag" />
+    <None Include="SimpleWorld\SimpleShader.frag">
+      <Filter>SimpleWorld</Filter>
+    </None>
+    <None Include="SimpleWorld\SimpleShader.vert">
+      <Filter>SimpleWorld</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\FileManager.h">
@@ -252,9 +260,12 @@
     <ClInclude Include="Mesh\Model.h">
       <Filter>Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="SimpleWorld\SimpleWorld.h">
       <Filter>SimpleWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalStringDefinition.h" />
+    <ClInclude Include="Mesh\Mesh.h">
+      <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
