@@ -197,15 +197,15 @@ void Renderer::Draw()
 			glBindTexture(GL_TEXTURE_2D, texture.textureID);
 		}
 
-		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
+		GLenum drawingPrimitive = (GLenum)drawCall.drawingPrimitive;
 
 		if (drawCall.drawingMode == DrawingMode::DRAW_ARRAY)
 		{
-			glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
+			glDrawArrays(drawingPrimitive, 0, drawCall.numOfVertices);
 		}
 		else if (drawCall.drawingMode == DrawingMode::DRAW_ELEMENT)
 		{
-			glDrawElements(drawingMode, drawCall.IBsize, GL_UNSIGNED_INT, 0);
+			glDrawElements(drawingPrimitive, drawCall.IBsize, GL_UNSIGNED_INT, 0);
 		}
 		
 		drawCall.DisableAttributePointer();

@@ -22,7 +22,7 @@ void Mesh::AddDrawListElement()
 	{
 		m_DrawListElement.shader = *m_Shader;
 		m_DrawListElement.vertexBuffer = &m_Vertices[0];
-		m_DrawListElement.VBsize_inByte = sizeof(m_Vertices) * m_Vertices.size();
+		m_DrawListElement.VBsize_inByte = sizeof(Vertex) * m_Vertices.size();
 		m_DrawListElement.indexBuffer = &m_Indices[0];
 		m_DrawListElement.IBsize = m_Indices.size();
 		m_DrawListElement.IBsize_inByte = sizeof(unsigned int) * m_Indices.size();

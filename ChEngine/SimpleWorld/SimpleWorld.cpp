@@ -26,7 +26,7 @@ void SimpleWorld::Update(float Delta)
 
 void SimpleWorld::InitWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(1.0f, 0.0f, 0.0f));
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(10.0f, 0.0f, 0.0f));
 	Model* newModel = new Model(m_gameContext, "SimpleWorld/nanosuit/nanosuit.obj");
 
 	gameObject->AddComponent(newModel);
@@ -36,7 +36,7 @@ void SimpleWorld::InitWorld()
 void SimpleWorld::InitCamera()
 {
 	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	m_Camera->SetupCamera(glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_Camera->SetupCamera(glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	m_gameContext->GetRenderer()->SetActiveCamera(m_Camera);
 }
