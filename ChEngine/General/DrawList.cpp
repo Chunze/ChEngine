@@ -28,6 +28,17 @@ void DrawList::AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic)
 	glBindBuffer(GL_ARRAY_BUFFER, elementToAdd.vertexBufferObject);
 	glBufferData(GL_ARRAY_BUFFER, elementToAdd.VBsize_inByte, elementToAdd.vertexBuffer, GL_STATIC_DRAW);
 
+	if (elementToAdd.drawingMode == DrawingMode::DRAW_ELEMENT)
+	{
+		// index buffer and populate data
+		if (elementToAdd.indexBufferObject == 0)
+		{
+			glGenBuffers(1, &elementToAdd.indexBufferObject);
+		}
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementToAdd.indexBufferObject);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementToAdd.IBsize_inByte, elementToAdd.indexBuffer, GL_STATIC_DRAW);
+	}
+
 	size_t index = 0;
 	int offset = 0;
 	for (int attributeSize : elementToAdd.attributeSizes)
@@ -61,6 +72,13 @@ void DrawList::AddOnScreenText(std::string text, GLfloat x, GLfloat y, GLfloat s
 void DrawList::Clear()
 {
 	
+}
+
+void DrawListElement::Init()
+{
+	vertexBufferObject = 0;
+	indexBufferObject = 0;
+	vertexArrayObject = 0;
 }
 
 void DrawListElement::GetRenderReady()

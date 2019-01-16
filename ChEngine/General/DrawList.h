@@ -19,14 +19,24 @@ enum class DrawingPrimitives
 	POLYGON
 };
 
+enum class DrawingMode
+{
+	DRAW_ARRAY,
+	DRAW_ELEMENT
+};
+
 struct DrawListElement
 {
 	DrawListElement() {}
 
 	DrawingPrimitives drawingPrimitive;
+	DrawingMode drawingMode;
 
-	float* vertexBuffer;
+	void* vertexBuffer;
+	unsigned int* indexBuffer;
 	size_t VBsize_inByte;
+	size_t IBsize_inByte;
+	size_t IBsize;
 
 	size_t vertextInfoSize;
 	size_t numOfVertices;
@@ -38,6 +48,7 @@ struct DrawListElement
 
 	// buffers
 	unsigned int vertexBufferObject;
+	unsigned int indexBufferObject;
 	unsigned int vertexArrayObject;
 	float PointSize = 5.0f;
 	float LineWidth = 1.0f;
@@ -50,6 +61,7 @@ struct DrawListElement
 	bool bHasTexture = false;
 	std::string TextureDir;
 
+	void Init();
 	void GetRenderReady();
 	void DisableAttributePointer();
 };

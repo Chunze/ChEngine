@@ -23,6 +23,7 @@ protected:
 	std::vector<Mesh> m_Meshes;
 	std::vector<Texture> m_TextureLoaded;
 	std::string m_Directory;
+	Shader* m_Shader;
 
 	void LoadModel(std::string path);
 	void ProcessNode(aiNode* node, const aiScene* scene);

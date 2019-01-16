@@ -44,7 +44,7 @@ void SimpleWorld::InitCamera()
 void SimpleWorld::InitLight()
 {
 	m_light = new Light();
-	m_light->m_position = glm::vec3(0.0f, 6.0f, 0.0f);
+	m_light->m_position = glm::vec3(0.0f, 6.0f, 20.0f);
 	m_light->m_ambient = glm::vec3(0.2f, 0.2f, 0.2f);
 	m_light->m_diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
 	m_light->m_specular = glm::vec3(1.0f, 1.0f, 1.0f);

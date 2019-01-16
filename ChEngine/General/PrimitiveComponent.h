@@ -12,6 +12,7 @@ public:
 	~PrimitiveComponent();
 
 protected:
+	bool bDirty = true;
 	DrawListElement m_DrawListElement;
 };
 

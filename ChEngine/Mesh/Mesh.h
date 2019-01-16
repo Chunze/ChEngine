@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-class Shader;
 
 struct Vertex {
 	glm::vec3 Position;
@@ -27,6 +26,7 @@ public:
 	Mesh(GameContext* gameContext);
 
 	Mesh(GameContext* gameContext, 
+		Shader* shader,
 		std::vector<Vertex> vertices, 
 		std::vector<unsigned int> indices, 
 		std::vector<Texture> textures);

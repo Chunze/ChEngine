@@ -9,6 +9,7 @@ Model::Model(GameContext* gameContext, char *path)
 	: PrimitiveComponent(gameContext)
 {
 	LoadModel(path);
+	m_Shader = new Shader("SimpleWorld/SimpleShader.vert", "SimpleWorld/SimpleShader.frag");
 }
 
 Model::~Model()
@@ -17,8 +18,9 @@ Model::~Model()
 
 void Model::AddDrawListElement()
 {
-	for (Mesh mesh : m_Meshes)
+	for (Mesh &mesh : m_Meshes)
 	{
+		mesh.m_Shader = m_Shader;
 		mesh.AddDrawListElement();
 	}
 }
@@ -115,7 +117,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 	}
 
-	return Mesh(m_gameContext, vertices, indices, textures);
+	return Mesh(m_gameContext, m_Shader, vertices, indices, textures);
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)

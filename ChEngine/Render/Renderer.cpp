@@ -187,10 +187,10 @@ void Renderer::Draw()
 // 			{
 // 				Counter = std::to_string(NormalCounter++);
 // 			}
-// 			else if (TextureType == str_TEXTURE_HEIGHT)
-// 			{
-// 				Counter = std::to_string(HeightCounter++);
-// 			}
+			else if (TextureType == str_TEXTURE_HEIGHT)
+			{
+				Counter = std::to_string(HeightCounter++);
+			}
 
 			drawCall.shader.SetUniformInt(TextureType + Counter, TextureSlot);
 
@@ -199,7 +199,15 @@ void Renderer::Draw()
 
 		GLenum drawingMode = (GLenum)drawCall.drawingPrimitive;
 
-		glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
+		if (drawCall.drawingMode == DrawingMode::DRAW_ARRAY)
+		{
+			glDrawArrays(drawingMode, 0, drawCall.numOfVertices);
+		}
+		else if (drawCall.drawingMode == DrawingMode::DRAW_ELEMENT)
+		{
+			glDrawElements(drawingMode, drawCall.IBsize, GL_UNSIGNED_INT, 0);
+		}
+		
 		drawCall.DisableAttributePointer();
 
 		drawQueue->m_DynamicElements.pop();
