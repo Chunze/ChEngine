@@ -118,6 +118,7 @@
     <ClCompile Include="Mesh\Mesh.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="General\SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -267,6 +268,7 @@
     <ClInclude Include="Mesh\Mesh.h">
       <Filter>Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="General\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">

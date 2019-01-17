@@ -2,16 +2,13 @@
 #include "Light.h"
 #include "Model.h"
 #include "JelloWorldInputHandler.h"
+#include "GameObject.h"
 
 
 SimpleWorld::SimpleWorld(GameContext* gameContext)
-	: World(gameContext)
+	: Super(gameContext)
 {
-	InitCamera();
-	InitWorld();
-	InitDebugElement();
-	InitLight();
-	InitInputHandler();
+	Init();
 }
 
 
@@ -21,16 +18,26 @@ SimpleWorld::~SimpleWorld()
 
 void SimpleWorld::Update(float Delta)
 {
+	Super::Update(Delta);
 	m_gameContext->GetDrawList()->AddToDrawQ(DebugDrawElement, false);
 }
 
-void SimpleWorld::InitWorld()
+void SimpleWorld::Init()
 {
+	Super::Init();
+
+	InitCamera();
+	InitDebugElement();
+	InitLight();
+	InitInputHandler();
+
 	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(10.0f, 0.0f, 0.0f));
-	Model* newModel = new Model(m_gameContext, "SimpleWorld/nanosuit/nanosuit.obj");
+	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
+	char* crate_path = "SimpleWorld/crate/Crate1.obj";
+	Model* newModel = new Model(m_gameContext, crate_path);
 
 	gameObject->AddComponent(newModel);
-	m_gameObjects.push_back(gameObject);
+	m_SceneObjects.push_back(gameObject);
 }
 
 void SimpleWorld::InitCamera()
@@ -44,7 +51,7 @@ void SimpleWorld::InitCamera()
 void SimpleWorld::InitLight()
 {
 	m_light = new Light();
-	m_light->m_position = glm::vec3(0.0f, 6.0f, 20.0f);
+	m_light->m_position = glm::vec3(0.0f, 40.0f, 10.0f);
 	m_light->m_ambient = glm::vec3(0.2f, 0.2f, 0.2f);
 	m_light->m_diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
 	m_light->m_specular = glm::vec3(1.0f, 1.0f, 1.0f);

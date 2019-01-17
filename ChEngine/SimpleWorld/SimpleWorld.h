@@ -3,12 +3,14 @@
 
 class SimpleWorld : public World
 {
+	typedef World Super;
+
 public:
 	SimpleWorld(GameContext* gameContext);
 	~SimpleWorld();
 
 	void Update(float Delta) override;
-	void InitWorld();
+	virtual void Init() override;
 	virtual void InitCamera() override;
 
 	void InitLight();

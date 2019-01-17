@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
-#include "BaseClass.h"
+#include "SceneObject.h"
 #include "DrawList.h"
 #include "Component.h"
 
 class World;
 
-class GameObject : public BaseClass
+class GameObject : public SceneObject
 {
+	typedef SceneObject Super;
 public:
 	GameObject(GameContext* gameContext, World* world);
 
@@ -15,24 +16,16 @@ public:
 
 	virtual void RenderObject();
 
-	virtual void Update(float Delta) {}
-
-	World* GetWorld() { return m_world; }
-
-	glm::mat4 GetWorldTransform() { return m_WorldTransform; }
-
-	void SetLocation(glm::vec3 NewLocation);
+	virtual void Update(float Delta) override;
 
 	void AddComponent(Component* ComponentToAdd);
 
 protected:
-	World* m_world;
+	
 
 	Shader* shader;
 
 	DrawListElement e;
-
-	glm::mat4 m_WorldTransform = glm::mat4();
 
 	std::vector<Component*> m_Components;
 

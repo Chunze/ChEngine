@@ -42,5 +42,6 @@ void Mesh::AddDrawListElement()
 		bDirty = false;
 	}
 
+	m_DrawListElement.worldTransform = m_WorldTransform;
 	m_gameContext->GetDrawList()->AddToDrawQ(m_DrawListElement);
 }

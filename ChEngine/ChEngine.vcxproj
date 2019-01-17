@@ -41,6 +41,7 @@
     <ClCompile Include="General\pic.cpp" />
     <ClCompile Include="General\ppm.cpp" />
     <ClCompile Include="General\PrimitiveComponent.cpp" />
+    <ClCompile Include="General\SceneObject.cpp" />
     <ClCompile Include="Math\MatrixMxN.cpp" />
     <ClCompile Include="Mesh\Model.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="General\main.h" />
     <ClInclude Include="General\pic.h" />
     <ClInclude Include="General\PrimitiveComponent.h" />
+    <ClInclude Include="General\SceneObject.h" />
     <ClInclude Include="GlobalStringDefinition.h" />
     <ClInclude Include="Math\MathStatics.h" />
     <ClInclude Include="Math\MatrixMxN.h" />

@@ -1,17 +1,15 @@
 #include "GameObject.h"
 
 GameObject::GameObject(GameContext* gameContext, World* world)
-	: BaseClass(gameContext),
-	m_world(world)
+	: Super(gameContext, world)
 {
 
 }
 
 GameObject::GameObject(GameContext* gameContext, World* world, glm::vec3 location)
+	: Super(gameContext, world, location)
 {
-	GameObject(gameContext, world);
 
-	SetLocation(location);
 }
 
 void GameObject::RenderObject()
@@ -19,9 +17,13 @@ void GameObject::RenderObject()
 	CreateAndAddDrawListElement(0);
 }
 
-void GameObject::SetLocation(glm::vec3 NewLocation)
+void GameObject::Update(float Delta)
 {
-	m_WorldTransform[3] = glm::vec4(NewLocation, 0);
+	Super::Update(Delta);
+	for (Component* component : m_Components)
+	{
+		component->Update(Delta);
+	}
 }
 
 void GameObject::AddComponent(Component* ComponentToAdd)
@@ -34,6 +36,7 @@ void GameObject::AddComponent(Component* ComponentToAdd)
 		}
 	}
 	m_Components.push_back(ComponentToAdd);
+	ComponentToAdd->SetOwner(this);
 }
 
 void GameObject::CreateAndAddDrawListElement(int Mode)

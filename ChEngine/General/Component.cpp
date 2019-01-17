@@ -3,16 +3,11 @@
 
 
 Component::Component(GameContext* gameContext)
-	: BaseClass(gameContext)
+	: Super(gameContext)
 {
 }
 
 
 Component::~Component()
 {
-}
-
-void Component::Update(float Delta)
-{
-	m_WorldTransform = Owner->GetWorldTransform() * m_RaletiveTransform;
 }
