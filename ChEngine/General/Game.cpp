@@ -139,7 +139,7 @@ void Game::InitGame()
 		}
 		else if (Homework == "0")
 		{
-			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
+			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
 			World* world = new SimpleWorld(m_gameContext);
 
 			bPaused = false;
@@ -249,37 +249,8 @@ void Game::saveScreenshot(int windowWidth, int windowHeight, char *filename)
 
 void Game::Update(float Delta)
 {
-
-	int IntegrationMode = m_gameContext->GetPhysicsManager()->GetIntegrator();
-	if (IntegrationMode == 0)
-	{
-		// force update
-		m_gameContext->GetPhysicsManager()->UpdateForces(Delta);
-
-		// world update
-		m_gameContext->GetWorld()->Update(Delta);
-
-		// physics update
-		m_gameContext->GetPhysicsManager()->UpdateContactForces(Delta);
-	}
-	else if (IntegrationMode == 1)
-	{
-
-		while (m_gameContext->GetPhysicsManager()->GetRK4StepCount() <= 4)
-		{
-			// force update
-			m_gameContext->GetPhysicsManager()->UpdateForces(Delta);
-			// world update (Particles will check current integrate method, and act accordingly)
-			m_gameContext->GetWorld()->Update(Delta);
-			// physics update
-			m_gameContext->GetPhysicsManager()->UpdateContactForces(Delta);
-			// Update RK4 step, very important for the particle to know what stage the update is in
-			m_gameContext->GetPhysicsManager()->Increment_RK4_step();
-		}
-
-		m_gameContext->GetPhysicsManager()->Reset_RK4_Step();
-	}
-
+	m_gameContext->GetPhysicsManager()->Update(Delta);
+	m_gameContext->GetWorld()->Update(Delta);
 	m_gameContext->GetWorld()->RenderWorld();
 	// render update
 	m_gameContext->m_renderer->Update(deltaTime);

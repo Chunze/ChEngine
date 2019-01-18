@@ -18,10 +18,13 @@ public:
 
 	virtual void Update(float Delta) override;
 
+	virtual void UpdateTransform() override;
+
 	void AddComponent(Component* ComponentToAdd);
+	void SetRootComponent(Component* Root);
 
 protected:
-	
+	Component* m_RootComponent;
 
 	Shader* shader;
 

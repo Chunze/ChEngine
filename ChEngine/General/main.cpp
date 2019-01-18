@@ -20,7 +20,7 @@ int main()
 	InitGLFW(3, 3, GLFW_OPENGL_CORE_PROFILE);
 
 	// create window object
-	GLFWwindow* window = glfwCreateWindow(640, 480, "ChEngine", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "ChEngine", NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -40,7 +40,7 @@ int main()
 	}
 
 	// specify the actual window for the rendering
-	glViewport(0, 0, 640, 480);
+	glViewport(0, 0, 1280, 720);
 
 	// create game context
 	GameContext gameContext(window);

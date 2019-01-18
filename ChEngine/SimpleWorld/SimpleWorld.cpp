@@ -37,7 +37,7 @@ void SimpleWorld::Init()
 
 void SimpleWorld::InitCamera()
 {
-	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 100.0f);
 	m_Camera->SetupCamera(glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	m_gameContext->GetRenderer()->SetActiveCamera(m_Camera);
@@ -46,9 +46,9 @@ void SimpleWorld::InitCamera()
 void SimpleWorld::InitLight()
 {
 	m_light = new Light();
-	m_light->m_position = glm::vec3(0.0f, 40.0f, 10.0f);
+	m_light->m_position = glm::vec3(0.0f, 40.0f, 0.0f);
 	m_light->m_ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-	m_light->m_diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+	m_light->m_diffuse = glm::vec3(0.6f, 0.6f, 0.6f);
 	m_light->m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 	m_gameContext->GetRenderer()->SetLight(m_light);
 }
@@ -78,12 +78,13 @@ void SimpleWorld::InitDebugElement()
 
 void SimpleWorld::SetupWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(10.0f, 0.0f, 0.0f));
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(3.0f, 10.0f, 0.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
-	Model* newModel = new Model(m_gameContext, nanosuit_path);
+	char* ball_path = "SimpleWorld/ball/Ball.obj";
+	Model* newModel = new Model(m_gameContext, crate_path);
 	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
-	gameObject->AddComponent(staticMeshComp);
+	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(newModel);
 
 	m_SceneObjects.push_back(gameObject);

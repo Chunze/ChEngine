@@ -26,6 +26,22 @@ void Particle::addForce(const glm::vec3 &force)
 	m_forceAccum += force;
 }
 
+void Particle::Integrate(float Delta)
+{
+	m_acceleration = m_forceAccum * m_inverseMass;
+
+	if (bUseGravite)
+	{
+		m_acceleration += m_gravity;
+	}
+
+	m_volecity += m_acceleration * Delta;
+
+	m_position += m_volecity * Delta;
+
+	ClearForce();
+}
+
 void Particle::Integrate_Euler(float Delta)
 {
 	m_acceleration = m_forceAccum * m_inverseMass;

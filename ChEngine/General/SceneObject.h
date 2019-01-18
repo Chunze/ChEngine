@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseClass.h"
+#include "Particle.h"
 #include <vector>
 
 class SceneObject : public BaseClass
@@ -13,12 +14,13 @@ public:
 	SceneObject(GameContext* gameContext, World* world, glm::vec3 location);
 
 	virtual void Update(float Delta);
-	void UpdateTransform();
+	virtual void UpdateTransform();
 
 	void AddChild(SceneObject* child) { m_Children.push_back(child); }
 	void RemoveChild(SceneObject* child);
 
 	/**    setters    **/
+	void SetRaletiveLocation(glm::vec3 location) { m_RaletiveTransform[3] = glm::vec4(location, 1.0); }
 	void SetWorldTransform(glm::mat4 worldTransform) { m_WorldTransform = worldTransform; }
 	void SetWorldLocation(glm::vec3 location);
 	void SetWorld(World* world) { m_World = world; }
@@ -39,6 +41,7 @@ protected:
 	glm::mat4 m_WorldTransform = glm::mat4();
 	
 	World* m_World;
+	Particle* m_Particle = nullptr;
 
 	SceneObject* m_Owner = nullptr;
 	std::vector<SceneObject*> m_Children;

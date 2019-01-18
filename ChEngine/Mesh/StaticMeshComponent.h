@@ -15,5 +15,8 @@ public:
 	Model* m_Model;
 
 	~StaticMeshComponent();
+
+private:
+	void InitPhysicsParticle();
 };
 

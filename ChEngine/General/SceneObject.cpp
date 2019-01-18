@@ -37,9 +37,14 @@ void SceneObject::Update(float Delta)
 
 void SceneObject::UpdateTransform()
 {
+	SetRaletiveLocation(m_Particle->m_position);
 	if (m_Owner != nullptr)
 	{
 		m_WorldTransform = m_Owner->GetWorldTransform() * m_RaletiveTransform;
+	}
+	else
+	{
+		m_WorldTransform = m_RaletiveTransform;
 	}
 }
 

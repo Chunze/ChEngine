@@ -22,16 +22,16 @@ public:
 
 	void registerForce(Particle* particle, ForceGenerator* FG);
 
+	void Update(float Delta);
+
+	void Integrate(float Delta);
+
 	// updating constant forces
 	void UpdateForces(float Delta);
 
 	// updating forces for one frame, new contact forces will be generated next frame
 	void UpdateContactForces(float Delta);
 
-	void Update_RK4(float Delta);
-
-
-	// Generating collision spring
 	void GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping);
 
 	void AddPhysicsParticle(Particle* ParticleToAdd);
