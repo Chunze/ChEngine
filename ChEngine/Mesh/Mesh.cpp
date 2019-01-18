@@ -10,7 +10,7 @@ Mesh::Mesh(GameContext* gameContext, std::vector<Vertex> vertices, std::vector<u
 	InitRenderInfo();
 }
 
-DrawListElement Mesh::GetDrawListElement()
+DrawListElement& Mesh::GetDrawListElement()
 {
 	return m_DrawListElement;
 }
@@ -34,4 +34,6 @@ void Mesh::InitRenderInfo()
 	{
 		m_DrawListElement.textures.push_back(texture);
 	}
+
+	m_DrawListElement.Init();
 }

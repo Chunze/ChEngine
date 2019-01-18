@@ -17,7 +17,7 @@ Model::~Model()
 {
 }
 
-std::vector<DrawListElement> Model::GetDrawListElement()
+std::vector<DrawListElement>& Model::GetDrawListElement()
 {
 	if (bDirty)
 	{

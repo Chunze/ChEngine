@@ -28,7 +28,7 @@ public:
 	std::vector<unsigned int> m_Indices;
 	std::vector<Texture> m_Textures;
 
-	DrawListElement GetDrawListElement();
+	DrawListElement& GetDrawListElement();
 
 private:
 	DrawListElement m_DrawListElement;

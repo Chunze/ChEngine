@@ -47,9 +47,9 @@ struct DrawListElement
 
 
 	// buffers
-	unsigned int vertexBufferObject;
-	unsigned int indexBufferObject;
-	unsigned int vertexArrayObject;
+	unsigned int vertexBufferObject = 0;
+	unsigned int indexBufferObject = 0;
+	unsigned int vertexArrayObject = 0;
 	float PointSize = 5.0f;
 	float LineWidth = 1.0f;
 	bool bIsDebug = false;
@@ -61,6 +61,7 @@ struct DrawListElement
 	bool bHasTexture = false;
 	std::string TextureDir;
 
+	bool bInitialized = false;
 	void Init();
 	void GetRenderReady();
 	void DisableAttributePointer();

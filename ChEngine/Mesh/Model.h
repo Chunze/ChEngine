@@ -19,7 +19,7 @@ public:
 	Model(GameContext* gameContext, char *path);
 	~Model();
 
-	std::vector<DrawListElement> GetDrawListElement();
+	std::vector<DrawListElement>& GetDrawListElement();
 
 protected:
 	std::vector<Mesh> m_Meshes;
