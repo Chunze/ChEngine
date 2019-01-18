@@ -62,6 +62,14 @@ void DrawList::AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic)
 	
 }
 
+void DrawList::AddToDrawQ(std::vector<DrawListElement> elements, bool bIsDynamic /*= true*/)
+{
+	for (DrawListElement& element : elements)
+	{
+		AddToDrawQ(element, bIsDynamic);
+	}
+}
+
 void DrawList::AddOnScreenText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
 	OnScreenTextElement TextToRender(text, x, y, scale, color);

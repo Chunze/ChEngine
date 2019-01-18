@@ -1,7 +1,7 @@
 #pragma once
 #include "glm.h"
 #include "DrawList.h"
-#include "PrimitiveComponent.h"
+#include "BaseClass.h"
 #include "Texture.h"
 
 #include <string>
@@ -14,19 +14,11 @@ struct Vertex {
 	glm::vec2 TexCoords;
 };
 
-// struct Texture {
-// 	unsigned int id;
-// 	std::string type;
-// 	std::string path;
-// };
-
-class Mesh : public PrimitiveComponent
+class Mesh : public BaseClass
 {
+	typedef BaseClass Super;
 public:
-	Mesh(GameContext* gameContext);
-
-	Mesh(GameContext* gameContext, 
-		Shader* shader,
+	Mesh(GameContext* gameContext,
 		std::vector<Vertex> vertices, 
 		std::vector<unsigned int> indices, 
 		std::vector<Texture> textures);
@@ -36,8 +28,12 @@ public:
 	std::vector<unsigned int> m_Indices;
 	std::vector<Texture> m_Textures;
 
-	Shader* m_Shader;
+	DrawListElement GetDrawListElement();
 
-	void AddDrawListElement() override;
+private:
+	DrawListElement m_DrawListElement;
+
+	// Get DrawListElement ready to pickup
+	void InitRenderInfo();
 
 };

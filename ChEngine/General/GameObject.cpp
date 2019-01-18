@@ -20,10 +20,6 @@ void GameObject::RenderObject()
 void GameObject::Update(float Delta)
 {
 	Super::Update(Delta);
-	for (Component* component : m_Components)
-	{
-		component->Update(Delta);
-	}
 }
 
 void GameObject::AddComponent(Component* ComponentToAdd)
@@ -36,6 +32,7 @@ void GameObject::AddComponent(Component* ComponentToAdd)
 		}
 	}
 	m_Components.push_back(ComponentToAdd);
+	m_Children.push_back(ComponentToAdd);
 	ComponentToAdd->SetOwner(this);
 }
 

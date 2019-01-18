@@ -6,23 +6,32 @@
 
 
 Model::Model(GameContext* gameContext, char *path)
-	: PrimitiveComponent(gameContext)
+	: Super(gameContext)
 {
 	LoadModel(path);
 	m_Shader = new Shader("SimpleWorld/SimpleShader.vert", "SimpleWorld/SimpleShader.frag");
+	m_Shader->SetUniformFloat("material.shininess", 2.0f);
 }
 
 Model::~Model()
 {
 }
 
-void Model::AddDrawListElement()
+std::vector<DrawListElement> Model::GetDrawListElement()
 {
-	for (Mesh &mesh : m_Meshes)
+	if (bDirty)
 	{
-		mesh.m_Shader = m_Shader;
-		mesh.AddDrawListElement();
+		for (Mesh& mesh : m_Meshes)
+		{
+			auto element = mesh.GetDrawListElement();
+			element.shader = *m_Shader;
+			m_DrawListElements.push_back(element);
+		}
+
+		bDirty = false;
 	}
+
+	return m_DrawListElements;
 }
 
 void Model::LoadModel(std::string path)
@@ -46,7 +55,7 @@ void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-		AddMesh(ProcessMesh(mesh, scene));
+		m_Meshes.push_back(ProcessMesh(mesh, scene));
 	}
 	// then do the same for each of its children
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -124,7 +133,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 	}
 
-	return Mesh(m_gameContext, m_Shader, vertices, indices, textures);
+	return Mesh(m_gameContext, vertices, indices, textures);
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
@@ -154,11 +163,4 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
 		}
 	}
 	return textures;
-}
-
-void Model::AddMesh(Mesh &mesh)
-{
-	m_Meshes.push_back(mesh);
-	m_Meshes.back().SetOwner(this);
-	m_Children.push_back(&m_Meshes.back());
 }

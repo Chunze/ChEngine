@@ -132,9 +132,6 @@ void Renderer::Draw()
 
 	DrawList* drawQueue = m_gameContext->GetDrawList();
 
-	glm::mat4 model;
-	model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
-
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 
@@ -198,8 +195,6 @@ void Renderer::Draw()
 
 			glBindTexture(GL_TEXTURE_2D, texture.textureID);
 		}
-
-		drawCall.shader.SetUniformFloat("material.shininess", 2.0f);
 
 		GLenum drawingPrimitive = (GLenum)drawCall.drawingPrimitive;
 

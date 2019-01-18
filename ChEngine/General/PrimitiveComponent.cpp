@@ -2,8 +2,8 @@
 
 
 
-PrimitiveComponent::PrimitiveComponent(GameContext* gameContext)
-	: Component(gameContext)
+PrimitiveComponent::PrimitiveComponent(GameContext* gameContext, World* world)
+	: Super(gameContext, world)
 {
 }
 

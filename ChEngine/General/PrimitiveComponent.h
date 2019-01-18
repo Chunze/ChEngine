@@ -4,8 +4,9 @@
 
 class PrimitiveComponent : public Component
 {
+	typedef Component Super;
 public:
-	PrimitiveComponent(GameContext* gameContext);
+	PrimitiveComponent(GameContext* gameContext, World* world);
 
 	void AddDrawListElement() override;
 

@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "JelloWorldInputHandler.h"
 #include "GameObject.h"
+#include "StaticMeshComponent.h"
 
 
 SimpleWorld::SimpleWorld(GameContext* gameContext)
@@ -31,13 +32,7 @@ void SimpleWorld::Init()
 	InitLight();
 	InitInputHandler();
 
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(10.0f, 0.0f, 0.0f));
-	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
-	char* crate_path = "SimpleWorld/crate/Crate1.obj";
-	Model* newModel = new Model(m_gameContext, crate_path);
-
-	gameObject->AddComponent(newModel);
-	m_SceneObjects.push_back(gameObject);
+	SetupWorld();
 }
 
 void SimpleWorld::InitCamera()
@@ -79,6 +74,19 @@ void SimpleWorld::InitDebugElement()
 	DebugDrawElement.vertextInfoSize = 6;
 	DebugDrawElement.bIsDebug = true;
 	DebugDrawElement.LineWidth = 3;
+}
+
+void SimpleWorld::SetupWorld()
+{
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(10.0f, 0.0f, 0.0f));
+	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
+	char* crate_path = "SimpleWorld/crate/Crate1.obj";
+	Model* newModel = new Model(m_gameContext, nanosuit_path);
+	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
+	gameObject->AddComponent(staticMeshComp);
+	staticMeshComp->SetMesh(newModel);
+
+	m_SceneObjects.push_back(gameObject);
 }
 
 void SimpleWorld::InitInputHandler()

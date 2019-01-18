@@ -102,6 +102,8 @@ public:
 
 	void AddToDrawQ(DrawListElement& elementToAdd, bool bIsDynamic = true);
 
+	void AddToDrawQ(std::vector<DrawListElement> elements, bool bIsDynamic = true);
+
 	void AddOnScreenText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 	
 	void Clear();

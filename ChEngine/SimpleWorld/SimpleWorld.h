@@ -18,6 +18,7 @@ public:
 
 
 private:
+	void SetupWorld();
 	void InitInputHandler();
 	float BoundaryLineColor = 0.7f;
 	DrawListElement DebugDrawElement;

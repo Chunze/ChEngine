@@ -8,6 +8,12 @@ Component::Component(GameContext* gameContext)
 }
 
 
+Component::Component(GameContext* gameContext, World* world)
+	: Super(gameContext, world)
+{
+
+}
+
 Component::~Component()
 {
 }

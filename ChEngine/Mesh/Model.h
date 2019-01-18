@@ -6,31 +6,37 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "PrimitiveComponent.h"
+#include "BaseClass.h"
+#include "DrawList.h"
 
 class Mesh;
 class Texture;
 
-class Model : public PrimitiveComponent
+class Model : public BaseClass
 {
+	typedef BaseClass Super;
 public:
 	Model(GameContext* gameContext, char *path);
 	~Model();
 
-	void AddDrawListElement() override;
+	std::vector<DrawListElement> GetDrawListElement();
 
 protected:
 	std::vector<Mesh> m_Meshes;
 	std::vector<Texture> m_TextureLoaded;
+	std::vector<DrawListElement> m_DrawListElements;
+
 	std::string m_Directory;
 	Shader* m_Shader;
 
 	void LoadModel(std::string path);
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type,
-		std::string typeName);
+	std::vector<Texture> loadMaterialTextures(aiMaterial *mat, 
+											  aiTextureType type,
+											  std::string typeName);
 
-	void AddMesh(Mesh &mesh);
+private:
+	bool bDirty = true;
 };
 
