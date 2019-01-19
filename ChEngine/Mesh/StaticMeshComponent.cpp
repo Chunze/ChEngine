@@ -28,6 +28,6 @@ StaticMeshComponent::~StaticMeshComponent()
 
 void StaticMeshComponent::InitPhysicsParticle()
 {
-	m_Particle = new Particle(1, GetWorldLocation(), glm::vec3(0.0));
+	m_Particle = new Particle(1, GetWorldLocation(), glm::vec3(0.0, 0.0, 0.0f));
 	m_gameContext->GetPhysicsManager()->AddPhysicsParticle(m_Particle);
 }

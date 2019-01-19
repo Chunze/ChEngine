@@ -1,5 +1,7 @@
 #pragma once
-#include <glm/glm.hpp>
+#include "glm.h"
+
+class PhysicsManager;
 
 class Particle
 {
@@ -17,9 +19,13 @@ public:
 	glm::vec3 m_prePosition = glm::vec3(0.0f);
 	glm::vec3 m_preVolecity = glm::vec3(0.0f);
 
-	glm::vec3 m_gravity = glm::vec3(0.0f, -0.98f, 0.0f);
+	float m_DampingCoef = 0.0f;
 
-	float damping = 0.98f;
+	/**    setters    **/
+	void SetPosition(glm::vec3 NewPos) { m_position = NewPos; }
+
+	/**    getters    **/
+	glm::vec3 GetPosition() { return m_position; }
 
 	/**
 	* Adds the given force to the particle to be applied at the
@@ -33,7 +39,7 @@ public:
 
 	void Integrate_Rk4(float Delta, int step);
 
-
+	void SetPhysicsManager(PhysicsManager* physicsManager) { m_PhysicsManager = physicsManager; }
 
 	void ClearForce();
 protected:
@@ -45,6 +51,8 @@ protected:
 	glm::vec3 m_forceAccum = glm::vec3(0.0f);
 
 	bool bUseGravite = true;
+
+	PhysicsManager* m_PhysicsManager;
 
 private:
 	// Intermediate value for RK4 calculation

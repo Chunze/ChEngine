@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "PhysicsManager.h"
 
 Particle::Particle(float mass, glm::vec3 position, glm::vec3 volecity)
 	: m_position(position),
@@ -28,34 +29,39 @@ void Particle::addForce(const glm::vec3 &force)
 
 void Particle::Integrate(float Delta)
 {
+	if (m_inverseMass == INFINITY || m_inverseMass == 0)
+	{
+		return;
+	}
+
+	m_position += m_volecity * Delta;
+
 	m_acceleration = m_forceAccum * m_inverseMass;
 
 	if (bUseGravite)
 	{
-		m_acceleration += m_gravity;
+		m_acceleration += m_PhysicsManager->GetGravity();
 	}
 
 	m_volecity += m_acceleration * Delta;
 
-	m_position += m_volecity * Delta;
+	float Damping;
+	if (m_DampingCoef != 0.0f)
+	{
+		Damping = powf(m_DampingCoef, Delta);
+	}
+	else
+	{
+		Damping = m_PhysicsManager->GetDamping();
+	}
+	m_volecity *= Damping;
 
 	ClearForce();
 }
 
 void Particle::Integrate_Euler(float Delta)
 {
-	m_acceleration = m_forceAccum * m_inverseMass;
-
-	if (bUseGravite)
-	{
-		m_acceleration += m_gravity;
-	}
-
-	m_volecity += m_acceleration * Delta;
-
-	m_position += m_volecity * Delta;
 	
-	ClearForce();
 }
 
 void Particle::Integrate_Rk4(float Delta, int step)

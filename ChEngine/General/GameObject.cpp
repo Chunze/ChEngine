@@ -19,11 +19,22 @@ void GameObject::RenderObject()
 
 void GameObject::Update(float Delta)
 {
-	Super::Update(Delta);
+	//Super::Update(Delta);
+	UpdateTransform();
 }
 
 void GameObject::UpdateTransform()
 {
+	if (m_RootComponent != nullptr)
+	{
+		m_WorldTransform = m_RootComponent->GetWorldTransform();
+	}
+}
+
+void GameObject::PostPhysicsUpdate()
+{
+	Super::PostPhysicsUpdate();
+
 	if (m_RootComponent != nullptr)
 	{
 		m_WorldTransform = m_RootComponent->GetWorldTransform();
@@ -49,6 +60,7 @@ void GameObject::SetRootComponent(Component* RootComponent)
 	AddComponent(RootComponent);
 
 	m_RootComponent = RootComponent;
+	RootComponent->SetIsRoot(true);
 	m_RootComponent->SetWorldTransform(GetWorldTransform());
 }
 

@@ -24,7 +24,7 @@ void CollisionSpringFG::UpdateForce(Particle* particle, float duration)
 	glm::vec3 springForceDir, springForce, dampingForce;
 
 	// pointing from this particle to other
-	springForceDir = particle->m_position - Anchor->m_position;
+	springForceDir = particle->GetPosition() - Anchor->GetPosition();
 
 	if (glm::dot(springForceDir, outwardDirection) < 0 || !bValid)
 	{

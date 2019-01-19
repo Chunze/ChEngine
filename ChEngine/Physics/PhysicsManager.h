@@ -44,6 +44,9 @@ public:
 	void Increment_RK4_step() { RK4_step++; }
 	void Reset_RK4_Step() { RK4_step = 1; }
 	
+	float GetDamping() { return m_Damping; }
+	glm::vec3 GetGravity() { return m_Gravity; }
+
 protected:
 	// 0 = Euler; 1 = RK4
 	int m_intergrator;
@@ -52,5 +55,10 @@ protected:
 	int RK4_step = 1;
 	std::vector<Particle*> m_physicsParticles;
 	World* m_world;
+
+	// physics constants
+	glm::vec3 m_Gravity = glm::vec3(0.0f, -9.8f, 0.0f);
+	float m_Damping;
+	float m_DampingCoef = 0.98f;
 };
 #endif

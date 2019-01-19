@@ -15,6 +15,8 @@ void PhysicsManager::registerForce(Particle* particle, ForceGenerator* FG)
 
 void PhysicsManager::Update(float Delta)
 {
+	m_Damping = powf(m_DampingCoef, Delta);
+
 	UpdateForces(Delta);
 
 	Integrate(Delta);
@@ -50,4 +52,5 @@ void PhysicsManager::GenerateCollisionInfo(Particle* particle, Particle* Anchor,
 void PhysicsManager::AddPhysicsParticle(Particle* ParticleToAdd)
 {
 	m_physicsParticles.push_back(ParticleToAdd);
+	ParticleToAdd->SetPhysicsManager(this);
 }

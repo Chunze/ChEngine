@@ -27,24 +27,76 @@ SceneObject::SceneObject(GameContext* gameContext, World* world, glm::vec3 locat
 
 void SceneObject::Update(float Delta)
 {
-	UpdateTransform();
-
 	for (SceneObject *sceneObject : m_Children)
 	{
 		sceneObject->Update(Delta);
 	}
+
+	bPostPhysicsUpdated = false;
 }
 
 void SceneObject::UpdateTransform()
 {
-	SetRaletiveLocation(m_Particle->m_position);
+	if (bPostPhysicsUpdated)
+	{
+		return;
+	}
+
+	SetRaletiveLocation(m_Particle->GetPosition());
 	if (m_Owner != nullptr)
 	{
+		if (!m_Owner->HasPostPhysicsUpdated())
+		{
+			m_Owner->UpdateTransform();
+		}
 		m_WorldTransform = m_Owner->GetWorldTransform() * m_RaletiveTransform;
 	}
 	else
 	{
 		m_WorldTransform = m_RaletiveTransform;
+	}
+}
+
+void SceneObject::PostPhysicsUpdate()
+{
+	if (bPostPhysicsUpdated)
+	{
+		return;
+	}
+
+	if (m_Particle != nullptr)
+	{
+		if (bIsRoot)
+		{
+			SetWorldLocation(m_Particle->GetPosition());
+			return;
+		}
+		else
+		{
+			SetRaletiveLocation(m_Particle->GetPosition());
+		}
+	}
+
+	if (m_Owner != nullptr)
+	{
+		if (!m_Owner->HasPostPhysicsUpdated())
+		{
+			m_Owner->UpdateTransform();
+		}
+		m_WorldTransform = m_Owner->GetWorldTransform() * m_RaletiveTransform;
+	}
+	else
+	{
+		m_WorldTransform = m_RaletiveTransform;
+	}
+}
+
+void SceneObject::SetWorldTransform(glm::mat4 worldTransform)
+{ 
+	m_WorldTransform = worldTransform;
+	if (m_Particle != nullptr)
+	{
+		m_Particle->SetPosition(glm::vec3(m_WorldTransform[3]));
 	}
 }
 

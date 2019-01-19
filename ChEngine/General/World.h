@@ -23,13 +23,15 @@ public:
 
 	virtual bool LoadWorld(const char* fileName) { return false; }
 	virtual void Update(float Delta);
+	virtual void PostPhysicsUpdate();
 	virtual void RenderWorld();
 
 	float m_customDelta = -1.0f;
 
 protected:
-	SceneObject* m_RootSceneObject;
+	std::vector<GameObject*> m_GameObjects;
 	std::vector<SceneObject*> m_SceneObjects;
+
 	Camera* m_Camera;
 	virtual void InitCamera() = 0;
 	virtual void Init();

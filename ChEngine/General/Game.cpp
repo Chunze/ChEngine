@@ -170,7 +170,7 @@ void Game::GameLoop()
 		// First frame
 		if (lastFrameTime == 0.0f)
 		{
-			deltaTime = 0.0005f;
+			deltaTime = 0.016f;
 		}
 
 		lastFrameTime = currentTime;
@@ -249,8 +249,10 @@ void Game::saveScreenshot(int windowWidth, int windowHeight, char *filename)
 
 void Game::Update(float Delta)
 {
-	m_gameContext->GetPhysicsManager()->Update(Delta);
+
 	m_gameContext->GetWorld()->Update(Delta);
+	m_gameContext->GetPhysicsManager()->Update(Delta);
+	m_gameContext->GetWorld()->PostPhysicsUpdate();
 	m_gameContext->GetWorld()->RenderWorld();
 	// render update
 	m_gameContext->m_renderer->Update(deltaTime);

@@ -9,26 +9,33 @@ World::World(GameContext* gameContext)
 
 void World::Update(float Delta)
 {
+	for (GameObject* gameObject : m_GameObjects)
+	{
+		gameObject->Update(Delta);
+	}
 	for (SceneObject* sceneObject : m_SceneObjects)
 	{
 		sceneObject->Update(Delta);
 	}
 }
 
-void World::RenderWorld()
+void World::PostPhysicsUpdate()
 {
 	for (SceneObject* sceneObject : m_SceneObjects)
 	{
-		GameObject* gameObject = dynamic_cast<GameObject*>(sceneObject);
+		sceneObject->PostPhysicsUpdate();
+	}
+}
 
-		if (gameObject != nullptr)
-		{
-			gameObject->RenderObject();
-		}
+void World::RenderWorld()
+{
+	for (GameObject* gameObject : m_GameObjects)
+	{
+		gameObject->RenderObject();
 	}
 }
 
 void World::Init()
 {
-	m_RootSceneObject = new SceneObject(m_gameContext, this);
+	//m_RootSceneObject = new SceneObject(m_gameContext, this);
 }

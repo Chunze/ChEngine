@@ -5,6 +5,9 @@
 #include "GameObject.h"
 #include "StaticMeshComponent.h"
 
+#include "AnchoredSpringFG.h"
+#include "PhysicsManager.h"
+
 
 SimpleWorld::SimpleWorld(GameContext* gameContext)
 	: Super(gameContext)
@@ -38,7 +41,7 @@ void SimpleWorld::Init()
 void SimpleWorld::InitCamera()
 {
 	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 100.0f);
-	m_Camera->SetupCamera(glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_Camera->SetupCamera(glm::vec3(30.0f, 15.0f, 30.0f), glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	m_gameContext->GetRenderer()->SetActiveCamera(m_Camera);
 }
@@ -87,7 +90,12 @@ void SimpleWorld::SetupWorld()
 	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(newModel);
 
-	m_SceneObjects.push_back(gameObject);
+	m_GameObjects.push_back(gameObject);
+	m_SceneObjects.push_back(staticMeshComp);
+
+	AnchoredSpringFG* FG = new AnchoredSpringFG(gameObject->GetWorldLocation() + glm::vec3(0.0, 5.0f, 0.0f), 101.f, 5.f);
+	m_gameContext->GetPhysicsManager()->registerForce(staticMeshComp->GetParticle(), FG);
+
 }
 
 void SimpleWorld::InitInputHandler()

@@ -20,6 +20,8 @@ public:
 
 	virtual void UpdateTransform() override;
 
+	virtual void PostPhysicsUpdate() override;
+
 	void AddComponent(Component* ComponentToAdd);
 	void SetRootComponent(Component* Root);
 
