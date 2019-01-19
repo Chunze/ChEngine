@@ -180,7 +180,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;C:\Users\Chen\Desktop\ChEngine\ChEngine\SimpleWorld;C:\Users\Chen\Desktop\ChEngine\ChEngine\Mesh;C:\Users\Chen\Desktop\ChEngine\ChEngine</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
