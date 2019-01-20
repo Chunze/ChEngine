@@ -48,6 +48,7 @@
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Physics\ForceGenerators\AnchoredSpringFG.cpp" />
+    <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp" />
     <ClCompile Include="Render\Light.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
     <ClCompile Include="General\FileManager.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Mesh\StaticMeshComponent.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h" />
+    <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h" />
     <ClInclude Include="Render\Light.h" />
     <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />

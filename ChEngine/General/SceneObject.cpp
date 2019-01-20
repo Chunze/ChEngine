@@ -42,18 +42,18 @@ void SceneObject::UpdateTransform()
 		return;
 	}
 
-	SetRaletiveLocation(m_Particle->GetPosition());
+	SetRelativeLocation(m_Particle->GetPosition());
 	if (m_Owner != nullptr)
 	{
 		if (!m_Owner->HasPostPhysicsUpdated())
 		{
 			m_Owner->UpdateTransform();
 		}
-		m_WorldTransform = m_Owner->GetWorldTransform() * m_RaletiveTransform;
+		m_WorldTransform = m_Owner->GetWorldTransform() * m_RelativeTransform;
 	}
 	else
 	{
-		m_WorldTransform = m_RaletiveTransform;
+		m_WorldTransform = m_RelativeTransform;
 	}
 }
 
@@ -73,7 +73,7 @@ void SceneObject::PostPhysicsUpdate()
 		}
 		else
 		{
-			SetRaletiveLocation(m_Particle->GetPosition());
+			SetRelativeLocation(m_Particle->GetPosition());
 		}
 	}
 
@@ -83,11 +83,11 @@ void SceneObject::PostPhysicsUpdate()
 		{
 			m_Owner->UpdateTransform();
 		}
-		m_WorldTransform = m_Owner->GetWorldTransform() * m_RaletiveTransform;
+		m_WorldTransform = m_Owner->GetWorldTransform() * m_RelativeTransform;
 	}
 	else
 	{
-		m_WorldTransform = m_RaletiveTransform;
+		m_WorldTransform = m_RelativeTransform;
 	}
 }
 

@@ -123,6 +123,9 @@
     <ClCompile Include="Physics\ForceGenerators\AnchoredSpringFG.cpp">
       <Filter>Physics\ForceGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp">
+      <Filter>Physics\ForceGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -275,6 +278,9 @@
     <ClInclude Include="General\SceneObject.h" />
     <ClInclude Include="Mesh\StaticMeshComponent.h" />
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h">
+      <Filter>Physics\ForceGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h">
       <Filter>Physics\ForceGenerators</Filter>
     </ClInclude>
   </ItemGroup>

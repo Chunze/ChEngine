@@ -26,6 +26,8 @@ public:
 
 	/**    getters    **/
 	glm::vec3 GetPosition() { return m_position; }
+	glm::vec3 GetVelocity() { return m_volecity; }
+	float GetMass() { return 1.0f / m_inverseMass; }
 
 	/**
 	* Adds the given force to the particle to be applied at the

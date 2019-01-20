@@ -21,7 +21,7 @@ public:
 	void RemoveChild(SceneObject* child);
 
 	/**    setters    **/
-	void SetRaletiveLocation(glm::vec3 location) { m_RaletiveTransform[3] = glm::vec4(location, 1.0); }
+	void SetRelativeLocation(glm::vec3 location) { m_RelativeTransform[3] = glm::vec4(location, 1.0); }
 	void SetWorldTransform(glm::mat4 worldTransform);
 	void SetWorldLocation(glm::vec3 location);
 	void SetWorld(World* world) { m_World = world; }
@@ -41,7 +41,7 @@ public:
 	~SceneObject();
 
 protected:
-	glm::mat4 m_RaletiveTransform = glm::mat4();
+	glm::mat4 m_RelativeTransform = glm::mat4();
 
 	glm::mat4 m_WorldTransform = glm::mat4();
 	
