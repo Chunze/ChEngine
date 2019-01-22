@@ -126,6 +126,12 @@
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp">
       <Filter>Physics\ForceGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="Contacts.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleLink.cpp">
+      <Filter>Physics\ContactGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -283,6 +289,15 @@
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h">
       <Filter>Physics\ForceGenerators</Filter>
     </ClInclude>
+    <ClInclude Include="Contacts.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h">
+      <Filter>Physics\ContactGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleLink.h">
+      <Filter>Physics\ContactGenerators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -320,6 +335,9 @@
     </Filter>
     <Filter Include="SimpleWorld">
       <UniqueIdentifier>{9f916e56-8a9c-4cc4-8d64-c6a005ff6962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\ContactGenerators">
+      <UniqueIdentifier>{1f9240d5-0070-498b-b977-a27872176adc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

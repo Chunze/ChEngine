@@ -5,9 +5,9 @@ Particle::Particle(float mass, glm::vec3 position, glm::vec3 volecity)
 	: m_position(position),
 	  m_volecity(volecity)
 {
-	if (mass <= 0)
+	if (mass <= 0 || mass == INFINITY)
 	{
-		m_inverseMass = INFINITY;
+		m_inverseMass = -1.0f;
 	}
 	else
 	{
@@ -29,7 +29,7 @@ void Particle::addForce(const glm::vec3 &force)
 
 void Particle::Integrate(float Delta)
 {
-	if (m_inverseMass == INFINITY || m_inverseMass == 0)
+	if (m_inverseMass <= 0.0f)
 	{
 		return;
 	}

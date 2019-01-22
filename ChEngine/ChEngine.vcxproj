@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
     <ClCompile Include="..\stb_image.cpp" />
+    <ClCompile Include="Contacts.cpp" />
     <ClCompile Include="cs520\HW2\HW2InputHandler.cpp" />
     <ClCompile Include="cs520\HW2\ParticleAttractor.cpp" />
     <ClCompile Include="cs520\HW2\ParticleWorld.cpp" />
@@ -46,6 +47,7 @@
     <ClCompile Include="Mesh\Model.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
+    <ClCompile Include="ParticleLink.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Physics\ForceGenerators\AnchoredSpringFG.cpp" />
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp" />
@@ -67,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="Contacts.h" />
     <ClInclude Include="cs520\HW2\HW2InputHandler.h" />
     <ClInclude Include="cs520\HW2\ParticleAttractor.h" />
     <ClInclude Include="cs520\HW2\ParticleWorld.h" />
@@ -96,7 +99,9 @@
     <ClInclude Include="Mesh\Model.h" />
     <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="Mesh\StaticMeshComponent.h" />
+    <ClInclude Include="ParticleLink.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
+    <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h" />
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h" />
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h" />
     <ClInclude Include="Render\Light.h" />
@@ -184,7 +189,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Physics\ForceGenerators;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Physics\ForceGenerators;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine;$(SolutionDir)ChEngine\Physics\ContactGenerators</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

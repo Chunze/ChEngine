@@ -21,12 +21,18 @@ public:
 
 	float m_DampingCoef = 0.0f;
 
+	void AddVelocity(glm::vec3 VelocityToAdd) { m_volecity += VelocityToAdd; }
+	void AddPosition(glm::vec3 PositionToAdd) { m_position += PositionToAdd; }
+
 	/**    setters    **/
 	void SetPosition(glm::vec3 NewPos) { m_position = NewPos; }
+	void SetVelocity(glm::vec3 NewVel) { m_volecity = NewVel; }
 
 	/**    getters    **/
 	glm::vec3 GetPosition() { return m_position; }
 	glm::vec3 GetVelocity() { return m_volecity; }
+	glm::vec3 GetAcceleration() { return m_acceleration; }
+	float GetInverseMass() { return m_inverseMass; }
 	float GetMass() { return 1.0f / m_inverseMass; }
 
 	/**
