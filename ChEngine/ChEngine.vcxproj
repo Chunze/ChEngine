@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
     <ClCompile Include="..\stb_image.cpp" />
-    <ClCompile Include="Contacts.cpp" />
     <ClCompile Include="cs520\HW2\HW2InputHandler.cpp" />
     <ClCompile Include="cs520\HW2\ParticleAttractor.cpp" />
     <ClCompile Include="cs520\HW2\ParticleWorld.cpp" />
@@ -49,6 +48,7 @@
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
     <ClCompile Include="ParticleLink.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
+    <ClCompile Include="Physics\Contacts.cpp" />
     <ClCompile Include="Physics\ForceGenerators\AnchoredSpringFG.cpp" />
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp" />
     <ClCompile Include="Render\Light.cpp" />
@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
-    <ClInclude Include="Contacts.h" />
     <ClInclude Include="cs520\HW2\HW2InputHandler.h" />
     <ClInclude Include="cs520\HW2\ParticleAttractor.h" />
     <ClInclude Include="cs520\HW2\ParticleWorld.h" />
@@ -102,6 +101,7 @@
     <ClInclude Include="ParticleLink.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h" />
+    <ClInclude Include="Physics\Contacts.h" />
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h" />
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h" />
     <ClInclude Include="Render\Light.h" />

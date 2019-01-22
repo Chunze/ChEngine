@@ -82,7 +82,7 @@ void SimpleWorld::InitDebugElement()
 
 void SimpleWorld::SetupWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 10.0f, 0.0f));
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
@@ -94,9 +94,9 @@ void SimpleWorld::SetupWorld()
 	m_GameObjects.push_back(gameObject);
 	m_SceneObjects.push_back(staticMeshComp);
 
-	AnchoredSpringFG* FG = new AnchoredSpringFG(gameObject->GetWorldLocation() + glm::vec3(3.0, 5.0f, 0.0f), 10.f, 5.f);
+	//AnchoredSpringFG* FG = new AnchoredSpringFG(gameObject->GetWorldLocation() + glm::vec3(3.0, 5.0f, 0.0f), 10.f, 5.f);
 	//FakeSprintFG* FG = new FakeSprintFG(gameObject->GetWorldLocation() + glm::vec3(3.0f, 3.0f, 0.0f), 15.0f, 0.95f);
-	m_gameContext->GetPhysicsManager()->registerForce(staticMeshComp->GetParticle(), FG);
+	//m_gameContext->GetPhysicsManager()->registerForce(staticMeshComp->GetParticle(), FG);
 
 }
 

@@ -126,11 +126,11 @@
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp">
       <Filter>Physics\ForceGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="Contacts.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleLink.cpp">
       <Filter>Physics\ContactGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Contacts.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,14 +289,14 @@
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h">
       <Filter>Physics\ForceGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="Contacts.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h">
       <Filter>Physics\ContactGenerators</Filter>
     </ClInclude>
     <ClInclude Include="ParticleLink.h">
       <Filter>Physics\ContactGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Contacts.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

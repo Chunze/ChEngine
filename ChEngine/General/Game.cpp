@@ -206,6 +206,8 @@ void Game::GameLoop()
 			deltaTime = 0.0f;
 			bWasPausedLastFrame = false;
 		}
+
+		//deltaTime = 0.016f;
 		Update(deltaTime);
 		
 		glfwSwapBuffers(m_gameContext->GetWindow());
@@ -255,6 +257,6 @@ void Game::Update(float Delta)
 	m_gameContext->GetWorld()->PostPhysicsUpdate();
 	m_gameContext->GetWorld()->RenderWorld();
 	// render update
-	m_gameContext->m_renderer->Update(deltaTime);
+	m_gameContext->m_renderer->Update(Delta);
 }
 

@@ -9,6 +9,8 @@
 class Particle;
 class ForceGenerator;
 class World;
+class ParticleContact;
+class ParticleContactResolver;
 
 class PhysicsManager : public BaseClass
 {
@@ -48,17 +50,27 @@ public:
 	glm::vec3 GetGravity() { return m_Gravity; }
 
 protected:
+	void Init();
+
 	// 0 = Euler; 1 = RK4
 	int m_intergrator;
 
 	// RK4 step count
 	int RK4_step = 1;
 	std::vector<Particle*> m_physicsParticles;
+	std::vector<ParticleContact> m_ParticleContacts;
+	ParticleContactResolver* m_ParticleContactResolver = nullptr;
 	World* m_world;
+
+	// The height of a simple plane for testing (upward normal)
+	float m_PlaneHeight = 0.0f;
 
 	// physics constants
 	glm::vec3 m_Gravity = glm::vec3(0.0f, -9.8f, 0.0f);
 	float m_Damping;
 	float m_DampingCoef = 0.98f;
+
+	void RunCollisionDetection();
+	void RunCollisionResolution(float Delta);
 };
 #endif
