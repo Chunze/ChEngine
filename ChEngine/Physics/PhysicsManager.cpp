@@ -75,7 +75,7 @@ void PhysicsManager::RunCollisionDetection()
 			contact->m_Particles[0] = particle;
 			contact->m_Penetration = m_PlaneHeight - particle->GetPosition().y;
 			contact->m_ContactNormal = glm::vec3(0.0f, 1.0f, 0.0f);
-			contact->m_Restitution = 0.3f;
+			contact->m_Restitution = 0.5f;
 
 			m_ParticleContacts.push_back(*contact);
 		}

@@ -41,8 +41,11 @@ void ParticleContact::ResolveVelocity(float duration)
 		return;
 	}
 
+	// clamping restitution for small velocity
+	float Restitution = abs(SeparatingVelocity) < 0.01f ? 0.0f : m_Restitution;
+
 	// new separating velocity
-	float NewSeparatingVelocity = -SeparatingVelocity * m_Restitution;
+	float NewSeparatingVelocity = -SeparatingVelocity * Restitution;
 
 	// Check the velocity (in the direction of normal) build up due to acceleration only (for this frame)
 	glm::vec3 RelativeAccel = m_Particles[0]->GetAcceleration();
@@ -52,7 +55,7 @@ void ParticleContact::ResolveVelocity(float duration)
 	// If we get a closing velocity due to acceleration buildup, remove it from the new separating velocity.
 	if (SeparatingVelocityBuildup < 0)
 	{
-		NewSeparatingVelocity += m_Restitution * SeparatingVelocityBuildup;
+		NewSeparatingVelocity += Restitution * SeparatingVelocityBuildup;
 
 		// Make sure we haven't removed more than there was to remove
 		if (NewSeparatingVelocity < 0)
