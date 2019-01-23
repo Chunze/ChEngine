@@ -30,6 +30,12 @@ public:
 	/// Calculates the separating velocity at this contact
 	float CalculateSeparatingVelocity() const;
 
+	void SetIsValid(bool IsValid) { bIsValid = IsValid; }
+	bool IsValid() { return bIsValid; }
+
+protected:
+	bool bIsValid = false;
+
 private:
 	/// Handles the impulse calculations for this collision
 	void ResolveVelocity(float duration);

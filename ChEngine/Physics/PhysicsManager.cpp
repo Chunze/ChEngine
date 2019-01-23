@@ -2,6 +2,7 @@
 #include "JelloWorld.h"
 #include "Contacts.h"
 #include "ForceGenerators/CollisionSpringFG.h"
+#include "ParticleContactGenerator.h"
 
 PhysicsManager::PhysicsManager(GameContext* gameContext)
 	: BaseClass(gameContext)
@@ -60,6 +61,14 @@ void PhysicsManager::AddPhysicsParticle(Particle* ParticleToAdd)
 	ParticleToAdd->SetPhysicsManager(this);
 }
 
+void PhysicsManager::AddParticleContactGenerator(ParticleContactGenerator* contactGenerator)
+{
+	if (contactGenerator != nullptr)
+	{
+		m_ContactGenerator.push_back(contactGenerator);
+	}
+}
+
 void PhysicsManager::Init()
 {
 	m_ParticleContactResolver = new ParticleContactResolver(10);
@@ -76,9 +85,22 @@ void PhysicsManager::RunCollisionDetection()
 			contact->m_Penetration = m_PlaneHeight - particle->GetPosition().y;
 			contact->m_ContactNormal = glm::vec3(0.0f, 1.0f, 0.0f);
 			contact->m_Restitution = 0.5f;
+			contact->SetIsValid(true);
 
 			m_ParticleContacts.push_back(*contact);
 		}
+	}
+
+	for (ParticleContactGenerator* contactGenerator : m_ContactGenerator)
+	{
+		if (m_ParticleContacts.size() == 0 || m_ParticleContacts.back().IsValid())
+		{
+			ParticleContact* contact = new ParticleContact();
+			m_ParticleContacts.push_back(*contact);
+		}
+
+		ParticleContact* contact = &m_ParticleContacts.back();
+		contactGenerator->AddContact(contact, 1);
 	}
 }
 

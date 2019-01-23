@@ -4,6 +4,7 @@
 #include "JelloWorldInputHandler.h"
 #include "GameObject.h"
 #include "StaticMeshComponent.h"
+#include "ParticleLink.h"
 
 #include "AnchoredSpringFG.h"
 #include "FakeSprintFG.h"
@@ -42,7 +43,7 @@ void SimpleWorld::Init()
 void SimpleWorld::InitCamera()
 {
 	m_Camera = new Camera(CameraType::Camera_3D, glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 100.0f);
-	m_Camera->SetupCamera(glm::vec3(30.0f, 15.0f, 30.0f), glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_Camera->SetupCamera(glm::vec3(10.0f, 10.0f, 20.0f), glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	m_gameContext->GetRenderer()->SetActiveCamera(m_Camera);
 }
@@ -93,6 +94,22 @@ void SimpleWorld::SetupWorld()
 
 	m_GameObjects.push_back(gameObject);
 	m_SceneObjects.push_back(staticMeshComp);
+
+	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 7.0f, 0.0));
+	StaticMeshComponent* staticMeshComp_1 = new StaticMeshComponent(m_gameContext, this);
+	staticMeshComp_1->SetMesh(newModel);
+	gameObject_1->SetRootComponent(staticMeshComp_1);
+
+	m_GameObjects.push_back(gameObject_1);
+	m_SceneObjects.push_back(staticMeshComp_1);
+
+	gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 10.0f, 0.0f));
+
+	ParticleCableLink* CableLink = new ParticleCableLink(gameObject->GetRootComponent()->GetParticle(), 
+														 gameObject_1->GetRootComponent()->GetParticle(),
+														 8.0f);
+
+	m_gameContext->GetPhysicsManager()->AddParticleContactGenerator(CableLink);
 
 	//AnchoredSpringFG* FG = new AnchoredSpringFG(gameObject->GetWorldLocation() + glm::vec3(3.0, 5.0f, 0.0f), 10.f, 5.f);
 	//FakeSprintFG* FG = new FakeSprintFG(gameObject->GetWorldLocation() + glm::vec3(3.0f, 3.0f, 0.0f), 15.0f, 0.95f);

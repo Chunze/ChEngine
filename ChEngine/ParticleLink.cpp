@@ -17,6 +17,14 @@ float ParticleLink::CurrentLength() const
 	return glm::length(RelativePos);
 }
 
+ParticleCableLink::ParticleCableLink(Particle* particle_1, Particle* particle_2, float MaxLength, float Restitution)
+	: m_MaxLength(MaxLength),
+	  m_Restitution(Restitution)
+{
+	m_Particles[0] = particle_1;
+	m_Particles[1] = particle_2;
+}
+
 int ParticleCableLink::AddContact(ParticleContact* contact, unsigned int limit) const
 {
 	// Find the length of the cable
@@ -38,6 +46,7 @@ int ParticleCableLink::AddContact(ParticleContact* contact, unsigned int limit) 
 
 	contact->m_Penetration = length - m_MaxLength;
 	contact->m_Restitution = m_Restitution;
+	contact->SetIsValid(true);
 
 	return 1;
 }

@@ -25,6 +25,8 @@ public:
 	void AddComponent(Component* ComponentToAdd);
 	void SetRootComponent(Component* Root);
 
+	Component* GetRootComponent() { return m_RootComponent; }
+
 protected:
 	Component* m_RootComponent;
 

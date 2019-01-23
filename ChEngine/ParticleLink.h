@@ -21,6 +21,8 @@ protected:
 class ParticleCableLink : public ParticleLink
 {
 public:
+	ParticleCableLink(Particle* particle_1, Particle* particle_2, float MaxLength = 10.0f, float Restitution = 0.8f);
+
 	float m_MaxLength;
 
 	/// Holds the restitution (bounciness) of the cable

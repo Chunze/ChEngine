@@ -11,6 +11,7 @@ class ForceGenerator;
 class World;
 class ParticleContact;
 class ParticleContactResolver;
+class ParticleContactGenerator;
 
 class PhysicsManager : public BaseClass
 {
@@ -37,6 +38,7 @@ public:
 	void GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping);
 
 	void AddPhysicsParticle(Particle* ParticleToAdd);
+	void AddParticleContactGenerator(ParticleContactGenerator* contactGenerator);
 
 	int GetIntegrator() { return m_intergrator; }
 	void SetIntegrator(int in) { m_intergrator = in; }
@@ -59,6 +61,7 @@ protected:
 	int RK4_step = 1;
 	std::vector<Particle*> m_physicsParticles;
 	std::vector<ParticleContact> m_ParticleContacts;
+	std::vector<ParticleContactGenerator*> m_ContactGenerator;
 	ParticleContactResolver* m_ParticleContactResolver = nullptr;
 	World* m_world;
 

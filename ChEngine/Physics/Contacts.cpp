@@ -143,6 +143,8 @@ void ParticleContactResolver::ResolveContacts(std::vector<ParticleContact>& Cont
 		unsigned int maxIndex = Contacts.size();
 		for (i = 0; i < Contacts.size(); i++)
 		{
+			if(!Contacts[i].IsValid()) continue;
+
 			float SeparatingVel = Contacts[i].CalculateSeparatingVelocity();
 			if (SeparatingVel < max && (SeparatingVel < 0) || Contacts[i].m_Penetration > 0)
 			{
