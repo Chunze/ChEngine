@@ -30,7 +30,7 @@ void PhysicsManager::Update(float Delta)
 
 void PhysicsManager::Integrate(float Delta)
 {
-	for (Particle* particle : m_physicsParticles)
+	for (auto particle : m_physicsParticles)
 	{
 		particle->Integrate(Delta);
 	}
@@ -55,7 +55,7 @@ void PhysicsManager::GenerateCollisionInfo(Particle* particle, Particle* Anchor,
 	m_contactForceRegistry.Add(particle, collisionFG);
 }
 
-void PhysicsManager::AddPhysicsParticle(Particle* ParticleToAdd)
+void PhysicsManager::AddPhysicsParticle(shared_ptr<Particle> ParticleToAdd)
 {
 	m_physicsParticles.push_back(ParticleToAdd);
 	ParticleToAdd->SetPhysicsManager(this);
@@ -71,35 +71,36 @@ void PhysicsManager::AddParticleContactGenerator(ParticleContactGenerator* conta
 
 void PhysicsManager::Init()
 {
-	m_ParticleContactResolver = new ParticleContactResolver(10);
+	//m_ParticleContactResolver = new ParticleContactResolver(10);
+	m_ParticleContactResolver = std::make_unique<ParticleContactResolver>(10);
 }
 
 void PhysicsManager::RunCollisionDetection()
 {
-	for (Particle* particle : m_physicsParticles)
+	for (auto particle : m_physicsParticles)
 	{
 		if (particle->GetPosition().y < m_PlaneHeight)
 		{
-			ParticleContact* contact = new ParticleContact();
-			contact->m_Particles[0] = particle;
+			auto contact = make_shared<ParticleContact>();
+			contact->m_Particle_1 = particle;
 			contact->m_Penetration = m_PlaneHeight - particle->GetPosition().y;
 			contact->m_ContactNormal = glm::vec3(0.0f, 1.0f, 0.0f);
 			contact->m_Restitution = 0.5f;
 			contact->SetIsValid(true);
 
-			m_ParticleContacts.push_back(*contact);
+			m_ParticleContacts.push_back(contact);
 		}
 	}
 
 	for (ParticleContactGenerator* contactGenerator : m_ContactGenerator)
 	{
-		if (m_ParticleContacts.size() == 0 || m_ParticleContacts.back().IsValid())
+		if (m_ParticleContacts.size() == 0 || m_ParticleContacts.back()->IsValid())
 		{
-			ParticleContact* contact = new ParticleContact();
-			m_ParticleContacts.push_back(*contact);
+			auto contact = make_shared<ParticleContact>();
+			m_ParticleContacts.push_back(contact);
 		}
 
-		ParticleContact* contact = &m_ParticleContacts.back();
+		auto contact = m_ParticleContacts.back();
 		contactGenerator->AddContact(contact, 1);
 	}
 }

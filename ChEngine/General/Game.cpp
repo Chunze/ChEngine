@@ -198,7 +198,7 @@ void Game::GameLoop()
 
 		if (m_gameContext->GetWorld() && m_gameContext->GetWorld()->m_customDelta > 0.0f)
 		{
-			deltaTime = m_gameContext->GetWorld()->m_customDelta;
+			deltaTime *= m_gameContext->GetWorld()->m_customDelta;
 		}
 
 		if (bPaused)
@@ -208,7 +208,18 @@ void Game::GameLoop()
 		}
 
 		//deltaTime = 0.016f;
-		Update(deltaTime);
+		/****     Update(deltaTime)    ****/
+		m_gameContext->GetWorld()->Update(deltaTime);
+
+		PhysicsTimeAccumulator += deltaTime;
+		while (PhysicsTimeAccumulator >= PHYSICS_TIME_STEP)
+		{
+			m_gameContext->GetPhysicsManager()->Update(PHYSICS_TIME_STEP);
+			PhysicsTimeAccumulator -= PHYSICS_TIME_STEP;
+		}
+		m_gameContext->GetWorld()->PostPhysicsUpdate();
+		m_gameContext->GetWorld()->RenderWorld();
+		m_gameContext->m_renderer->Update(deltaTime);
 		
 		glfwSwapBuffers(m_gameContext->GetWindow());
 		glfwPollEvents();
@@ -251,12 +262,6 @@ void Game::saveScreenshot(int windowWidth, int windowHeight, char *filename)
 
 void Game::Update(float Delta)
 {
-
-	m_gameContext->GetWorld()->Update(Delta);
-	m_gameContext->GetPhysicsManager()->Update(Delta);
-	m_gameContext->GetWorld()->PostPhysicsUpdate();
-	m_gameContext->GetWorld()->RenderWorld();
-	// render update
-	m_gameContext->m_renderer->Update(Delta);
+	
 }
 

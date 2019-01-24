@@ -1,6 +1,7 @@
 #ifndef PHYSICS_MANAGER_H
 #define PHYSICS_MANAGER_H
 #include <vector>
+#include <memory>
 
 #include "BaseClass.h"
 #include "ParticleForceRegistry.h"
@@ -12,6 +13,8 @@ class World;
 class ParticleContact;
 class ParticleContactResolver;
 class ParticleContactGenerator;
+
+using namespace std;
 
 class PhysicsManager : public BaseClass
 {
@@ -37,7 +40,7 @@ public:
 
 	void GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping);
 
-	void AddPhysicsParticle(Particle* ParticleToAdd);
+	void AddPhysicsParticle(shared_ptr<Particle> ParticleToAdd);
 	void AddParticleContactGenerator(ParticleContactGenerator* contactGenerator);
 
 	int GetIntegrator() { return m_intergrator; }
@@ -59,11 +62,10 @@ protected:
 
 	// RK4 step count
 	int RK4_step = 1;
-	std::vector<Particle*> m_physicsParticles;
-	std::vector<ParticleContact> m_ParticleContacts;
+	std::vector<shared_ptr<Particle>> m_physicsParticles;
+	std::vector<shared_ptr<ParticleContact>> m_ParticleContacts;
 	std::vector<ParticleContactGenerator*> m_ContactGenerator;
-	ParticleContactResolver* m_ParticleContactResolver = nullptr;
-	World* m_world;
+	std::unique_ptr<ParticleContactResolver> m_ParticleContactResolver = nullptr;
 
 	// The height of a simple plane for testing (upward normal)
 	float m_PlaneHeight = 0.0f;

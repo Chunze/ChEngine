@@ -2,6 +2,9 @@
 #include "BaseClass.h"
 #include "Particle.h"
 #include <vector>
+#include <memory>
+
+using namespace std;
 
 class SceneObject : public BaseClass
 {
@@ -36,7 +39,7 @@ public:
 	std::vector<SceneObject*> &GetChildren() { return m_Children; }
 	bool HasPostPhysicsUpdated() { return bPostPhysicsUpdated; }
 	bool GetIsRoot() { return bIsRoot; }
-	Particle* GetParticle() { return m_Particle; }
+	shared_ptr<Particle> GetParticle() { return m_Particle; }
 
 	~SceneObject();
 
@@ -46,7 +49,7 @@ protected:
 	glm::mat4 m_WorldTransform = glm::mat4();
 	
 	World* m_World;
-	Particle* m_Particle = nullptr;
+	shared_ptr<Particle> m_Particle = nullptr;
 
 	SceneObject* m_Owner = nullptr;
 	std::vector<SceneObject*> m_Children;

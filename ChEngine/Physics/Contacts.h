@@ -1,6 +1,7 @@
 #pragma once
 #include "glm.h"
 #include <vector>
+#include <memory>
 
 class Particle;
 
@@ -13,7 +14,8 @@ public:
 
 	/// Holds the particles that are involved in the contact.
 	/// The second of these 2 can be nullptr for contacts with static object.
-	Particle* m_Particles[2];
+	std::shared_ptr<Particle> m_Particle_1 = nullptr;
+	std::shared_ptr<Particle> m_Particle_2 = nullptr;
 
 	/// Restitution coefficient
 	float m_Restitution;
@@ -56,7 +58,7 @@ public:
 
 	void SetIteration(unsigned int iterations);
 
-	void ResolveContacts(std::vector<ParticleContact>& Contacts, float duration);
+	void ResolveContacts(std::vector<std::shared_ptr<ParticleContact>>& Contacts, float duration);
 
 protected:
 	/// Holds the number of iterations allowed

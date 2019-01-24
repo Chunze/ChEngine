@@ -4,8 +4,8 @@
 
 ParticleContact::ParticleContact()
 {
-	m_Particles[0] = nullptr;
-	m_Particles[1] = nullptr;
+	m_Particle_1 = nullptr;
+	m_Particle_2 = nullptr;
 }
 
 
@@ -21,10 +21,10 @@ void ParticleContact::Resolve(float duration)
 
 float ParticleContact::CalculateSeparatingVelocity() const
 {
-	glm::vec3 RelativeVelocity = m_Particles[0]->GetVelocity();
-	if (m_Particles[1])
+	glm::vec3 RelativeVelocity = m_Particle_1->GetVelocity();
+	if (m_Particle_2)
 	{
-		RelativeVelocity -= m_Particles[1]->GetVelocity();
+		RelativeVelocity -= m_Particle_2->GetVelocity();
 	}
 
 	float SeparatingVelocity = glm::dot(RelativeVelocity, m_ContactNormal);
@@ -48,8 +48,8 @@ void ParticleContact::ResolveVelocity(float duration)
 	float NewSeparatingVelocity = -SeparatingVelocity * Restitution;
 
 	// Check the velocity (in the direction of normal) build up due to acceleration only (for this frame)
-	glm::vec3 RelativeAccel = m_Particles[0]->GetAcceleration();
-	RelativeAccel -= m_Particles[1] ? m_Particles[1]->GetAcceleration() : glm::vec3(0.0f);
+	glm::vec3 RelativeAccel = m_Particle_1->GetAcceleration();
+	RelativeAccel -= m_Particle_2 ? m_Particle_2->GetAcceleration() : glm::vec3(0.0f);
 	float SeparatingVelocityBuildup = glm::dot(RelativeAccel, m_ContactNormal) * duration;
 
 	// If we get a closing velocity due to acceleration buildup, remove it from the new separating velocity.
@@ -83,11 +83,11 @@ void ParticleContact::ResolveVelocity(float duration)
 
 	// Apply impulse: they are applied in the direction of the contact,
 	// and are proportional to the inverse mass
-	m_Particles[0]->AddVelocity(ImpulsePerIMass * m_Particles[0]->GetInverseMass());
-	if (m_Particles[1])
+	m_Particle_1->AddVelocity(ImpulsePerIMass * m_Particle_1->GetInverseMass());
+	if (m_Particle_2)
 	{
 		// Particle 1 goes in the opposite direction
-		m_Particles[1]->AddVelocity(-ImpulsePerIMass * m_Particles[1]->GetInverseMass());
+		m_Particle_2->AddVelocity(-ImpulsePerIMass * m_Particle_2->GetInverseMass());
 	}
 }
 
@@ -106,17 +106,17 @@ void ParticleContact::ResolveInterpenetration(float duration)
 	glm::vec3 MovePerIMass = m_ContactNormal * (m_Penetration / TotalInverseMass);
 
 	// Apply displacement
-	m_Particles[0]->AddPosition(MovePerIMass * m_Particles[0]->GetInverseMass());
-	if (m_Particles[1])
+	m_Particle_1->AddPosition(MovePerIMass * m_Particle_1->GetInverseMass());
+	if (m_Particle_2)
 	{
-		m_Particles[1]->AddPosition(-MovePerIMass * m_Particles[1]->GetInverseMass());
+		m_Particle_2->AddPosition(-MovePerIMass * m_Particle_2->GetInverseMass());
 	}
 }
 
 float ParticleContact::GetTotalInverseMass()
 {
-	float TotalInverseMass = m_Particles[0]->GetInverseMass();
-	TotalInverseMass += m_Particles[1] ? m_Particles[1]->GetInverseMass() : 0;
+	float TotalInverseMass = m_Particle_1->GetInverseMass();
+	TotalInverseMass += m_Particle_2 ? m_Particle_2->GetInverseMass() : 0;
 
 	return TotalInverseMass;
 }
@@ -132,7 +132,7 @@ void ParticleContactResolver::SetIteration(unsigned int iterations)
 	m_Iterations = iterations;
 }
 
-void ParticleContactResolver::ResolveContacts(std::vector<ParticleContact>& Contacts, float duration)
+void ParticleContactResolver::ResolveContacts(std::vector<std::shared_ptr<ParticleContact>>& Contacts, float duration)
 {
 	unsigned int i;
 	m_IterationsUsed = 0;
@@ -143,10 +143,10 @@ void ParticleContactResolver::ResolveContacts(std::vector<ParticleContact>& Cont
 		unsigned int maxIndex = Contacts.size();
 		for (i = 0; i < Contacts.size(); i++)
 		{
-			if(!Contacts[i].IsValid()) continue;
+			if(!Contacts[i]->IsValid()) continue;
 
-			float SeparatingVel = Contacts[i].CalculateSeparatingVelocity();
-			if (SeparatingVel < max && (SeparatingVel < 0) || Contacts[i].m_Penetration > 0)
+			float SeparatingVel = Contacts[i]->CalculateSeparatingVelocity();
+			if (SeparatingVel < max && (SeparatingVel < 0) || Contacts[i]->m_Penetration > 0)
 			{
 				max = SeparatingVel;
 				maxIndex = i;
@@ -159,7 +159,7 @@ void ParticleContactResolver::ResolveContacts(std::vector<ParticleContact>& Cont
 			break;
 		}
 
-		Contacts[maxIndex].Resolve(duration);
+		Contacts[maxIndex]->Resolve(duration);
 
 		m_IterationsUsed++;
 	}

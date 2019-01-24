@@ -13,19 +13,19 @@ ParticleLink::~ParticleLink()
 
 float ParticleLink::CurrentLength() const
 {
-	glm::vec3 RelativePos = m_Particles[0]->GetPosition() - m_Particles[1]->GetPosition();
+	glm::vec3 RelativePos = m_Particle_1->GetPosition() - m_Particle_2->GetPosition();
 	return glm::length(RelativePos);
 }
 
-ParticleCableLink::ParticleCableLink(Particle* particle_1, Particle* particle_2, float MaxLength, float Restitution)
+ParticleCableLink::ParticleCableLink(std::shared_ptr<Particle> particle_1, std::shared_ptr<Particle> particle_2, float MaxLength, float Restitution)
 	: m_MaxLength(MaxLength),
 	  m_Restitution(Restitution)
 {
-	m_Particles[0] = particle_1;
-	m_Particles[1] = particle_2;
+	m_Particle_1 = particle_1;
+	m_Particle_2 = particle_2;
 }
 
-int ParticleCableLink::AddContact(ParticleContact* contact, unsigned int limit) const
+int ParticleCableLink::AddContact(std::shared_ptr<ParticleContact> contact, unsigned int limit) const
 {
 	// Find the length of the cable
 	float length = CurrentLength();
@@ -37,11 +37,11 @@ int ParticleCableLink::AddContact(ParticleContact* contact, unsigned int limit) 
 	}
 
 	// Otherwise, return the contact
-	contact->m_Particles[0] = m_Particles[0];
-	contact->m_Particles[1] = m_Particles[1];
+	contact->m_Particle_1 = m_Particle_1;
+	contact->m_Particle_2 = m_Particle_2;
 
 	// normal
-	glm::vec3 Normal = m_Particles[1]->GetPosition() - m_Particles[0]->GetPosition();
+	glm::vec3 Normal = m_Particle_2->GetPosition() - m_Particle_1->GetPosition();
 	contact->m_ContactNormal = glm::normalize(Normal);
 
 	contact->m_Penetration = length - m_MaxLength;

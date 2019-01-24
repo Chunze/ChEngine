@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#define PHYSICS_TIME_STEP 0.001f
+
 struct GLFWwindow;
 class InputHandler;
 
@@ -38,10 +40,10 @@ public:
 
 	bool ShowFPS = false;
 
-protected:
-	InputHandler* m_InputHandler;
-
 private:
+	// for physics to run in smaller steps
+	float PhysicsTimeAccumulator = 0.0f;
+
 
 	bool KEY_B_WasPressed = false;
 	bool KEY_H_WasPressed = false;
