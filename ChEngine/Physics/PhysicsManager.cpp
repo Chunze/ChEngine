@@ -72,7 +72,7 @@ void PhysicsManager::AddParticleContactGenerator(ParticleContactGenerator* conta
 void PhysicsManager::Init()
 {
 	//m_ParticleContactResolver = new ParticleContactResolver(10);
-	m_ParticleContactResolver = std::make_unique<ParticleContactResolver>(10);
+	m_ParticleContactResolver = std::make_unique<ParticleContactResolver>(0);
 }
 
 void PhysicsManager::RunCollisionDetection()
@@ -101,7 +101,10 @@ void PhysicsManager::RunCollisionDetection()
 		}
 
 		auto contact = m_ParticleContacts.back();
-		contactGenerator->AddContact(contact, 1);
+		if (!contactGenerator->AddContact(contact, 1))
+		{
+			m_ParticleContacts.pop_back();
+		}
 	}
 }
 

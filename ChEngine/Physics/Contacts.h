@@ -17,6 +17,9 @@ public:
 	std::shared_ptr<Particle> m_Particle_1 = nullptr;
 	std::shared_ptr<Particle> m_Particle_2 = nullptr;
 
+	glm::vec3 m_ParticleMovement_1;
+	glm::vec3 m_ParticleMovement_2;
+
 	/// Restitution coefficient
 	float m_Restitution;
 
@@ -62,7 +65,7 @@ public:
 
 protected:
 	/// Holds the number of iterations allowed
-	unsigned int m_Iterations;
+	unsigned int m_Iterations = 0;
 
 	/// The actual number of iterations used
 	unsigned int m_IterationsUsed;

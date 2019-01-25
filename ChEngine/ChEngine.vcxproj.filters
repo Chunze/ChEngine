@@ -132,6 +132,9 @@
     <ClCompile Include="Physics\Contacts.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\RigidBody\RigidBody.cpp">
+      <Filter>Physics\RigidBody</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -298,6 +301,9 @@
     <ClInclude Include="Physics\Contacts.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\RigidBody\RigidBody.h">
+      <Filter>Physics\RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -338,6 +344,9 @@
     </Filter>
     <Filter Include="Physics\ContactGenerators">
       <UniqueIdentifier>{1f9240d5-0070-498b-b977-a27872176adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\RigidBody">
+      <UniqueIdentifier>{8dffd7c0-772a-4802-afb7-fcc4eeb37d3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -35,7 +35,7 @@ void ParticleContact::ResolveVelocity(float duration)
 {
 	float SeparatingVelocity = CalculateSeparatingVelocity();
 
-	if (SeparatingVelocity > 0)
+	if (SeparatingVelocity >= 0)
 	{
 		// the contact is either separating or stationary
 		return;
@@ -106,10 +106,16 @@ void ParticleContact::ResolveInterpenetration(float duration)
 	glm::vec3 MovePerIMass = m_ContactNormal * (m_Penetration / TotalInverseMass);
 
 	// Apply displacement
-	m_Particle_1->AddPosition(MovePerIMass * m_Particle_1->GetInverseMass());
+	m_ParticleMovement_1 = MovePerIMass * m_Particle_1->GetInverseMass();
+	m_Particle_1->AddPosition(m_ParticleMovement_1);
 	if (m_Particle_2)
 	{
-		m_Particle_2->AddPosition(-MovePerIMass * m_Particle_2->GetInverseMass());
+		m_ParticleMovement_2 = -MovePerIMass * m_Particle_2->GetInverseMass();
+
+	}
+	if (m_Particle_2)
+	{
+		m_Particle_2->AddPosition(m_ParticleMovement_2);
 	}
 }
 
@@ -136,6 +142,10 @@ void ParticleContactResolver::ResolveContacts(std::vector<std::shared_ptr<Partic
 {
 	unsigned int i;
 	m_IterationsUsed = 0;
+	if (m_Iterations == 0)
+	{
+		m_Iterations = Contacts.size();
+	}
 	while (m_IterationsUsed < m_Iterations)
 	{
 		// find the contact with the largest closing velocity
@@ -146,7 +156,7 @@ void ParticleContactResolver::ResolveContacts(std::vector<std::shared_ptr<Partic
 			if(!Contacts[i]->IsValid()) continue;
 
 			float SeparatingVel = Contacts[i]->CalculateSeparatingVelocity();
-			if (SeparatingVel < max && (SeparatingVel < 0) || Contacts[i]->m_Penetration > 0)
+			if (SeparatingVel < max && (SeparatingVel < 0 || Contacts[i]->m_Penetration > 0))
 			{
 				max = SeparatingVel;
 				maxIndex = i;

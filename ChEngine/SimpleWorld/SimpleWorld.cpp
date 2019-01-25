@@ -95,7 +95,7 @@ void SimpleWorld::SetupWorld()
 	m_GameObjects.push_back(gameObject);
 	m_SceneObjects.push_back(staticMeshComp);
 
-	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 7.0f, 0.0));
+	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 10.0f, 0.0));
 	StaticMeshComponent* staticMeshComp_1 = new StaticMeshComponent(m_gameContext, this);
 	staticMeshComp_1->SetMesh(newModel);
 	gameObject_1->SetRootComponent(staticMeshComp_1);
@@ -103,11 +103,12 @@ void SimpleWorld::SetupWorld()
 	m_GameObjects.push_back(gameObject_1);
 	m_SceneObjects.push_back(staticMeshComp_1);
 
-	gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 10.0f, 0.0f));
+	gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	ParticleCableLink* CableLink = new ParticleCableLink(gameObject->GetRootComponent()->GetParticle(), 
-														 gameObject_1->GetRootComponent()->GetParticle(),
-														 8.0f);
+	auto* CableLink = new ParticleRodLink(gameObject->GetRootComponent()->GetParticle(), 
+										  gameObject_1->GetRootComponent()->GetParticle(),
+										  glm::length(gameObject->GetRootComponent()->GetParticle()->GetPosition()
+											  - gameObject_1->GetRootComponent()->GetParticle()->GetPosition()));
 
 	m_gameContext->GetPhysicsManager()->AddParticleContactGenerator(CableLink);
 
