@@ -78,6 +78,13 @@ namespace Math {
 
 		return result;
 	}
+
+	// Get the rotation matrix out of a transformation matrix
+	// This assumes that the transformation matrix has no scaling
+	static mat3 GetRotationMatrix(const mat4 &Transform)
+	{
+		return mat3(Transform);
+	}
 } // namespace Math
 
 #endif

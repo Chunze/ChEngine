@@ -142,10 +142,7 @@ void ParticleContactResolver::ResolveContacts(std::vector<std::shared_ptr<Partic
 {
 	unsigned int i;
 	m_IterationsUsed = 0;
-	if (m_Iterations == 0)
-	{
-		m_Iterations = Contacts.size();
-	}
+	m_Iterations = Contacts.size();
 	while (m_IterationsUsed < m_Iterations)
 	{
 		// find the contact with the largest closing velocity
