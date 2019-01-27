@@ -1,8 +1,10 @@
 #pragma once
 #include "BaseClass.h"
 #include "Particle.h"
+
+#include "PhysicsTypes.h"
+
 #include <vector>
-#include <memory>
 
 using namespace std;
 
@@ -39,7 +41,7 @@ public:
 	std::vector<SceneObject*> &GetChildren() { return m_Children; }
 	bool HasPostPhysicsUpdated() { return bPostPhysicsUpdated; }
 	bool GetIsRoot() { return bIsRoot; }
-	shared_ptr<Particle> GetParticle() { return m_Particle; }
+	Particle_sp GetParticle() { return m_Particle; }
 
 	~SceneObject();
 
@@ -49,7 +51,7 @@ protected:
 	glm::mat4 m_WorldTransform = glm::mat4();
 	
 	World* m_World;
-	shared_ptr<Particle> m_Particle = nullptr;
+	Particle_sp m_Particle = nullptr;
 
 	SceneObject* m_Owner = nullptr;
 	std::vector<SceneObject*> m_Children;

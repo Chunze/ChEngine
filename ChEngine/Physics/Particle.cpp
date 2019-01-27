@@ -52,7 +52,7 @@ void Particle::Integrate(float Delta)
 	}
 	else
 	{
-		Damping = m_PhysicsManager->GetDamping();
+		Damping = m_PhysicsManager->GetLinearDamping();
 	}
 	m_volecity *= Damping;
 

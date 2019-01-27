@@ -1,13 +1,13 @@
 #ifndef PHYSICS_MANAGER_H
 #define PHYSICS_MANAGER_H
 #include <vector>
-#include <memory>
+
+#include "PhysicsTypes.h"
 
 #include "BaseClass.h"
 #include "ParticleForceRegistry.h"
 #include "glm.h"
 
-class Particle;
 class ForceGenerator;
 class World;
 class ParticleContact;
@@ -40,7 +40,7 @@ public:
 
 	void GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping);
 
-	void AddPhysicsParticle(shared_ptr<Particle> ParticleToAdd);
+	void AddPhysicsParticle(Particle_sp ParticleToAdd);
 	void AddParticleContactGenerator(ParticleContactGenerator* contactGenerator);
 
 	int GetIntegrator() { return m_intergrator; }
@@ -51,7 +51,9 @@ public:
 	void Increment_RK4_step() { RK4_step++; }
 	void Reset_RK4_Step() { RK4_step = 1; }
 	
-	float GetDamping() { return m_Damping; }
+	/**    getters    **/
+	float GetLinearDamping() { return m_LinearDamping; }
+	float GetAngularDamping() { return m_AngularDamping; }
 	glm::vec3 GetGravity() { return m_Gravity; }
 
 protected:
@@ -62,7 +64,8 @@ protected:
 
 	// RK4 step count
 	int RK4_step = 1;
-	std::vector<shared_ptr<Particle>> m_physicsParticles;
+	std::vector<Particle_sp> m_physicsParticles;
+	std::vector<RigidBody_sp> m_RigidBodies;
 	std::vector<shared_ptr<ParticleContact>> m_ParticleContacts;
 	std::vector<ParticleContactGenerator*> m_ContactGenerator;
 	std::unique_ptr<ParticleContactResolver> m_ParticleContactResolver = nullptr;
@@ -72,8 +75,10 @@ protected:
 
 	// physics constants
 	glm::vec3 m_Gravity = glm::vec3(0.0f, -9.8f, 0.0f);
-	float m_Damping;
-	float m_DampingCoef = 0.98f;
+	float m_LinearDamping;
+	float m_AngularDamping;
+	float m_LinearDampingCoef = 0.93f;
+	float m_AngularDampingCoef = 0.96f;
 
 	void RunCollisionDetection();
 	void RunCollisionResolution(float Delta);

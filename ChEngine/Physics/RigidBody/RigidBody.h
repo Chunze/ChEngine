@@ -1,6 +1,7 @@
 #pragma once
 #include "glm.h"
 
+class PhysicsManager;
 
 class RigidBody
 {
@@ -8,14 +9,15 @@ public:
 	RigidBody();
 	~RigidBody();
 
-	float m_InverseMass;
+	float m_InverseMass = 1.0f;
 
 	/// As long as the tensor is finite, it will be invertible.
 	/// The inverse tensor is used for similar reasons to inverse mass
 	mat3 m_InverseInertiaTensor;
 
 	/// Damping apply to the linear motion
-	float m_LinearDamping;
+	float m_LinearDamping = -1.0f;
+	float m_AngularDamping = -1.0f;
 
 	vec3 m_Position;
 	quat m_Orientation;
@@ -52,9 +54,16 @@ public:
 	void CalculateDerivedData();
 
 protected:
+	PhysicsManager* m_PhysicsManager;
+
 	bool m_bIsAwake;
 	vec3 m_ForceAccum;
+	vec3 m_Acceleration;
 	vec3 m_TorqueAccum;
+	vec3 m_AngularAcceleration;
+
+	virtual void ConstructInertiaTensor() = 0;
 
 	void ClearAccumulators();
+
 };

@@ -1,4 +1,6 @@
 #include "RigidBody.h"
+#include "PhysicsManager.h"
+#include "MathStatics.h"
 
 static inline void CalculateTransformMat(mat4& OutMatrix, const vec3 &Position, const quat &Orientation)
 {
@@ -16,6 +18,7 @@ static inline void CalculateInertiaTensor(mat3& iitWorld, const mat3 &iitBody, c
 
 RigidBody::RigidBody()
 {
+	m_InverseMass = 1.0f;
 }
 
 
@@ -49,7 +52,36 @@ void RigidBody::AddForceAtBodyPoint(const vec3 &force, const vec3 &point)
 
 void RigidBody::Integrate(float duration)
 {
+	// calculate linear acceleration
+	m_Acceleration = m_ForceAccum * m_InverseMass;
 
+	// calculate angular acceleration
+	m_AngularAcceleration = m_InverseTensorWorld * m_TorqueAccum;
+
+	// adjust velocity
+	m_Velocity += m_Acceleration * duration;
+	m_AngularVelocity += m_AngularAcceleration * duration;
+
+	// apply damping
+	if (m_LinearDamping <= 0.0f)
+	{
+		m_LinearDamping = m_PhysicsManager->GetLinearDamping();
+	}
+
+	if (m_AngularDamping <= 0.0f)
+	{
+		m_AngularDamping = m_PhysicsManager->GetAngularDamping();
+	}
+
+	m_Velocity *= m_LinearDamping;
+	m_AngularVelocity *= m_AngularDamping;
+
+	// adjust position and rotation
+	m_Position += m_Velocity * duration;
+	m_Orientation = Math::Rotate(m_Orientation, m_AngularVelocity, duration);
+
+	// update derived data
+	CalculateDerivedData();
 
 	// clear accumulators
 	ClearAccumulators();

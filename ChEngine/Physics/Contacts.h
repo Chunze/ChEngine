@@ -1,7 +1,7 @@
 #pragma once
 #include "glm.h"
+#include "PhysicsTypes.h"
 #include <vector>
-#include <memory>
 
 class Particle;
 
@@ -14,8 +14,8 @@ public:
 
 	/// Holds the particles that are involved in the contact.
 	/// The second of these 2 can be nullptr for contacts with static object.
-	std::shared_ptr<Particle> m_Particle_1 = nullptr;
-	std::shared_ptr<Particle> m_Particle_2 = nullptr;
+	Particle_sp m_Particle_1 = nullptr;
+	Particle_sp m_Particle_2 = nullptr;
 
 	glm::vec3 m_ParticleMovement_1;
 	glm::vec3 m_ParticleMovement_2;

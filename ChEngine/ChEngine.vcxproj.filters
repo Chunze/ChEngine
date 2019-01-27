@@ -126,13 +126,14 @@
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp">
       <Filter>Physics\ForceGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleLink.cpp">
-      <Filter>Physics\ContactGenerators</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Contacts.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\RigidBody\RigidBody.cpp">
+      <Filter>Physics\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\ContactGenerators\ParticleLink.cpp" />
+    <ClCompile Include="Physics\RigidBody\BoxCollider.cpp">
       <Filter>Physics\RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
@@ -295,13 +296,17 @@
     <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h">
       <Filter>Physics\ContactGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleLink.h">
-      <Filter>Physics\ContactGenerators</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\Contacts.h">
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\RigidBody\RigidBody.h">
+      <Filter>Physics\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ContactGenerators\ParticleLink.h" />
+    <ClInclude Include="Physics\PhysicsTypes.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\RigidBody\BoxCollider.h">
       <Filter>Physics\RigidBody</Filter>
     </ClInclude>
   </ItemGroup>

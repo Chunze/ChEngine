@@ -85,6 +85,18 @@ namespace Math {
 	{
 		return mat3(Transform);
 	}
+
+	// Rotates a quaternion by a angular velocity with duration
+	static quat Rotate(const quat &QuatToRotate, const vec3 &AngularVelocity, const float duration)
+	{
+		// quaternion constructed from angular velocity
+		quat Result;
+		quat q(0.0f, AngularVelocity.x, AngularVelocity.y, AngularVelocity.z);
+
+		Result = QuatToRotate + duration * 0.5f * q * QuatToRotate;
+
+		return Result;
+	}
 } // namespace Math
 
 #endif

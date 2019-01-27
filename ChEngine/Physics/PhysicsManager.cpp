@@ -3,6 +3,7 @@
 #include "Contacts.h"
 #include "ForceGenerators/CollisionSpringFG.h"
 #include "ParticleContactGenerator.h"
+#include "RigidBody.h"
 
 PhysicsManager::PhysicsManager(GameContext* gameContext)
 	: BaseClass(gameContext)
@@ -17,7 +18,8 @@ void PhysicsManager::registerForce(Particle* particle, ForceGenerator* FG)
 
 void PhysicsManager::Update(float Delta)
 {
-	m_Damping = powf(m_DampingCoef, Delta);
+	m_LinearDamping = powf(m_LinearDampingCoef, Delta);
+	m_AngularDamping = powf(m_AngularDampingCoef, Delta);
 
 	UpdateForces(Delta);
 
@@ -33,6 +35,11 @@ void PhysicsManager::Integrate(float Delta)
 	for (auto particle : m_physicsParticles)
 	{
 		particle->Integrate(Delta);
+	}
+
+	for (auto rigid_body : m_RigidBodies)
+	{
+		rigid_body->Integrate(Delta);
 	}
 }
 
@@ -55,7 +62,7 @@ void PhysicsManager::GenerateCollisionInfo(Particle* particle, Particle* Anchor,
 	m_contactForceRegistry.Add(particle, collisionFG);
 }
 
-void PhysicsManager::AddPhysicsParticle(shared_ptr<Particle> ParticleToAdd)
+void PhysicsManager::AddPhysicsParticle(Particle_sp ParticleToAdd)
 {
 	m_physicsParticles.push_back(ParticleToAdd);
 	ParticleToAdd->SetPhysicsManager(this);
