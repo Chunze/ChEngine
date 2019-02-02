@@ -136,6 +136,9 @@
     <ClCompile Include="Physics\RigidBody\BoxCollider.cpp">
       <Filter>Physics\RigidBody</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleWorld\SimpleInputHandler.cpp">
+      <Filter>SimpleWorld</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -308,6 +311,9 @@
     </ClInclude>
     <ClInclude Include="Physics\RigidBody\BoxCollider.h">
       <Filter>Physics\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleWorld\SimpleInputHandler.h">
+      <Filter>SimpleWorld</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

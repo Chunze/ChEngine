@@ -42,6 +42,7 @@ public:
 
 	void AddPhysicsParticle(Particle_sp ParticleToAdd);
 	void AddParticleContactGenerator(ParticleContactGenerator* contactGenerator);
+	void AddPhysicsBody(RigidBody_sp BodyToAdd);
 
 	int GetIntegrator() { return m_intergrator; }
 	void SetIntegrator(int in) { m_intergrator = in; }

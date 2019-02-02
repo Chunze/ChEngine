@@ -1,7 +1,7 @@
 #include "SimpleWorld.h"
 #include "Light.h"
 #include "Model.h"
-#include "JelloWorldInputHandler.h"
+#include "SimpleInputHandler.h"
 #include "GameObject.h"
 #include "StaticMeshComponent.h"
 #include "ParticleLink.h"
@@ -83,17 +83,17 @@ void SimpleWorld::InitDebugElement()
 
 void SimpleWorld::SetupWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 6.0f, 0.0f));
+//	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 6.0f, 0.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
-	Model* newModel = new Model(m_gameContext, crate_path);
-	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
-	gameObject->SetRootComponent(staticMeshComp);
-	staticMeshComp->SetMesh(newModel);
-
-	m_GameObjects.push_back(gameObject);
-	m_SceneObjects.push_back(staticMeshComp);
+ 	Model* newModel = new Model(m_gameContext, crate_path);
+// 	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
+// 	gameObject->SetRootComponent(staticMeshComp);
+// 	staticMeshComp->SetMesh(newModel);
+// 
+// 	m_GameObjects.push_back(gameObject);
+// 	m_SceneObjects.push_back(staticMeshComp);
 
 	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 10.0f, 0.0));
 	StaticMeshComponent* staticMeshComp_1 = new StaticMeshComponent(m_gameContext, this);
@@ -103,14 +103,14 @@ void SimpleWorld::SetupWorld()
 	m_GameObjects.push_back(gameObject_1);
 	m_SceneObjects.push_back(staticMeshComp_1);
 
-	gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+	//gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	auto* CableLink = new ParticleRodLink(gameObject->GetRootComponent()->GetParticle(), 
-										  gameObject_1->GetRootComponent()->GetParticle(),
-										  glm::length(gameObject->GetRootComponent()->GetParticle()->GetPosition()
-											  - gameObject_1->GetRootComponent()->GetParticle()->GetPosition()));
+// 	auto* CableLink = new ParticleRodLink(gameObject->GetRootComponent()->GetParticle(), 
+// 										  gameObject_1->GetRootComponent()->GetParticle(),
+// 										  glm::length(gameObject->GetRootComponent()->GetParticle()->GetPosition()
+// 											  - gameObject_1->GetRootComponent()->GetParticle()->GetPosition()));
 
-	m_gameContext->GetPhysicsManager()->AddParticleContactGenerator(CableLink);
+	//m_gameContext->GetPhysicsManager()->AddParticleContactGenerator(CableLink);
 
 	//AnchoredSpringFG* FG = new AnchoredSpringFG(gameObject->GetWorldLocation() + glm::vec3(3.0, 5.0f, 0.0f), 10.f, 5.f);
 	//FakeSprintFG* FG = new FakeSprintFG(gameObject->GetWorldLocation() + glm::vec3(3.0f, 3.0f, 0.0f), 15.0f, 0.95f);
@@ -120,5 +120,5 @@ void SimpleWorld::SetupWorld()
 
 void SimpleWorld::InitInputHandler()
 {
-	m_gameContext->m_InputHandler = new JelloWorldInputHandler(m_gameContext);
+	m_gameContext->m_InputHandler = new SimpleInputHandler(m_gameContext);
 }

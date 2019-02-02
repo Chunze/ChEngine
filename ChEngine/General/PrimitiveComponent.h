@@ -10,10 +10,19 @@ public:
 
 	void AddDrawListElement() override;
 
+	void PostPhysicsUpdate() override;
+
+	RigidBody_sp GetPhsicsBody() { return m_RigidBody; }
+
+	void SetWorldTransform(mat4 worldTransform) override;
+	void SetWorldLocation(vec3 location) override;
+
 	~PrimitiveComponent();
 
 protected:
 	bool bDirty = true;
 	DrawListElement m_DrawListElement;
+
+	RigidBody_sp m_RigidBody;
 };
 

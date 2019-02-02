@@ -76,6 +76,12 @@ void PhysicsManager::AddParticleContactGenerator(ParticleContactGenerator* conta
 	}
 }
 
+void PhysicsManager::AddPhysicsBody(RigidBody_sp BodyToAdd)
+{
+	m_RigidBodies.push_back(BodyToAdd);
+	BodyToAdd->SetPhisicsManager(this);
+}
+
 void PhysicsManager::Init()
 {
 	//m_ParticleContactResolver = new ParticleContactResolver(10);

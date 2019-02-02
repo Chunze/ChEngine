@@ -89,6 +89,8 @@ void SceneObject::PostPhysicsUpdate()
 	{
 		m_WorldTransform = m_RelativeTransform;
 	}
+
+	bPostPhysicsUpdated = true;
 }
 
 void SceneObject::SetWorldTransform(glm::mat4 worldTransform)
@@ -98,6 +100,11 @@ void SceneObject::SetWorldTransform(glm::mat4 worldTransform)
 	{
 		m_Particle->SetPosition(glm::vec3(m_WorldTransform[3]));
 	}
+}
+
+void SceneObject::SetRelativeTransform(mat4 relativeTransform)
+{
+
 }
 
 void SceneObject::RemoveChild(SceneObject* child)
@@ -114,6 +121,10 @@ void SceneObject::RemoveChild(SceneObject* child)
 void SceneObject::SetWorldLocation(glm::vec3 location)
 {
 	m_WorldTransform[3] = glm::vec4(location, 1.0f);
+	if (m_Particle != nullptr)
+	{
+		m_Particle->SetPosition(location);
+	}
 }
 
 void SceneObject::SetOwner(SceneObject* owner)

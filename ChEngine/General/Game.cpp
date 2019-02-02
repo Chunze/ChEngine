@@ -142,7 +142,7 @@ void Game::InitGame()
 			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
 			World* world = new SimpleWorld(m_gameContext);
 
-			bPaused = true;
+			bPaused = false;
 
 			m_gameContext->m_world = world;
 		}

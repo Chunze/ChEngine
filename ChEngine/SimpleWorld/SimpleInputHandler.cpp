@@ -1,7 +1,12 @@
-#include "JelloWorldInputHandler.h"
-#include "JelloWorld.h"
+#include "SimpleInputHandler.h"
 
-namespace JelloSpace 
+#include "GameContext.h"
+#include "RigidBody.h"
+#include "GameObject.h"
+#include "PrimitiveComponent.h"
+#include "World.h"
+
+namespace Simple
 {
 	GameContext* _gameContext;
 	double _mouselastX = 400, _mouselastY = 300;
@@ -29,13 +34,13 @@ namespace JelloSpace
 	}
 }
 
-JelloWorldInputHandler::JelloWorldInputHandler(GameContext* gameContext)
+SimpleInputHandler::SimpleInputHandler(GameContext* gameContext)
 	: InputHandler(gameContext)
 {
-	JelloSpace::_gameContext = gameContext;
+	Simple::_gameContext = gameContext;
 }
 
-void JelloWorldInputHandler::ProcessInput(GLFWwindow* contextWindow)
+void SimpleInputHandler::ProcessInput(GLFWwindow* contextWindow)
 {
 	InputHandler::ProcessInput(contextWindow);
 
@@ -56,7 +61,7 @@ void JelloWorldInputHandler::ProcessInput(GLFWwindow* contextWindow)
 	if (glfwGetMouseButton(contextWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		glfwSetInputMode(contextWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetCursorPosCallback(contextWindow, JelloSpace::_mouse_callback);
+		glfwSetCursorPosCallback(contextWindow, Simple::_mouse_callback);
 
 		if (glfwGetKey(contextWindow, GLFW_KEY_W) == GLFW_PRESS)
 		{
@@ -89,7 +94,7 @@ void JelloWorldInputHandler::ProcessInput(GLFWwindow* contextWindow)
 		// mouse right release, show cursor, unbind callback function and reset
 		glfwSetInputMode(contextWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		glfwSetCursorPosCallback(contextWindow, NULL);
-		JelloSpace::_firstMouse = true;
+		Simple::_firstMouse = true;
 	}
 
 	if (glfwGetKey(contextWindow, GLFW_KEY_F4) == GLFW_PRESS)
@@ -110,11 +115,11 @@ void JelloWorldInputHandler::ProcessInput(GLFWwindow* contextWindow)
 		if (KEY_B_WasPressed)
 		{
 			KEY_B_WasPressed = false;
-			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext->GetWorld());
-			if (_jelloWorld)
-			{
-				_jelloWorld->ToggleBendSpring();
-			}
+			World* world = m_gameContext->m_world;
+			GameObject* gameobject = world->GetGameObjects()[0];
+			PrimitiveComponent* comp = dynamic_cast<PrimitiveComponent *>(gameobject->GetRootComponent());
+			auto body = comp->GetPhsicsBody();
+			body->AddForceAtBodyPoint(vec3(-300.0f, 100.0f, 0.0f), vec3(0.5f, 0.0f, 0.2f));
 		}
 	}
 
@@ -127,28 +132,25 @@ void JelloWorldInputHandler::ProcessInput(GLFWwindow* contextWindow)
 		if (KEY_H_WasPressed)
 		{
 			KEY_H_WasPressed = false;
-			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext->GetWorld());
-			if (_jelloWorld)
-			{
-				_jelloWorld->ToggleShearSpring();
-			}
+			
 		}
 	}
 
 	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_PRESS)
 	{
 		KEY_V_WasPressed = true;
+		World* world = m_gameContext->m_world;
+		GameObject* gameobject = world->GetGameObjects()[0];
+		PrimitiveComponent* comp = dynamic_cast<PrimitiveComponent *>(gameobject->GetRootComponent());
+		auto body = comp->GetPhsicsBody();
+		body->AddForce(vec3(0.0, 100.f, 0.0f));
 	}
 	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_RELEASE)
 	{
 		if (KEY_V_WasPressed)
 		{
 			KEY_V_WasPressed = false;
-			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext->GetWorld());
-			if (_jelloWorld)
-			{
-				_jelloWorld->ToggleDrawingMode();
-			}
+			
 		}
 	}
 	if (glfwGetKey(contextWindow, GLFW_KEY_X) == GLFW_PRESS)
@@ -159,12 +161,7 @@ void JelloWorldInputHandler::ProcessInput(GLFWwindow* contextWindow)
 	{
 		if (KEY_X_WasPressed)
 		{
-			KEY_X_WasPressed = false;
-			JelloWorld* _jelloWorld = static_cast<JelloWorld*>(m_gameContext->GetWorld());
-			if (_jelloWorld)
-			{
-				_jelloWorld->ToggleStructuralSpring();
-			}
+			
 		}
 	}
 }

@@ -27,8 +27,9 @@ public:
 
 	/**    setters    **/
 	void SetRelativeLocation(glm::vec3 location) { m_RelativeTransform[3] = glm::vec4(location, 1.0); }
-	void SetWorldTransform(glm::mat4 worldTransform);
-	void SetWorldLocation(glm::vec3 location);
+	virtual void SetWorldTransform(glm::mat4 worldTransform);
+	virtual void SetRelativeTransform(mat4 relativeTransform);
+	virtual void SetWorldLocation(glm::vec3 location);
 	void SetWorld(World* world) { m_World = world; }
 	void SetOwner(SceneObject* owner);
 	void SetIsRoot(bool IsRoot) { bIsRoot = IsRoot; }

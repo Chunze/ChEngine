@@ -18,5 +18,6 @@ public:
 
 private:
 	void InitPhysicsParticle();
+	void InitPhysicsBody();
 };
 

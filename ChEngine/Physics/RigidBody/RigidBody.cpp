@@ -5,7 +5,7 @@
 static inline void CalculateTransformMat(mat4& OutMatrix, const vec3 &Position, const quat &Orientation)
 {
 	mat4 RotationMatrix = mat4_cast(Orientation);
-	RotationMatrix[3] = glm::vec4(Position.x, Position.y, Position.z, 1.0f);
+	RotationMatrix[3] = glm::vec4(Position, 1.0f);
 	OutMatrix = RotationMatrix;
 }
 
@@ -19,6 +19,8 @@ static inline void CalculateInertiaTensor(mat3& iitWorld, const mat3 &iitBody, c
 RigidBody::RigidBody()
 {
 	m_InverseMass = 1.0f;
+
+	m_bUseGravity = true;
 }
 
 
@@ -55,6 +57,11 @@ void RigidBody::Integrate(float duration)
 	// calculate linear acceleration
 	m_Acceleration = m_ForceAccum * m_InverseMass;
 
+	if (m_bUseGravity)
+	{
+		m_Acceleration += m_PhysicsManager->GetGravity();
+	}
+
 	// calculate angular acceleration
 	m_AngularAcceleration = m_InverseTensorWorld * m_TorqueAccum;
 
@@ -79,6 +86,7 @@ void RigidBody::Integrate(float duration)
 	// adjust position and rotation
 	m_Position += m_Velocity * duration;
 	m_Orientation = Math::Rotate(m_Orientation, m_AngularVelocity, duration);
+	m_Orientation = glm::normalize(m_Orientation);
 
 	// update derived data
 	CalculateDerivedData();
@@ -100,6 +108,14 @@ void RigidBody::CalculateDerivedData()
 	// calculate the inverse inertia tensor in world space
 	mat3 RotationMatrix = mat3(m_Transform);
 	CalculateInertiaTensor(m_InverseTensorWorld, m_InverseInertiaTensor, RotationMatrix);
+}
+
+void RigidBody::SetTransform(mat4 Transform)
+{
+	m_Position = vec3(Transform[3]);
+	mat3 RotationMat = mat3(Transform);
+	m_Orientation = glm::quat_cast(RotationMat);
+	m_Transform = Transform;
 }
 
 void RigidBody::ClearAccumulators()

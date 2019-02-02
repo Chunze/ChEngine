@@ -67,6 +67,7 @@
     <ClCompile Include="Physics\Particle.cpp" />
     <ClCompile Include="Physics\ParticleForceRegistry.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="SimpleWorld\SimpleInputHandler.cpp" />
     <ClCompile Include="SimpleWorld\SimpleWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +124,7 @@
     <ClInclude Include="Physics\Particle.h" />
     <ClInclude Include="Physics\ParticleForceRegistry.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="SimpleWorld\SimpleInputHandler.h" />
     <ClInclude Include="SimpleWorld\SimpleWorld.h" />
   </ItemGroup>
   <ItemGroup>

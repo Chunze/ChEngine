@@ -53,10 +53,20 @@ public:
 	void SetInertirTensor(const mat3 &IntertiaTensor);
 	void CalculateDerivedData();
 
+	/**    getters    **/
+	mat4 GetTransform() { return m_Transform; }
+	vec3 GetPosition() { return m_Position; }
+
+	/**    setters    **/
+	void SetTransform(mat4 Transform);
+	void SetPosition(vec3 Position) { m_Position = Position; }
+	void SetPhisicsManager(PhysicsManager* PhysicsManager) { m_PhysicsManager = PhysicsManager; }
+
 protected:
 	PhysicsManager* m_PhysicsManager;
 
 	bool m_bIsAwake;
+	bool m_bUseGravity;
 	vec3 m_ForceAccum;
 	vec3 m_Acceleration;
 	vec3 m_TorqueAccum;

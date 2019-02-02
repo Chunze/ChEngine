@@ -26,6 +26,8 @@ public:
 	virtual void PostPhysicsUpdate();
 	virtual void RenderWorld();
 
+	std::vector<GameObject*> GetGameObjects() { return m_GameObjects; }
+
 	float m_customDelta = -1.0f;
 
 protected:
