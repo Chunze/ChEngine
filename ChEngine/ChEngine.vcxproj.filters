@@ -139,6 +139,9 @@
     <ClCompile Include="SimpleWorld\SimpleInputHandler.cpp">
       <Filter>SimpleWorld</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\CollisionPrimitives\CollisionPrimitives.cpp">
+      <Filter>Physics\CollisionPrimitives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -315,6 +318,9 @@
     <ClInclude Include="SimpleWorld\SimpleInputHandler.h">
       <Filter>SimpleWorld</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\CollisionPrimitives\CollisionPrimitives.h">
+      <Filter>Physics\CollisionPrimitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -358,6 +364,9 @@
     </Filter>
     <Filter Include="Physics\RigidBody">
       <UniqueIdentifier>{8dffd7c0-772a-4802-afb7-fcc4eeb37d3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\CollisionPrimitives">
+      <UniqueIdentifier>{79f56dab-495f-43e8-b954-fa835bfe88b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
