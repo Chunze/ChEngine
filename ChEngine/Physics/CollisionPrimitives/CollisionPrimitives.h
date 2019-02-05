@@ -1,7 +1,0 @@
-
-class RigidBody;
-
-class PhysicsPrimitive
-{
-
-};

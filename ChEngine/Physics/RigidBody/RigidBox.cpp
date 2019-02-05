@@ -1,19 +1,19 @@
-#include "BoxCollider.h"
+#include "RigidBox.h"
 
-BoxCollider::BoxCollider(vec3 extend)
+RigidBox::RigidBox(vec3 extend)
 	: m_Extend(extend)
 {
 	ConstructInertiaTensor();
 }
 
-BoxCollider::BoxCollider()
+RigidBox::RigidBox()
 {
 	// Default 1 x 1 x 1 box
 	m_Extend = vec3(0.5f);
 	ConstructInertiaTensor();
 }
 
-void BoxCollider::ConstructInertiaTensor()
+void RigidBox::ConstructInertiaTensor()
 {
 	mat3 InertiaTensor(0.0f);
 

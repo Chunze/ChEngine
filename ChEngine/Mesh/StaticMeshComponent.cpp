@@ -1,4 +1,4 @@
-#include "BoxCollider.h"
+#include "RigidBox.h"
 #include "StaticMeshComponent.h"
 #include "PhysicsManager.h"
 
@@ -34,6 +34,6 @@ void StaticMeshComponent::InitPhysicsParticle()
 
 void StaticMeshComponent::InitPhysicsBody()
 {
-	m_RigidBody = std::make_shared<BoxCollider>();
+	m_RigidBody = std::make_shared<RigidBox>();
 	m_gameContext->GetPhysicsManager()->AddPhysicsBody(m_RigidBody);
 }

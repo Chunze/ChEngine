@@ -46,13 +46,14 @@
     <ClCompile Include="Mesh\Model.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
-    <ClCompile Include="Physics\CollisionPrimitives\CollisionPrimitives.cpp" />
+    <ClCompile Include="Physics\Collision\CollisionPrimitives.cpp" />
+    <ClCompile Include="Physics\Collision\CollisionTests.cpp" />
     <ClCompile Include="Physics\ContactGenerators\ParticleLink.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Physics\Contacts.cpp" />
     <ClCompile Include="Physics\ForceGenerators\AnchoredSpringFG.cpp" />
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp" />
-    <ClCompile Include="Physics\RigidBody\BoxCollider.cpp" />
+    <ClCompile Include="Physics\RigidBody\RigidBox.cpp" />
     <ClCompile Include="Physics\RigidBody\RigidBody.cpp" />
     <ClCompile Include="Render\Light.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
@@ -102,7 +103,9 @@
     <ClInclude Include="Mesh\Model.h" />
     <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="Mesh\StaticMeshComponent.h" />
-    <ClInclude Include="Physics\CollisionPrimitives\CollisionPrimitives.h" />
+    <ClInclude Include="Physics\Collision\CollisionInfo.h" />
+    <ClInclude Include="Physics\Collision\CollisionPrimitives.h" />
+    <ClInclude Include="Physics\Collision\CollisionTests.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleLink.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h" />
@@ -110,7 +113,7 @@
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h" />
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h" />
     <ClInclude Include="Physics\PhysicsTypes.h" />
-    <ClInclude Include="Physics\RigidBody\BoxCollider.h" />
+    <ClInclude Include="Physics\RigidBody\RigidBox.h" />
     <ClInclude Include="Physics\RigidBody\RigidBody.h" />
     <ClInclude Include="Render\Light.h" />
     <ClInclude Include="Render\Renderer.h" />
@@ -198,7 +201,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Physics\ForceGenerators;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine;$(SolutionDir)ChEngine\Physics\ContactGenerators;$(SolutionDir)ChEngine\Physics\RigidBody</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Physics\ForceGenerators;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine;$(SolutionDir)ChEngine\Physics\ContactGenerators;$(SolutionDir)ChEngine\Physics\RigidBody;$(SolutionDir)ChEngine\Physics\Collision</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

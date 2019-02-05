@@ -1,14 +1,14 @@
-#ifndef BOX_COLLIDER_H
-#define BOX_COLLIDER_H
+#ifndef RIGID_BOX_H
+#define RIGID_BOX_H
 
 #include "RigidBody.h"
 
-class BoxCollider : public RigidBody
+class RigidBox : public RigidBody
 {
 public:
-	BoxCollider();
+	RigidBox();
 
-	BoxCollider(vec3 extend);
+	RigidBox(vec3 extend);
 
 protected:
 	vec3 m_Extend;
