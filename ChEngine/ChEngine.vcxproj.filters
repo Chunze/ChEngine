@@ -330,6 +330,9 @@
     <ClInclude Include="Physics\Collision\CollisionInfo.h">
       <Filter>Physics\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\Collision\CollisionTestSelector.h">
+      <Filter>Physics\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">

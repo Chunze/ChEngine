@@ -106,6 +106,7 @@
     <ClInclude Include="Physics\Collision\CollisionInfo.h" />
     <ClInclude Include="Physics\Collision\CollisionPrimitives.h" />
     <ClInclude Include="Physics\Collision\CollisionTests.h" />
+    <ClInclude Include="Physics\Collision\CollisionTestSelector.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleLink.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h" />
