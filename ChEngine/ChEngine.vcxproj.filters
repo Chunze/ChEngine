@@ -145,6 +145,9 @@
     <ClCompile Include="Physics\Collision\CollisionTests.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\Collision\CollisionDetection.cpp">
+      <Filter>Physics\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -331,6 +334,9 @@
       <Filter>Physics\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Collision\CollisionTestSelector.h">
+      <Filter>Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Collision\CollisionDetection.h">
       <Filter>Physics\Collision</Filter>
     </ClInclude>
   </ItemGroup>

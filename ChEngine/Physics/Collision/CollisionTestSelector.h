@@ -9,7 +9,7 @@ struct CollisionTestSelector
 	SphereVsSphere	SphereVsSphereTest;
 	SphereVsBox		SphereVsBoxTest;
 
-	CollisionTest* SelectCollisionTest(PhysicsPrimitive* Primitive1, PhysicsPrimitive* Primitive2)
+	CollisionTest* SelectCollisionTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2)
 	{
 		if ((int)(Primitive1->GetType()) > (int)(Primitive2->GetType()))
 		{

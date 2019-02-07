@@ -118,6 +118,14 @@ void RigidBody::SetTransform(mat4 Transform)
 	m_Transform = Transform;
 }
 
+void RigidBody::AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)
+{
+	PrimitiveToAdd->SetBody(shared_from_this());
+	m_CollisionPrimitive = PrimitiveToAdd;
+
+	m_PhysicsManager->RegisterCollisionPrimitive(PrimitiveToAdd);
+}
+
 void RigidBody::ClearAccumulators()
 {
 	m_ForceAccum = vec3(0.0f);

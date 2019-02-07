@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "PhysicsTypes.h"
+#include "CollisionDetection.h"
 
 #include "BaseClass.h"
 #include "ParticleForceRegistry.h"
@@ -42,7 +43,8 @@ public:
 
 	void AddPhysicsParticle(Particle_sp ParticleToAdd);
 	void AddParticleContactGenerator(ParticleContactGenerator* contactGenerator);
-	void AddPhysicsBody(RigidBody_sp BodyToAdd);
+	void RegisterPhysicsBody(RigidBody_sp BodyToAdd);
+	void RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
 
 	int GetIntegrator() { return m_intergrator; }
 	void SetIntegrator(int in) { m_intergrator = in; }
@@ -51,6 +53,7 @@ public:
 
 	void Increment_RK4_step() { RK4_step++; }
 	void Reset_RK4_Step() { RK4_step = 1; }
+
 	
 	/**    getters    **/
 	float GetLinearDamping() { return m_LinearDamping; }
@@ -80,6 +83,9 @@ protected:
 	float m_AngularDamping;
 	float m_LinearDampingCoef = 0.93f;
 	float m_AngularDampingCoef = 0.96f;
+
+	// worker classes
+	CollisionDetection m_CollisionDetection;
 
 	void RunCollisionDetection();
 	void RunCollisionResolution(float Delta);

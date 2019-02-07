@@ -52,6 +52,50 @@ private:
 	float GetTotalInverseMass();
 };
 
+struct BodyContact
+{
+	RigidBody_sp m_RigidBody1;
+	RigidBody_sp m_RigidBody2;
+
+	vec3 m_ContactPoint;
+
+	vec3 m_ContactNormal;
+
+	float m_Penetration;
+
+	void SetBodies(RigidBody_sp Body_1, RigidBody_sp Body_2)
+	{
+		// if bodies are already set, make sure that input bodies are the same ones
+		if (m_RigidBody1)
+		{
+			assert(m_RigidBody1 == Body_1);
+		}
+		else
+		{
+			m_RigidBody1 = Body_1;
+		}
+
+		if (m_RigidBody2)
+		{
+			assert(m_RigidBody2 == Body_2);
+		}
+		else
+		{
+			m_RigidBody2 = Body_2;
+		}
+	}
+
+	bool operator==(const BodyContact &OtherContact)
+	{
+		return m_ContactPoint == OtherContact.m_ContactPoint;
+	}
+
+	bool operator!=(const BodyContact &OtherContact)
+	{
+		return !(m_ContactPoint == OtherContact.m_ContactPoint);
+	}
+};
+
 /// The contact resolution routine for particle contacts.
 /// One instance can be shared for the entire simulation.
 class ParticleContactResolver

@@ -25,6 +25,7 @@ void PhysicsManager::Update(float Delta)
 
 	Integrate(Delta);
 
+	m_CollisionDetection.RunCollisionDetection();
 	RunCollisionDetection();
 
 	RunCollisionResolution(Delta);
@@ -76,10 +77,15 @@ void PhysicsManager::AddParticleContactGenerator(ParticleContactGenerator* conta
 	}
 }
 
-void PhysicsManager::AddPhysicsBody(RigidBody_sp BodyToAdd)
+void PhysicsManager::RegisterPhysicsBody(RigidBody_sp BodyToAdd)
 {
 	m_RigidBodies.push_back(BodyToAdd);
 	BodyToAdd->SetPhisicsManager(this);
+}
+
+void PhysicsManager::RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)
+{
+	m_CollisionDetection.RegisterCollisionPrimitive(PrimitiveToAdd);
 }
 
 void PhysicsManager::Init()

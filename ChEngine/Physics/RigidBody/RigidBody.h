@@ -1,9 +1,12 @@
 #pragma once
+#include <memory>
+
 #include "glm.h"
+#include "CollisionPrimitives.h"
 
 class PhysicsManager;
 
-class RigidBody
+class RigidBody : std::enable_shared_from_this<RigidBody>
 {
 public:
 	RigidBody();
@@ -62,6 +65,10 @@ public:
 	void SetPosition(vec3 Position) { m_Position = Position; }
 	void SetPhisicsManager(PhysicsManager* PhysicsManager) { m_PhysicsManager = PhysicsManager; }
 
+	// Currently, I only allow 1 physics primitive.
+	// Multiple primitive on 1 rigid body will be supported.
+	void AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
+
 protected:
 	PhysicsManager* m_PhysicsManager;
 
@@ -71,6 +78,9 @@ protected:
 	vec3 m_Acceleration;
 	vec3 m_TorqueAccum;
 	vec3 m_AngularAcceleration;
+
+	// Collision shape that helps with the collision detection
+	CollisionPrimitive_sp m_CollisionPrimitive;
 
 	virtual void ConstructInertiaTensor() = 0;
 

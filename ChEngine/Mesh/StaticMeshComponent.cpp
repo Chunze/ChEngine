@@ -35,5 +35,5 @@ void StaticMeshComponent::InitPhysicsParticle()
 void StaticMeshComponent::InitPhysicsBody()
 {
 	m_RigidBody = std::make_shared<RigidBox>();
-	m_gameContext->GetPhysicsManager()->AddPhysicsBody(m_RigidBody);
+	m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(m_RigidBody);
 }
