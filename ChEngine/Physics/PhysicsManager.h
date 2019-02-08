@@ -19,6 +19,7 @@ using namespace std;
 
 class PhysicsManager : public BaseClass
 {
+	friend class CollisionDetection;
 public:
 
 	PhysicsManager(GameContext* gameContext);
@@ -59,6 +60,7 @@ public:
 	float GetLinearDamping() { return m_LinearDamping; }
 	float GetAngularDamping() { return m_AngularDamping; }
 	glm::vec3 GetGravity() { return m_Gravity; }
+	RigidBodies* GetRigidBodies() { return &m_RigidBodies; }
 
 protected:
 	void Init();
@@ -68,9 +70,9 @@ protected:
 
 	// RK4 step count
 	int RK4_step = 1;
-	std::vector<Particle_sp> m_physicsParticles;
-	std::vector<RigidBody_sp> m_RigidBodies;
-	std::vector<shared_ptr<ParticleContact>> m_ParticleContacts;
+	Particles m_physicsParticles;
+	RigidBodies m_RigidBodies;
+	ParticleContacts m_ParticleContacts;
 	std::vector<ParticleContactGenerator*> m_ContactGenerator;
 	std::unique_ptr<ParticleContactResolver> m_ParticleContactResolver = nullptr;
 

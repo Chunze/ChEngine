@@ -2,16 +2,19 @@
 #define COLLISION_DETECTION_H
 #include <vector>
 
-#include "CollisionTestSelector.h"
+#include "BroadPhaseTest.h"
+#include "NarrowPhaseTest.h"
 #include "PhysicsTypes.h"
 
 class PhysicsManager;
 
 class CollisionDetection
 {
-public:
+	friend class BroadPhaseTest;
+	friend class NarrowPhaseTest;
 
-	CollisionTestSelector m_CollisionTestSelector;
+public:
+	CollisionDetection();
 
 	void RunCollisionDetection();
 
@@ -19,8 +22,17 @@ public:
 
 protected:
 	PhysicsManager* m_PhysicsManager;
+	BroadPhaseTest m_BroadPhaseTest;
+	NarrowPhaseTest m_NarrowPhaseTest;
 
-	CollisionPrimitives m_CollisionPrimitives;
+
+	// CollisionPrimitives m_CollisionPrimitives;
+
+	/// Potential body contacts.
+	/// Broad Phase Test will write to this.
+	/// Narrow Phase Test will read from this.
+	PotentialBodyContacts m_PotentialContacts;
+
 
 	void RunBroadPhase();
 	void RunNarrowPhase();

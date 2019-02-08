@@ -46,9 +46,11 @@
     <ClCompile Include="Mesh\Model.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
+    <ClCompile Include="Physics\Collision\BroadPhaseTest.cpp" />
     <ClCompile Include="Physics\Collision\CollisionDetection.cpp" />
     <ClCompile Include="Physics\Collision\CollisionPrimitives.cpp" />
     <ClCompile Include="Physics\Collision\CollisionTests.cpp" />
+    <ClCompile Include="Physics\Collision\NarrowPhaseTest.cpp" />
     <ClCompile Include="Physics\ContactGenerators\ParticleLink.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="Physics\Contacts.cpp" />
@@ -104,11 +106,13 @@
     <ClInclude Include="Mesh\Model.h" />
     <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="Mesh\StaticMeshComponent.h" />
+    <ClInclude Include="Physics\Collision\BroadPhaseTest.h" />
     <ClInclude Include="Physics\Collision\CollisionDetection.h" />
     <ClInclude Include="Physics\Collision\CollisionInfo.h" />
     <ClInclude Include="Physics\Collision\CollisionPrimitives.h" />
     <ClInclude Include="Physics\Collision\CollisionTests.h" />
     <ClInclude Include="Physics\Collision\CollisionTestSelector.h" />
+    <ClInclude Include="Physics\Collision\NarrowPhaseTest.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleLink.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleContactGenerator.h" />

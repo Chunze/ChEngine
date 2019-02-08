@@ -59,6 +59,7 @@ public:
 	/**    getters    **/
 	mat4 GetTransform() { return m_Transform; }
 	vec3 GetPosition() { return m_Position; }
+	CollisionPrimitive_sp GetCollisionPrimitive() { return m_CollisionPrimitive; }
 
 	/**    setters    **/
 	void SetTransform(mat4 Transform);

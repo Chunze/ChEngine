@@ -52,6 +52,19 @@ private:
 	float GetTotalInverseMass();
 };
 
+/// This is the output of the broad phase of the collision detection
+struct PotentialBodyContact
+{
+	PotentialBodyContact(RigidBody_sp Body1, RigidBody_sp Body2)
+		: m_Body1(Body1), m_Body2(Body2)
+	{}
+	/// The two bodies that might be in contact
+	RigidBody_sp m_Body1;
+	RigidBody_sp m_Body2;
+};
+
+
+/// This is the output of the narrow phase of the collision detection
 struct BodyContact
 {
 	RigidBody_sp m_RigidBody1;
