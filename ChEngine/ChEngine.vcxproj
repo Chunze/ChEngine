@@ -58,6 +58,7 @@
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp" />
     <ClCompile Include="Physics\RigidBody\RigidBox.cpp" />
     <ClCompile Include="Physics\RigidBody\RigidBody.cpp" />
+    <ClCompile Include="Physics\RigidBody\RigidSphere.cpp" />
     <ClCompile Include="Render\Light.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
     <ClCompile Include="General\FileManager.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="Physics\PhysicsTypes.h" />
     <ClInclude Include="Physics\RigidBody\RigidBox.h" />
     <ClInclude Include="Physics\RigidBody\RigidBody.h" />
+    <ClInclude Include="Physics\RigidBody\RigidSphere.h" />
     <ClInclude Include="Render\Light.h" />
     <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />

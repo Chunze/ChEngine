@@ -19,7 +19,7 @@ class CollisionPrimitive
 public:
 
 	/**    setters    **/
-	void SetBody(RigidBody_sp Body) { m_RigidBody = Body; }
+	void SetBody(RigidBody_sp Body, const mat4 &Offset = mat4()) { m_RigidBody = Body; }
 
 	/**    getters    **/
 	PrimitiveType GetType() { return m_Type; }
@@ -46,6 +46,11 @@ class SpherePrimitive : public CollisionPrimitive
 {
 public:
 	SpherePrimitive() { m_Type = PrimitiveType::SPHERE; }
+	SpherePrimitive(float Radius)
+		: m_Radius(Radius)
+	{
+		m_Type = PrimitiveType::SPHERE;
+	}
 	float m_Radius;
 };
 

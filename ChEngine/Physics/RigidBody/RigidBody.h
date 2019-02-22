@@ -64,11 +64,12 @@ public:
 	/**    setters    **/
 	void SetTransform(mat4 Transform);
 	void SetPosition(vec3 Position) { m_Position = Position; }
+	void SetVelocity(vec3 Velocity) { m_Velocity = Velocity; }
 	void SetPhisicsManager(PhysicsManager* PhysicsManager) { m_PhysicsManager = PhysicsManager; }
 
 	// Currently, I only allow 1 physics primitive.
 	// Multiple primitive on 1 rigid body will be supported.
-	void AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
+	void AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd, const mat4 &Offset = mat4());
 
 protected:
 	PhysicsManager* m_PhysicsManager;

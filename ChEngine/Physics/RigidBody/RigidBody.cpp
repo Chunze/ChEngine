@@ -20,7 +20,7 @@ RigidBody::RigidBody()
 {
 	m_InverseMass = 1.0f;
 
-	m_bUseGravity = true;
+	m_bUseGravity = false;
 }
 
 
@@ -118,9 +118,9 @@ void RigidBody::SetTransform(mat4 Transform)
 	m_Transform = Transform;
 }
 
-void RigidBody::AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)
+void RigidBody::AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd, const mat4 &Offset)
 {
-	PrimitiveToAdd->SetBody(shared_from_this());
+	PrimitiveToAdd->SetBody(shared_from_this(), Offset);
 	m_CollisionPrimitive = PrimitiveToAdd;
 
 	m_PhysicsManager->RegisterCollisionPrimitive(PrimitiveToAdd);

@@ -154,6 +154,9 @@
     <ClCompile Include="Physics\Collision\NarrowPhaseTest.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\RigidBody\RigidSphere.cpp">
+      <Filter>Physics\RigidBody</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -350,6 +353,9 @@
     </ClInclude>
     <ClInclude Include="Physics\Collision\NarrowPhaseTest.h">
       <Filter>Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\RigidBody\RigidSphere.h">
+      <Filter>Physics\RigidBody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

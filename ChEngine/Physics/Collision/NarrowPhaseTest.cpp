@@ -12,8 +12,9 @@ NarrowPhaseTest::NarrowPhaseTest(CollisionDetection* collisionDetection)
 
 void NarrowPhaseTest::RunTest()
 {
-	for (auto potentialContact : m_CollisionDetection->m_PotentialContacts)
+	while (!m_CollisionDetection->m_PotentialContacts.empty())
 	{
+		auto potentialContact = m_CollisionDetection->m_PotentialContacts.front();
 		CollisionPrimitive* Primitive1 = potentialContact->m_Body1->GetCollisionPrimitive().get();
 		CollisionPrimitive* Primitive2 = potentialContact->m_Body2->GetCollisionPrimitive().get();
 
@@ -21,6 +22,8 @@ void NarrowPhaseTest::RunTest()
 
 		CollisionInfo Info;
 		Test->RunTest(Primitive1, Primitive2, Info);
+
+		m_CollisionDetection->m_PotentialContacts.pop();
 	}
 }
 

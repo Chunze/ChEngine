@@ -1,10 +1,12 @@
 #include "CollisionDetection.h"
+#include "PhysicsManager.h"
 
-CollisionDetection::CollisionDetection()
-	: m_BroadPhaseTest(this),
+CollisionDetection::CollisionDetection(PhysicsManager* PhysicsManager)
+	: m_PhysicsManager(PhysicsManager),
+	  m_BroadPhaseTest(this),
 	  m_NarrowPhaseTest(this)
 {
-
+	
 }
 
 void CollisionDetection::RunCollisionDetection()

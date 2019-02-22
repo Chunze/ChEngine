@@ -3,6 +3,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <queue>
 
 class CollisionPrimitive;
 class Particle;
@@ -21,7 +22,8 @@ typedef std::shared_ptr<PotentialBodyContact> PotentialBodyContact_sp;
 typedef std::vector<CollisionPrimitive_sp> CollisionPrimitives;
 typedef std::vector<Particle_sp> Particles;
 typedef std::vector<ParticleContact_sp> ParticleContacts;
-typedef std::vector<PotentialBodyContact_sp> PotentialBodyContacts;
 typedef std::vector<RigidBody_sp> RigidBodies;
+
+typedef std::queue<PotentialBodyContact_sp> PotentialBodyContacts;
 
 #endif // !PHYSICS_TYPES_H

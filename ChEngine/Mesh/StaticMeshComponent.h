@@ -19,5 +19,7 @@ public:
 private:
 	void InitPhysicsParticle();
 	void InitPhysicsBody();
+
+	bool bUseCollision = true;
 };
 

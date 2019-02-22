@@ -14,7 +14,7 @@ void BroadPhaseTest::RunTest()
 		for (auto y = x + 1; y != rigid_bodies.end(); ++y)
 		{
 			PotentialBodyContact_sp potentialContact = make_shared<PotentialBodyContact>(*x, *y);
-			m_CollisionDetection->m_PotentialContacts.push_back(potentialContact);
+			m_CollisionDetection->m_PotentialContacts.push(potentialContact);
 		}
 	}
 }

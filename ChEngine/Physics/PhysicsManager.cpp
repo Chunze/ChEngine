@@ -6,7 +6,8 @@
 #include "RigidBody.h"
 
 PhysicsManager::PhysicsManager(GameContext* gameContext)
-	: BaseClass(gameContext)
+	: BaseClass(gameContext),
+	  m_CollisionDetection(this)
 {
 	Init();
 }

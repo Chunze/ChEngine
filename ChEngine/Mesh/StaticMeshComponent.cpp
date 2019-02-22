@@ -1,4 +1,5 @@
 #include "RigidBox.h"
+#include "RigidSphere.h"
 #include "StaticMeshComponent.h"
 #include "PhysicsManager.h"
 
@@ -34,6 +35,13 @@ void StaticMeshComponent::InitPhysicsParticle()
 
 void StaticMeshComponent::InitPhysicsBody()
 {
-	m_RigidBody = std::make_shared<RigidBox>();
+	m_RigidBody = std::make_shared<RigidSphere>();
 	m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(m_RigidBody);
+
+	// TODO: the collision primitive should be calculated and attached in mesh or model class
+	if (bUseCollision)
+	{
+		CollisionPrimitive_sp Sphere = std::make_shared<SpherePrimitive>(1.0f);
+		m_RigidBody->AddCollisionPrimitive(Sphere);
+	}
 }

@@ -1,6 +1,5 @@
 #ifndef COLLISION_DETECTION_H
 #define COLLISION_DETECTION_H
-#include <vector>
 
 #include "BroadPhaseTest.h"
 #include "NarrowPhaseTest.h"
@@ -14,7 +13,7 @@ class CollisionDetection
 	friend class NarrowPhaseTest;
 
 public:
-	CollisionDetection();
+	CollisionDetection(PhysicsManager* PhysicsManager);
 
 	void RunCollisionDetection();
 
@@ -32,7 +31,6 @@ protected:
 	/// Broad Phase Test will write to this.
 	/// Narrow Phase Test will read from this.
 	PotentialBodyContacts m_PotentialContacts;
-
 
 	void RunBroadPhase();
 	void RunNarrowPhase();

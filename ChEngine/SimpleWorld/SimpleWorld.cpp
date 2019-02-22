@@ -83,17 +83,18 @@ void SimpleWorld::InitDebugElement()
 
 void SimpleWorld::SetupWorld()
 {
-//	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 6.0f, 0.0f));
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 10.0f, 0.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
- 	Model* newModel = new Model(m_gameContext, crate_path);
-// 	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
-// 	gameObject->SetRootComponent(staticMeshComp);
-// 	staticMeshComp->SetMesh(newModel);
-// 
-// 	m_GameObjects.push_back(gameObject);
-// 	m_SceneObjects.push_back(staticMeshComp);
+	Model* newModel = new Model(m_gameContext, crate_path);
+	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
+	gameObject->SetRootComponent(staticMeshComp);
+	staticMeshComp->SetMesh(newModel);
+	staticMeshComp->GetPhsicsBody()->SetVelocity(vec3(1.0f, 0.0f, 0.0f));
+
+	m_GameObjects.push_back(gameObject);
+	m_SceneObjects.push_back(staticMeshComp);
 
 	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 10.0f, 0.0));
 	StaticMeshComponent* staticMeshComp_1 = new StaticMeshComponent(m_gameContext, this);
