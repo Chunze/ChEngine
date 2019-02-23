@@ -17,6 +17,8 @@ public:
 
 	void RunCollisionDetection();
 
+	void ReportCollision(CollisionInfo &Collision) const;
+
 	void RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
 
 protected:

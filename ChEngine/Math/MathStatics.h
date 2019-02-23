@@ -97,6 +97,27 @@ namespace Math {
 
 		return Result;
 	}
+
+	static float LengthSq(const vec3 &V)
+	{
+		return V.x * V.x + V.y * V.y + V.z * V.z;
+	}
+
+	// Generates orthonormal basis from 2 vectors (x and y)
+	static bool MakeOrthonormalBasis(vec3 &x, vec3 &y, vec3&z)
+	{
+		x = glm::normalize(x);
+		z = glm::cross(x, y);
+		if (LengthSq(z) == 0.0f)
+		{
+			return false;
+		}
+
+		z = glm::normalize(z);
+		y = glm::cross(z, x);
+
+		return true;
+	}
 } // namespace Math
 
 #endif

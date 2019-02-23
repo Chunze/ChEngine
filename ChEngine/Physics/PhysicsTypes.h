@@ -11,6 +11,7 @@ class ParticleContact;
 class RigidBody;
 
 struct PotentialBodyContact;
+struct CollisionInfo;
 
 /**    smart pointers    **/
 typedef std::shared_ptr<Particle> Particle_sp;
@@ -24,6 +25,7 @@ typedef std::vector<Particle_sp> Particles;
 typedef std::vector<ParticleContact_sp> ParticleContacts;
 typedef std::vector<RigidBody_sp> RigidBodies;
 
-typedef std::queue<PotentialBodyContact_sp> PotentialBodyContacts;
+typedef std::queue<PotentialBodyContact> PotentialBodyContacts;
+typedef std::queue<CollisionInfo> CollisionInfos;
 
 #endif // !PHYSICS_TYPES_H

@@ -7,7 +7,8 @@
 
 PhysicsManager::PhysicsManager(GameContext* gameContext)
 	: BaseClass(gameContext),
-	  m_CollisionDetection(this)
+	  m_CollisionDetection(this),
+	  m_CollisionResolution(this)
 {
 	Init();
 }
@@ -29,6 +30,7 @@ void PhysicsManager::Update(float Delta)
 	m_CollisionDetection.RunCollisionDetection();
 	RunCollisionDetection();
 
+	m_CollisionResolution.RunCollisionResolution();
 	RunCollisionResolution(Delta);
 }
 

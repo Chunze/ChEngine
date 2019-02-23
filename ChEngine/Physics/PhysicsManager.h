@@ -4,6 +4,7 @@
 
 #include "PhysicsTypes.h"
 #include "CollisionDetection.h"
+#include "CollisionResolution.h"
 
 #include "BaseClass.h"
 #include "ParticleForceRegistry.h"
@@ -20,6 +21,7 @@ using namespace std;
 class PhysicsManager : public BaseClass
 {
 	friend class CollisionDetection;
+	friend class CollisionResolution;
 public:
 
 	PhysicsManager(GameContext* gameContext);
@@ -47,20 +49,19 @@ public:
 	void RegisterPhysicsBody(RigidBody_sp BodyToAdd);
 	void RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
 
-	int GetIntegrator() { return m_intergrator; }
-	void SetIntegrator(int in) { m_intergrator = in; }
-
-	int GetRK4StepCount() { return RK4_step; }
-
 	void Increment_RK4_step() { RK4_step++; }
 	void Reset_RK4_Step() { RK4_step = 1; }
-
 	
 	/**    getters    **/
+	int GetIntegrator() { return m_intergrator; }
+	int GetRK4StepCount() { return RK4_step; }
 	float GetLinearDamping() { return m_LinearDamping; }
 	float GetAngularDamping() { return m_AngularDamping; }
 	glm::vec3 GetGravity() { return m_Gravity; }
 	RigidBodies* GetRigidBodies() { return &m_RigidBodies; }
+
+	/**    setters    **/
+	void SetIntegrator(int in) { m_intergrator = in; }
 
 protected:
 	void Init();
@@ -73,6 +74,7 @@ protected:
 	Particles m_physicsParticles;
 	RigidBodies m_RigidBodies;
 	ParticleContacts m_ParticleContacts;
+	CollisionInfos Collisions;
 	std::vector<ParticleContactGenerator*> m_ContactGenerator;
 	std::unique_ptr<ParticleContactResolver> m_ParticleContactResolver = nullptr;
 
@@ -88,6 +90,7 @@ protected:
 
 	// worker classes
 	CollisionDetection m_CollisionDetection;
+	CollisionResolution m_CollisionResolution;
 
 	void RunCollisionDetection();
 	void RunCollisionResolution(float Delta);

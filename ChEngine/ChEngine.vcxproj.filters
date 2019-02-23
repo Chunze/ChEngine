@@ -157,6 +157,9 @@
     <ClCompile Include="Physics\RigidBody\RigidSphere.cpp">
       <Filter>Physics\RigidBody</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\Resolution\CollisionResolution.cpp">
+      <Filter>Physics\Resolution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -357,6 +360,9 @@
     <ClInclude Include="Physics\RigidBody\RigidSphere.h">
       <Filter>Physics\RigidBody</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\Resolution\CollisionResolution.h">
+      <Filter>Physics\Resolution</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -403,6 +409,9 @@
     </Filter>
     <Filter Include="Physics\Collision">
       <UniqueIdentifier>{79f56dab-495f-43e8-b954-fa835bfe88b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Resolution">
+      <UniqueIdentifier>{2e55b33e-4100-4858-88db-f12c34b03988}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

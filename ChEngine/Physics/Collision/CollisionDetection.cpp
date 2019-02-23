@@ -16,6 +16,14 @@ void CollisionDetection::RunCollisionDetection()
 	m_NarrowPhaseTest.RunTest();
 }
 
+void CollisionDetection::ReportCollision(CollisionInfo &Collision) const
+{
+	if (m_PhysicsManager)
+	{
+		m_PhysicsManager->Collisions.push(Collision);
+	}
+}
+
 void CollisionDetection::RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)
 {
 	// m_CollisionPrimitives.push_back(PrimitiveToAdd);
