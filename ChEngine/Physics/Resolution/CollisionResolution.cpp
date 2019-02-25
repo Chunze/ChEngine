@@ -18,23 +18,11 @@ void CollisionResolution::RunCollisionResolution()
 		{
 			continue;
 		}
-		/** Step 1: construct the contact coordinate axis **/
 
-		// TODO: assume there is only one contact point for now
-		vec3 x = collision.m_Contacts[0].m_ContactNormal;
-		vec3 y(0.0f, 1.0f, 0.0f);
-		vec3 z;
-
-		if (!Math::MakeOrthonormalBasis(x, y, z))
+		for (auto &Contact : collision.m_Contacts)
 		{
-			continue;
+			Contact.Resolve();
 		}
-
-		/** Step 2: work out the change in velocity of the contact points **/
-
-		/** Step 3: calculate the impulse needed to result the change in step 2 **/
-
-		/** step 4: split the impulse into linear and angular components **/
 
 	}
 }

@@ -1,5 +1,7 @@
 #include "Contacts.h"
+#include "MathStatics.h"
 #include "Particle.h"
+#include "RigidBody.h"
 
 
 ParticleContact::ParticleContact()
@@ -170,4 +172,70 @@ void ParticleContactResolver::ResolveContacts(std::vector<std::shared_ptr<Partic
 
 		m_IterationsUsed++;
 	}
+}
+
+bool BodyContact::ConstructContactToWorld()
+{
+	// TODO: assume there is only one contact point for now
+	vec3 x = m_ContactNormal;
+	vec3 y(0.0f, 1.0f, 0.0f);
+	vec3 z;
+	// To make the calculation stable, choose X-axis as the second basis if x is near Y-axis
+	if (glm::abs(x.x) <= glm::abs(x.y))
+	{
+		y.x = 1.0f;
+		y.y = 0.0f;
+	}
+
+	bool bSuccessful = Math::MakeOrthonormalBasis(x, y, z);
+
+	if (bSuccessful)
+	{
+		m_ContactToWorld = mat3(x, y, z);
+		m_WorldToContact = glm::transpose(m_ContactToWorld);
+	}
+
+	return bSuccessful;
+}
+
+void BodyContact::SetContactPoint(vec3 ContactPoint)
+{
+	m_ContactPoint = ContactPoint;
+	m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody1->GetPosition();
+	if (m_RigidBody2)
+	{
+		m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody2->GetPosition();
+	}
+}
+
+void BodyContact::ResolveInterpenetration()
+{
+	if (m_Penetration <= 0)
+	{
+		// There isn't any penetration
+		return;
+	}
+
+	// The movement of each object is backed on their inverse mass
+	float TotalInverseMass = GetTotalInverseMass();
+
+	// Find the amount of penetration resolution per unit of inverse mass
+	glm::vec3 MovePerIMass = m_ContactNormal * (m_Penetration / TotalInverseMass);
+
+	// Apply displacement
+	vec3 RigidBodyDisplacement = MovePerIMass * m_RigidBody1->m_InverseMass;
+	m_RigidBody1->AddPosition(RigidBodyDisplacement);
+	if (m_RigidBody2)
+	{
+		RigidBodyDisplacement = -MovePerIMass * m_RigidBody2->m_InverseMass;
+		m_RigidBody2->AddPosition(RigidBodyDisplacement);
+	}
+}
+
+float BodyContact::GetTotalInverseMass()
+{
+	float TotalInverseMass = m_RigidBody1->m_InverseMass;
+	TotalInverseMass += m_RigidBody2 ? m_RigidBody2->m_InverseMass : 0;
+
+	return TotalInverseMass;
 }

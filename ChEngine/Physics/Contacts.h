@@ -70,11 +70,27 @@ struct BodyContact
 	RigidBody_sp m_RigidBody1;
 	RigidBody_sp m_RigidBody2;
 
+	// vectors points from origin of rigid body to contact point
+	vec3 m_RelativeContactPosition1;
+	vec3 m_RelativeContactPosition2;
+
 	vec3 m_ContactPoint;
 
 	vec3 m_ContactNormal;
 
 	float m_Penetration;
+
+	static const float m_Restitution;
+
+	mat3 m_ContactToWorld;
+	mat3 m_WorldToContact;
+
+	bool ConstructContactToWorld();
+	void SetContactPoint(vec3 ContactPoint);
+
+	void Resolve(/*float duration*/);
+	void ResolveInterpenetration();
+	float GetTotalInverseMass();
 
 	void SetBodies(RigidBody_sp Body_1, RigidBody_sp Body_2)
 	{

@@ -51,6 +51,8 @@ public:
 	/// The force is in world space, and the point is in body space.
 	void AddForceAtBodyPoint(const vec3 &force, const vec3 &point);
 
+	void AddPosition(const vec3 &Displacement) { m_Position += Displacement; }
+
 	void Integrate(float duration);
 
 	void SetInertirTensor(const mat3 &IntertiaTensor);
@@ -60,6 +62,8 @@ public:
 	mat4 GetTransform() { return m_Transform; }
 	vec3 GetPosition() { return m_Position; }
 	CollisionPrimitive_sp GetCollisionPrimitive() { return m_CollisionPrimitive; }
+	// gets the linear velocity of a point
+	vec3 GetLinearVelocity(vec3 Point);
 
 	/**    setters    **/
 	void SetTransform(mat4 Transform);

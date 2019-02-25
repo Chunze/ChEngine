@@ -80,8 +80,8 @@ void RigidBody::Integrate(float duration)
 		m_AngularDamping = m_PhysicsManager->GetAngularDamping();
 	}
 
-	m_Velocity *= m_LinearDamping;
-	m_AngularVelocity *= m_AngularDamping;
+	//m_Velocity *= m_LinearDamping;
+	//m_AngularVelocity *= m_AngularDamping;
 
 	// adjust position and rotation
 	m_Position += m_Velocity * duration;
@@ -108,6 +108,14 @@ void RigidBody::CalculateDerivedData()
 	// calculate the inverse inertia tensor in world space
 	mat3 RotationMatrix = mat3(m_Transform);
 	CalculateInertiaTensor(m_InverseTensorWorld, m_InverseInertiaTensor, RotationMatrix);
+}
+
+vec3 RigidBody::GetLinearVelocity(vec3 Point)
+{
+	vec3 LinearVelocity = glm::cross(m_AngularVelocity, Point - m_Position);
+	LinearVelocity += m_Velocity;
+
+	return LinearVelocity;
 }
 
 void RigidBody::SetTransform(mat4 Transform)

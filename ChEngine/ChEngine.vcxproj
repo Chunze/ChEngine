@@ -57,6 +57,7 @@
     <ClCompile Include="Physics\ForceGenerators\AnchoredSpringFG.cpp" />
     <ClCompile Include="Physics\ForceGenerators\FakeSprintFG.cpp" />
     <ClCompile Include="Physics\Resolution\CollisionResolution.cpp" />
+    <ClCompile Include="Physics\Resolution\ContactResolvers.cpp" />
     <ClCompile Include="Physics\RigidBody\RigidBox.cpp" />
     <ClCompile Include="Physics\RigidBody\RigidBody.cpp" />
     <ClCompile Include="Physics\RigidBody\RigidSphere.cpp" />

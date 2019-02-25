@@ -15,7 +15,7 @@ bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive*
 	vec3 Position_1 = Sphere_1->GetPosition();
 	vec3 Position_2 = Sphere_2->GetPosition();
 
-	vec3 DistanceVec = Position_1 - Position_2;
+	vec3 DistanceVec = Position_2 - Position_1;
 	float Distance = glm::length(DistanceVec);
 
 	// Check distance vs radius sum
@@ -26,10 +26,11 @@ bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive*
 
 	BodyContact Contact;
 
-	Contact.m_ContactNormal = DistanceVec / Distance;
-	Contact.m_ContactPoint = Position_2 + DistanceVec * 0.5f;
-	Contact.m_Penetration = Sphere_1->m_Radius + Sphere_2->m_Radius - Distance;
 	Contact.SetBodies(Sphere_1->GetBody(), Sphere_2->GetBody());
+	Contact.m_ContactNormal = DistanceVec / Distance;
+	Contact.SetContactPoint(Position_2 + DistanceVec * 0.5f);
+	Contact.m_Penetration = Sphere_1->m_Radius + Sphere_2->m_Radius - Distance;
+	
 	Info.AddContact(Contact);
 
 	return true;
