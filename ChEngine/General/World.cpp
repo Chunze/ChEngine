@@ -9,13 +9,13 @@ World::World(GameContext* gameContext)
 
 void World::Update(float Delta)
 {
-	for (GameObject* gameObject : m_GameObjects)
-	{
-		gameObject->Update(Delta);
-	}
 	for (SceneObject* sceneObject : m_SceneObjects)
 	{
 		sceneObject->Update(Delta);
+	}
+	for (GameObject* gameObject : m_GameObjects)
+	{
+		gameObject->Update(Delta);
 	}
 }
 

@@ -33,8 +33,6 @@ void GameObject::UpdateTransform()
 
 void GameObject::PostPhysicsUpdate()
 {
-	Super::PostPhysicsUpdate();
-
 	if (m_RootComponent != nullptr)
 	{
 		m_WorldTransform = m_RootComponent->GetWorldTransform();

@@ -38,9 +38,9 @@ class SurfasePrimitive : public CollisionPrimitive
 public:
 	SurfasePrimitive() { m_Type = PrimitiveType::SURFACE; }
 	SurfasePrimitive(vec3 Normal, float Offset)
-		: m_Normal(Normal),
-		m_Offset(Offset)
+		: m_Offset(Offset)
 	{
+		m_Normal = glm::normalize(Normal);
 		m_Type = PrimitiveType::SURFACE;
 	}
 

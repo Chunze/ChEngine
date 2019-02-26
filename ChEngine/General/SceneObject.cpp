@@ -81,7 +81,7 @@ void SceneObject::PostPhysicsUpdate()
 	{
 		if (!m_Owner->HasPostPhysicsUpdated())
 		{
-			m_Owner->UpdateTransform();
+			m_Owner->PostPhysicsUpdate();
 		}
 		m_WorldTransform = m_Owner->GetWorldTransform() * m_RelativeTransform;
 	}

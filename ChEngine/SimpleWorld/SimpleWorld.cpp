@@ -104,7 +104,7 @@ void SimpleWorld::SetupWorld()
 	m_GameObjects.push_back(gameObject_1);
 	m_SceneObjects.push_back(staticMeshComp_1);
 
-	CollisionPrimitive_sp Surface = std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	CollisionPrimitive_sp Surface = std::make_shared<SurfasePrimitive>(vec3(0.2f, 1.0f, 0.0f), 0.0f);
 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(Surface);
 
 	//gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
