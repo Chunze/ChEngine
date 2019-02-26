@@ -14,9 +14,35 @@ void NarrowPhaseTest::RunTest()
 {
 	while (!m_CollisionDetection->m_PotentialContacts.empty())
 	{
+		CollisionPrimitive* Primitive1 = nullptr;
+		CollisionPrimitive* Primitive2 = nullptr;
 		auto potentialContact = m_CollisionDetection->m_PotentialContacts.front();
-		CollisionPrimitive* Primitive1 = potentialContact.m_Body1->GetCollisionPrimitive().get();
-		CollisionPrimitive* Primitive2 = potentialContact.m_Body2->GetCollisionPrimitive().get();
+		m_CollisionDetection->m_PotentialContacts.pop();
+
+		switch (potentialContact->ContactType)
+		{
+		case PotentialContactType::BODY_VS_BODY:
+			Primitive1 = std::static_pointer_cast<PotentialBodyVsBodyContact>(potentialContact)->m_Body1->GetCollisionPrimitive().get();
+			Primitive2 = std::static_pointer_cast<PotentialBodyVsBodyContact>(potentialContact)->m_Body2->GetCollisionPrimitive().get();
+			break;
+		case PotentialContactType::BODY_VS_PRIMITIVE:
+			Primitive1 = std::static_pointer_cast<PotentialBodyVsPrimiveContact>(potentialContact)->m_Body->GetCollisionPrimitive().get();
+			Primitive2 = std::static_pointer_cast<PotentialBodyVsPrimiveContact>(potentialContact)->m_Primitive.get();
+		default:
+			break;
+		}
+
+		if (!Primitive1 || !Primitive2)
+		{
+			continue;
+		}
+
+		if ((int)(Primitive1->GetType()) > (int)(Primitive2->GetType()))
+		{
+			CollisionPrimitive* Temp = Primitive2;
+			Primitive2 = Primitive1;
+			Primitive1 = Temp;
+		}
 
 		CollisionTest* Test = m_CollisionTestSelector.SelectCollisionTest(Primitive1, Primitive2);
 
@@ -26,8 +52,6 @@ void NarrowPhaseTest::RunTest()
 		{
 			m_CollisionDetection->ReportCollision(Info);
 		}
-
-		m_CollisionDetection->m_PotentialContacts.pop();
 	}
 }
 

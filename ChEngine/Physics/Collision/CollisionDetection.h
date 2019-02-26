@@ -21,18 +21,20 @@ public:
 
 	void RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
 
+	CollisionPrimitives *GetRegisteredPrimitives() { return &m_PrimitiveWithoutBody; }
+
 protected:
 	PhysicsManager* m_PhysicsManager;
 	BroadPhaseTest m_BroadPhaseTest;
 	NarrowPhaseTest m_NarrowPhaseTest;
 
 
-	// CollisionPrimitives m_CollisionPrimitives;
+	CollisionPrimitives m_PrimitiveWithoutBody;
 
 	/// Potential body contacts.
 	/// Broad Phase Test will write to this.
 	/// Narrow Phase Test will read from this.
-	PotentialBodyContacts m_PotentialContacts;
+	PotentialContacts m_PotentialContacts;
 
 	void RunBroadPhase();
 	void RunNarrowPhase();

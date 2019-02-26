@@ -20,7 +20,7 @@ RigidBody::RigidBody()
 {
 	m_InverseMass = 1.0f;
 
-	m_bUseGravity = false;
+	m_bUseGravity = true;
 }
 
 

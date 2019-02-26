@@ -8,9 +8,9 @@ class RigidBody;
 
 enum class PrimitiveType
 {
-	SURFACE,
 	SPHERE,
 	BOX,
+	SURFACE,
 	NUM_OF_PRIMITIVE_TYPE	// not a real type, convenience for max number of primitive types
 };
 
@@ -27,7 +27,7 @@ public:
 	RigidBody_sp GetBody() { return m_RigidBody; }
 
 protected:
-	RigidBody_sp m_RigidBody;
+	RigidBody_sp m_RigidBody = nullptr;
 	mat4 m_Offset;
 	PrimitiveType m_Type;
 	
@@ -37,9 +37,15 @@ class SurfasePrimitive : public CollisionPrimitive
 {
 public:
 	SurfasePrimitive() { m_Type = PrimitiveType::SURFACE; }
+	SurfasePrimitive(vec3 Normal, float Offset)
+		: m_Normal(Normal),
+		m_Offset(Offset)
+	{
+		m_Type = PrimitiveType::SURFACE;
+	}
 
 	vec3 m_Normal;
-	float offset;
+	float m_Offset;
 };
 
 class SpherePrimitive : public CollisionPrimitive

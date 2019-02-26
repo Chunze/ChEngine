@@ -26,7 +26,10 @@ void CollisionDetection::ReportCollision(CollisionInfo &Collision) const
 
 void CollisionDetection::RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)
 {
-	// m_CollisionPrimitives.push_back(PrimitiveToAdd);
+	if (!PrimitiveToAdd->GetBody())
+	{
+		m_PrimitiveWithoutBody.push_back(PrimitiveToAdd);
+	}
 }
 
 void CollisionDetection::RunBroadPhase()

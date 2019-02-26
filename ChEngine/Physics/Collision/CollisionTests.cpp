@@ -43,7 +43,30 @@ bool SphereVsBox::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, Collision
 
 bool SphereVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo& Info)
 {
-	return false;
+	assert(Primitive1->GetType() == PrimitiveType::SPHERE);
+	assert(Primitive2->GetType() == PrimitiveType::SURFACE);
+
+	SpherePrimitive* Sphere = static_cast<SpherePrimitive*>(Primitive1);
+	SurfasePrimitive* Surface = static_cast<SurfasePrimitive*>(Primitive2);
+
+	vec3 Position = Sphere->GetPosition();
+
+	// find the distance from the plane
+	float Distance = glm::dot(Surface->m_Normal, Position) - Sphere->m_Radius - Surface->m_Offset;
+
+	if (Distance >= 0)
+	{
+		return false;
+	}
+
+	// Collision!
+	BodyContact Contact;
+	Contact.SetBodies(Sphere->GetBody(), Surface->GetBody());
+	Contact.m_ContactNormal = -Surface->m_Normal;
+	Contact.m_Penetration = -Distance;
+	Contact.m_ContactPoint = Position - Surface->m_Normal * (Sphere->m_Radius - 0.5f * Distance);
+	Info.AddContact(Contact);
+	return true;
 }
 
 bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo& Info)

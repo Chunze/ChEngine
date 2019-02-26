@@ -2,25 +2,11 @@
 #include "RigidBody.h"
 
 
-const float BodyContact::m_Restitution = 0.f;
+const float BodyContact::m_Restitution = 0.4f;
 
 void BodyContact::Resolve(/*float duration*/)
 {
 	ResolveInterpenetration();
-
-	// early out
-	// Closing velocity in the contact space
-	vec3 ContactVelocity = m_WorldToContact * m_RigidBody1->GetLinearVelocity(m_ContactPoint);
-	if (m_RigidBody2)
-	{
-		ContactVelocity -= m_WorldToContact * m_RigidBody2->GetLinearVelocity(m_ContactPoint);
-	}
-
-	float DeltaVelocity = -ContactVelocity.x * (1 + m_Restitution);
-// 	if (DeltaVelocity < 0.0f)
-// 	{
-// 		return;
-// 	}
 
 	/** Step 1: construct the contact coordinate axis **/
 
@@ -37,7 +23,15 @@ void BodyContact::Resolve(/*float duration*/)
 	// Add the linear component of velocity change
 	DeltaVelocity_PerUnitImpulse += m_RigidBody1->m_InverseMass;
 
-	/** Closing velocity is calculated above **/
+	/** Step 2: closing velocity is calculated above **/
+
+	vec3 ContactVelocity = m_WorldToContact * m_RigidBody1->GetLinearVelocity(m_ContactPoint);
+	if (m_RigidBody2)
+	{
+		ContactVelocity -= m_WorldToContact * m_RigidBody2->GetLinearVelocity(m_ContactPoint);
+	}
+
+	float DeltaVelocity = -ContactVelocity.x * (1 + m_Restitution);
 
 	/** Step 4: calculate the impulse needed to result the change in step 3 **/
 

@@ -220,14 +220,14 @@ void BodyContact::ResolveInterpenetration()
 	float TotalInverseMass = GetTotalInverseMass();
 
 	// Find the amount of penetration resolution per unit of inverse mass
-	glm::vec3 MovePerIMass = m_ContactNormal * (m_Penetration / TotalInverseMass);
+	glm::vec3 MovePerIMass = -m_ContactNormal * (m_Penetration / TotalInverseMass);
 
 	// Apply displacement
 	vec3 RigidBodyDisplacement = MovePerIMass * m_RigidBody1->m_InverseMass;
 	m_RigidBody1->AddPosition(RigidBodyDisplacement);
 	if (m_RigidBody2)
 	{
-		RigidBodyDisplacement = -MovePerIMass * m_RigidBody2->m_InverseMass;
+		RigidBodyDisplacement = MovePerIMass * m_RigidBody2->m_InverseMass;
 		m_RigidBody2->AddPosition(RigidBodyDisplacement);
 	}
 }

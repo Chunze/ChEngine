@@ -52,15 +52,40 @@ private:
 	float GetTotalInverseMass();
 };
 
-/// This is the output of the broad phase of the collision detection
-struct PotentialBodyContact
+enum class PotentialContactType
 {
-	PotentialBodyContact(RigidBody_sp Body1, RigidBody_sp Body2)
+	BODY_VS_BODY,
+	BODY_VS_PRIMITIVE
+};
+
+struct PotentialContact
+{
+	PotentialContactType ContactType;
+};
+
+/// This is the output of the broad phase of the collision detection
+struct PotentialBodyVsBodyContact : public PotentialContact
+{
+	PotentialBodyVsBodyContact(RigidBody_sp Body1, RigidBody_sp Body2)
 		: m_Body1(Body1), m_Body2(Body2)
-	{}
+	{
+		ContactType = PotentialContactType::BODY_VS_BODY;
+	}
 	/// The two bodies that might be in contact
 	RigidBody_sp m_Body1;
 	RigidBody_sp m_Body2;
+};
+
+struct PotentialBodyVsPrimiveContact : public PotentialContact
+{
+	PotentialBodyVsPrimiveContact(RigidBody_sp Body, CollisionPrimitive_sp Primitive)
+		: m_Body(Body), m_Primitive(Primitive)
+	{
+		ContactType = PotentialContactType::BODY_VS_PRIMITIVE;
+	}
+
+	RigidBody_sp m_Body;
+	CollisionPrimitive_sp m_Primitive;
 };
 
 

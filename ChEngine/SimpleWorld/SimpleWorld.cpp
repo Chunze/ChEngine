@@ -83,7 +83,7 @@ void SimpleWorld::InitDebugElement()
 
 void SimpleWorld::SetupWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 0.0f, 0.0f));
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.0f, 5.0f, 0.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
@@ -91,18 +91,21 @@ void SimpleWorld::SetupWorld()
 	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
 	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(newModel);
-	staticMeshComp->GetPhsicsBody()->SetVelocity(vec3(2.0f, 0.0f, 0.0f));
+	staticMeshComp->GetPhsicsBody()->SetVelocity(vec3(2.0f, 2.0f, 0.0f));
 
 	m_GameObjects.push_back(gameObject);
 	m_SceneObjects.push_back(staticMeshComp);
 
-	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 0.0f, 0.0));
+	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(5.0f, 10.0f, 0.0));
 	StaticMeshComponent* staticMeshComp_1 = new StaticMeshComponent(m_gameContext, this);
 	staticMeshComp_1->SetMesh(newModel);
 	gameObject_1->SetRootComponent(staticMeshComp_1);
 
 	m_GameObjects.push_back(gameObject_1);
 	m_SceneObjects.push_back(staticMeshComp_1);
+
+	CollisionPrimitive_sp Surface = std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(Surface);
 
 	//gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 

@@ -8,10 +8,11 @@ struct CollisionTestSelector
 {
 	SphereVsSphere	SphereVsSphereTest;
 	SphereVsBox		SphereVsBoxTest;
+	SphereVsSurface SphereVsSurfaceTest;
 
 	CollisionTest* SelectCollisionTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2)
 	{
-		if ((int)(Primitive1->GetType()) > (int)(Primitive2->GetType()))
+		if (!Primitive1 || !Primitive2)
 		{
 			return nullptr;
 		}
@@ -24,6 +25,12 @@ struct CollisionTestSelector
 		{
 			return &SphereVsBoxTest;
 		}
+		else if (Primitive1->GetType() == PrimitiveType::SPHERE && Primitive2->GetType() == PrimitiveType::SURFACE)
+		{
+			return &SphereVsSurfaceTest;
+		}
+
+		return nullptr;
 	}
 };
 
