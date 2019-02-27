@@ -48,6 +48,7 @@
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
     <ClCompile Include="Physics\Collision\BroadPhaseTest.cpp" />
     <ClCompile Include="Physics\Collision\CollisionDetection.cpp" />
+    <ClCompile Include="Physics\Collision\CollisionInfo.cpp" />
     <ClCompile Include="Physics\Collision\CollisionPrimitives.cpp" />
     <ClCompile Include="Physics\Collision\CollisionTests.cpp" />
     <ClCompile Include="Physics\Collision\NarrowPhaseTest.cpp" />

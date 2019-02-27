@@ -11,7 +11,7 @@ public:
 	RigidBox(vec3 extend);
 
 protected:
-	vec3 m_Extend;
+	vec3 m_HalfSize;
 
 private:
 	void ConstructInertiaTensor() override;

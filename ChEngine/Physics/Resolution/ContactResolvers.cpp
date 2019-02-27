@@ -2,7 +2,7 @@
 #include "RigidBody.h"
 
 
-const float BodyContact::m_Restitution = 0.4f;
+const float BodyContact::m_Restitution = 0.1f;
 
 void BodyContact::Resolve(/*float duration*/)
 {

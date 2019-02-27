@@ -108,6 +108,18 @@ void RigidBody::CalculateDerivedData()
 	// calculate the inverse inertia tensor in world space
 	mat3 RotationMatrix = mat3(m_Transform);
 	CalculateInertiaTensor(m_InverseTensorWorld, m_InverseInertiaTensor, RotationMatrix);
+
+	bDerivedDataReady = true;
+}
+
+mat4 RigidBody::GetTransform()
+{
+	if (!bDerivedDataReady)
+	{
+		CalculateDerivedData();
+	}
+
+	return m_Transform;
 }
 
 vec3 RigidBody::GetLinearVelocity(vec3 Point)

@@ -163,6 +163,9 @@
     <ClCompile Include="Physics\Resolution\ContactResolvers.cpp">
       <Filter>Physics\Resolution</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\Collision\CollisionInfo.cpp">
+      <Filter>Physics\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />

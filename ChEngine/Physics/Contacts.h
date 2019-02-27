@@ -112,6 +112,8 @@ struct BodyContact
 
 	bool ConstructContactToWorld();
 	void SetContactPoint(vec3 ContactPoint);
+	void SetContactNormal(vec3 ContactNormal);
+	void SetContactPenetration(float Penetration);
 
 	void Resolve(/*float duration*/);
 	void ResolveInterpenetration();

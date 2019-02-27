@@ -208,6 +208,16 @@ void BodyContact::SetContactPoint(vec3 ContactPoint)
 	}
 }
 
+void BodyContact::SetContactNormal(vec3 ContactNormal)
+{
+	m_ContactNormal = glm::normalize(ContactNormal);
+}
+
+void BodyContact::SetContactPenetration(float Penetration)
+{
+	m_Penetration = Penetration;
+}
+
 void BodyContact::ResolveInterpenetration()
 {
 	if (m_Penetration <= 0)

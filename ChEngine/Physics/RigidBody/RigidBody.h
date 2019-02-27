@@ -59,7 +59,7 @@ public:
 	void CalculateDerivedData();
 
 	/**    getters    **/
-	mat4 GetTransform() { return m_Transform; }
+	mat4 GetTransform();
 	vec3 GetPosition() { return m_Position; }
 	CollisionPrimitive_sp GetCollisionPrimitive() { return m_CollisionPrimitive; }
 	// gets the linear velocity of a point
@@ -87,6 +87,8 @@ protected:
 
 	// Collision shape that helps with the collision detection
 	CollisionPrimitive_sp m_CollisionPrimitive;
+
+	bool bDerivedDataReady = false;
 
 	virtual void ConstructInertiaTensor() = 0;
 

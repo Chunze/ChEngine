@@ -19,15 +19,18 @@ class CollisionPrimitive
 public:
 
 	/**    setters    **/
-	void SetBody(RigidBody_sp Body, const mat4 &Offset = mat4()) { m_RigidBody = Body; }
+	void SetBody(RigidBody_sp Body, const mat4 &Offset = mat4());
 
 	/**    getters    **/
 	PrimitiveType GetType() { return m_Type; }
 	vec3 GetPosition();
 	RigidBody_sp GetBody() { return m_RigidBody; }
+	mat4 GetOffset() { return m_Offset; }
+	mat4 GetWorldTransform();
 
 protected:
 	RigidBody_sp m_RigidBody = nullptr;
+	mat4 m_WorldTransform;
 	mat4 m_Offset;
 	PrimitiveType m_Type;
 	
@@ -62,7 +65,15 @@ public:
 
 class BoxPrimitive : public CollisionPrimitive
 {
+public:
 	BoxPrimitive() { m_Type = PrimitiveType::BOX; }
+	BoxPrimitive(vec3 HalfSize)
+		: m_HalfSize(HalfSize)
+	{
+		m_Type = PrimitiveType::BOX;
+	}
+	
+	vec3 m_HalfSize;
 };
 
 #endif // !COLLISION_PRIMITIVES_H
