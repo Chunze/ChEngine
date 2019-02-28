@@ -15,8 +15,7 @@ class SceneObject : public BaseClass
 public:
 	SceneObject();
 	SceneObject(GameContext* gameContext);
-	SceneObject(GameContext* gameContext, World* world);
-	SceneObject(GameContext* gameContext, World* world, glm::vec3 location);
+	SceneObject(GameContext* gameContext, World* world, glm::vec3 location = vec3(), quat rotation = quat());
 
 	virtual void Update(float Delta);
 	virtual void UpdateTransform();
@@ -27,6 +26,7 @@ public:
 
 	/**    setters    **/
 	void SetRelativeLocation(glm::vec3 location) { m_RelativeTransform[3] = glm::vec4(location, 1.0); }
+	void SetWorldTransform(const vec3 &location, const quat &orientation);
 	virtual void SetWorldTransform(glm::mat4 worldTransform);
 	virtual void SetRelativeTransform(mat4 relativeTransform);
 	virtual void SetWorldLocation(glm::vec3 location);

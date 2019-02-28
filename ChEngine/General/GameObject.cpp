@@ -1,13 +1,7 @@
 #include "GameObject.h"
 
-GameObject::GameObject(GameContext* gameContext, World* world)
-	: Super(gameContext, world)
-{
-
-}
-
-GameObject::GameObject(GameContext* gameContext, World* world, glm::vec3 location)
-	: Super(gameContext, world, location)
+GameObject::GameObject(GameContext* gameContext, World* world, glm::vec3 location, quat rotation)
+	: Super(gameContext, world, location, rotation)
 {
 
 }

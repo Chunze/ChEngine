@@ -35,16 +35,17 @@ void StaticMeshComponent::InitPhysicsParticle()
 
 void StaticMeshComponent::InitPhysicsBody()
 {
-	m_RigidBody = std::make_shared<RigidBox>(vec3(1.0f));
-	m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(m_RigidBody);
-
-	// TODO: the collision primitive should be calculated and attached in mesh or model class
-	if (bUseCollision)
-	{
-		//CollisionPrimitive_sp Collision = std::make_shared<SpherePrimitive>(1.0f);
-
-		CollisionPrimitive_sp Collision = std::make_shared<BoxPrimitive>(vec3(1.0f));
-
-		m_RigidBody->AddCollisionPrimitive(Collision);
-	}
+// 	m_RigidBody = std::make_shared<RigidSphere>(1.0);
+// 		m_RigidBody = std::make_shared<RigidBox>(vec3(1.0f));
+// 		m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(m_RigidBody);
+// 	
+// 		// TODO: the collision primitive should be calculated and attached in mesh or model class
+// 		if (bUseCollision)
+// 		{
+// 			CollisionPrimitive_sp Collision = std::make_shared<SpherePrimitive>(1.0f);
+// 	
+// 			CollisionPrimitive_sp Collision = std::make_shared<BoxPrimitive>(vec3(1.0f));
+// 	
+// 			m_RigidBody->AddCollisionPrimitive(Collision);
+// 		}
 }

@@ -3,6 +3,7 @@
 #include "CollisionTests.h"
 #include "CollisionPrimitives.h"
 #include "Contacts.h"
+#include "MathStatics.h"
 
 bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2, CollisionInfo& Info)
 {
@@ -15,7 +16,7 @@ bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive*
 	vec3 Position_1 = Sphere_1->GetPosition();
 	vec3 Position_2 = Sphere_2->GetPosition();
 
-	vec3 DistanceVec = Position_2 - Position_1;
+	vec3 DistanceVec = Position_1 - Position_2;
 	float Distance = glm::length(DistanceVec);
 
 	// Check distance vs radius sum
@@ -38,7 +39,63 @@ bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive*
 
 bool SphereVsBox::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Box */, CollisionInfo& Info)
 {
-	return false;
+	assert(Primitive1->GetType() == PrimitiveType::SPHERE);
+	assert(Primitive2->GetType() == PrimitiveType::BOX);
+
+	SpherePrimitive*  Sphere = static_cast<SpherePrimitive*>(Primitive1);
+	BoxPrimitive*	  Box    = static_cast<BoxPrimitive*>(Primitive2);
+
+	// convert sphere center into box space
+	vec3 Center = Sphere->GetPosition();
+	mat4 WorldToBox = glm::inverse(Box->GetWorldTransform());
+	vec3 RelCenter = WorldToBox * vec4(Center, 1.0);
+
+	// Early out
+	if (glm::abs(RelCenter.x) - Sphere->m_Radius > Box->m_HalfSize.x ||
+		glm::abs(RelCenter.y) - Sphere->m_Radius > Box->m_HalfSize.y ||
+		glm::abs(RelCenter.z) - Sphere->m_Radius > Box->m_HalfSize.z)
+	{
+		return false;
+	}
+
+	// find the closest point on the box to the sphere
+	vec3 ClosestPoint(0.0f);
+	float Distance;
+
+	// clamp each coordinate to the box
+	Distance = RelCenter.x;
+	if (Distance > Box->m_HalfSize.x) Distance = Box->m_HalfSize.x;
+	if (Distance < -Box->m_HalfSize.x) Distance = -Box->m_HalfSize.x;
+	ClosestPoint.x = Distance;
+
+	Distance = RelCenter.y;
+	if (Distance > Box->m_HalfSize.y) Distance = Box->m_HalfSize.y;
+	if (Distance < -Box->m_HalfSize.y) Distance = -Box->m_HalfSize.y;
+	ClosestPoint.y = Distance;
+
+	Distance = RelCenter.z;
+	if (Distance > Box->m_HalfSize.z) Distance = Box->m_HalfSize.z;
+	if (Distance < -Box->m_HalfSize.z) Distance = -Box->m_HalfSize.z;
+	ClosestPoint.z = Distance;
+
+	// check to see if in contact
+	Distance = Math::LengthSq(ClosestPoint - RelCenter);
+	if (Distance > Sphere->m_Radius * Sphere->m_Radius)
+	{
+		return false;
+	}
+
+	// collision!
+	vec3 ClosestPtWorld = Box->GetWorldTransform() * vec4(ClosestPoint, 1.0f);
+
+	BodyContact Contact;
+	Contact.SetBodies(Sphere->GetBody(), Box->GetBody());
+	Contact.SetContactNormal(Center - ClosestPtWorld);
+	Contact.SetContactPenetration(Sphere->m_Radius - glm::sqrt(Distance));
+	Contact.SetContactPoint(ClosestPtWorld);
+	Info.AddContact(Contact);
+
+	return true;
 }
 
 bool SphereVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo& Info)
@@ -62,7 +119,7 @@ bool SphereVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, Colli
 	// Collision!
 	BodyContact Contact;
 	Contact.SetBodies(Sphere->GetBody(), Surface->GetBody());
-	Contact.SetContactNormal(-Surface->m_Normal);
+	Contact.SetContactNormal(Surface->m_Normal);
 	Contact.SetContactPenetration(-Distance);
 	Contact.SetContactPoint(Position - Surface->m_Normal * (Sphere->m_Radius - 0.5f * Distance));
 	Info.AddContact(Contact);
@@ -102,7 +159,7 @@ bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPr
 			// Collision!
 			BodyContact Contact;
 			Contact.SetBodies(Box->GetBody(), Surface->GetBody());
-			Contact.SetContactNormal(-Surface->m_Normal);
+			Contact.SetContactNormal(Surface->m_Normal);
 			Contact.SetContactPenetration(Surface->m_Offset - VertexDistance);
 			Contact.SetContactPoint(VertexPosition + 0.5f * Surface->m_Normal * (Surface->m_Offset - VertexDistance));
 			Info.AddContact(Contact);

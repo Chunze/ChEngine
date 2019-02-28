@@ -1,5 +1,5 @@
 #include "SceneObject.h"
-
+#include "MathStatics.h"
 
 
 SceneObject::SceneObject()
@@ -12,17 +12,11 @@ SceneObject::SceneObject(GameContext* gameContext)
 
 }
 
-SceneObject::SceneObject(GameContext* gameContext, World* world)
+SceneObject::SceneObject(GameContext* gameContext, World* world, glm::vec3 location, quat rotation)
 	: Super(gameContext),
-	m_World(world)
+	  m_World(world)
 {
-
-}
-
-SceneObject::SceneObject(GameContext* gameContext, World* world, glm::vec3 location)
-	: SceneObject(gameContext, world)
-{
-	SetWorldLocation(location);
+	SetWorldTransform(location, rotation);
 }
 
 void SceneObject::Update(float Delta)
@@ -100,6 +94,11 @@ void SceneObject::SetWorldTransform(glm::mat4 worldTransform)
 	{
 		m_Particle->SetPosition(glm::vec3(m_WorldTransform[3]));
 	}
+}
+
+void SceneObject::SetWorldTransform(const vec3 &location, const quat &orientation)
+{
+	SetWorldTransform(Math::MakeTransform(location, orientation));
 }
 
 void SceneObject::SetRelativeTransform(mat4 relativeTransform)

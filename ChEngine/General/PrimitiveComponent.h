@@ -12,6 +12,8 @@ public:
 
 	void PostPhysicsUpdate() override;
 
+	void SetRigidBody(RigidBody_sp RigidBody) { m_RigidBody = RigidBody; }
+
 	RigidBody_sp GetPhsicsBody() { return m_RigidBody; }
 
 	void SetWorldTransform(mat4 worldTransform) override;

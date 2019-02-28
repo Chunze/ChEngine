@@ -204,7 +204,7 @@ void BodyContact::SetContactPoint(vec3 ContactPoint)
 	m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody1->GetPosition();
 	if (m_RigidBody2)
 	{
-		m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody2->GetPosition();
+		m_RelativeContactPosition2 = m_ContactPoint - m_RigidBody2->GetPosition();
 	}
 }
 
@@ -216,30 +216,6 @@ void BodyContact::SetContactNormal(vec3 ContactNormal)
 void BodyContact::SetContactPenetration(float Penetration)
 {
 	m_Penetration = Penetration;
-}
-
-void BodyContact::ResolveInterpenetration()
-{
-	if (m_Penetration <= 0)
-	{
-		// There isn't any penetration
-		return;
-	}
-
-	// The movement of each object is backed on their inverse mass
-	float TotalInverseMass = GetTotalInverseMass();
-
-	// Find the amount of penetration resolution per unit of inverse mass
-	glm::vec3 MovePerIMass = -m_ContactNormal * (m_Penetration / TotalInverseMass);
-
-	// Apply displacement
-	vec3 RigidBodyDisplacement = MovePerIMass * m_RigidBody1->m_InverseMass;
-	m_RigidBody1->AddPosition(RigidBodyDisplacement);
-	if (m_RigidBody2)
-	{
-		RigidBodyDisplacement = MovePerIMass * m_RigidBody2->m_InverseMass;
-		m_RigidBody2->AddPosition(RigidBodyDisplacement);
-	}
 }
 
 float BodyContact::GetTotalInverseMass()

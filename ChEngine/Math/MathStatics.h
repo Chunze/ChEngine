@@ -118,6 +118,14 @@ namespace Math {
 
 		return true;
 	}
+
+	static mat4 MakeTransform(const vec3 &Location, const quat &Orientation)
+	{
+		mat4 Result = glm::toMat4(glm::normalize(Orientation));
+		Result[3] = vec4(Location, 1.0f);
+		return Result;
+	}
+
 } // namespace Math
 
 #endif

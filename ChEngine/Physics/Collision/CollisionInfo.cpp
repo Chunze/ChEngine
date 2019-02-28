@@ -34,8 +34,8 @@ void CollisionInfo::Resolve()
 		NewContactNormal /= (float)ContactNum;
 
 		Contact.SetContactPoint(NewContactPoint);
-		Contact.m_ContactNormal = NewContactNormal;
-		Contact.m_Penetration = NewPenetration;
+		Contact.SetContactNormal(NewContactNormal);
+		Contact.SetContactPenetration(NewPenetration);
 		Contact.Resolve();
 	}
 }

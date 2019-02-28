@@ -2,7 +2,7 @@
 #include "RigidBody.h"
 
 
-const float BodyContact::m_Restitution = 0.1f;
+const float BodyContact::m_Restitution = 0.3f;
 
 void BodyContact::Resolve(/*float duration*/)
 {
@@ -33,18 +33,18 @@ void BodyContact::Resolve(/*float duration*/)
 
 	float DeltaVelocity = -ContactVelocity.x * (1 + m_Restitution);
 
-	/** Step 4: calculate the impulse needed to result the change in step 3 **/
+	/** Step 3: calculate the impulse needed to result the change in step 2 **/
 
 	vec3 ContactImpulse, WorldImpulse;
 	ContactImpulse.x = DeltaVelocity / DeltaVelocity_PerUnitImpulse;
 	WorldImpulse = m_ContactToWorld * ContactImpulse;
 
-	/** step 5: split the impulse into linear and angular components **/
+	/** step 4: split the impulse into linear and angular components **/
 
 	// Linear velocity change
 	vec3 VelocityChange = WorldImpulse * m_RigidBody1->m_InverseMass;
 	// Angular velocity change
-	vec3 ImpulsiveTorque = glm::cross(WorldImpulse, m_ContactPoint - m_RigidBody1->m_Position);
+	vec3 ImpulsiveTorque = glm::cross(m_RelativeContactPosition1, WorldImpulse);
 	vec3 RotationChange = m_RigidBody1->m_InverseTensorWorld * ImpulsiveTorque;
 
 	m_RigidBody1->m_Velocity += VelocityChange;
@@ -54,23 +54,49 @@ void BodyContact::Resolve(/*float duration*/)
 	if (m_RigidBody2)
 	{
 		/** Step 2 **/
-		Torque = glm::cross(m_RelativeContactPosition2, m_ContactNormal);
+		Torque = glm::cross(m_RelativeContactPosition2, -m_ContactNormal);
 		AngularVelChange = m_RigidBody2->m_InverseInertiaTensor * Torque;
 		LinearVelChange = glm::cross(AngularVelChange, m_RelativeContactPosition2);
-		DeltaVelocity_PerUnitImpulse = glm::dot(LinearVelChange, m_ContactNormal);
+		DeltaVelocity_PerUnitImpulse = glm::dot(LinearVelChange, -m_ContactNormal);
 		// Add the linear component of velocity change
 		DeltaVelocity_PerUnitImpulse += m_RigidBody2->m_InverseMass;
 
-		/** Step 4 **/
+		/** Step 3 **/
 		ContactImpulse.x = DeltaVelocity / DeltaVelocity_PerUnitImpulse;
 		WorldImpulse = - m_ContactToWorld * ContactImpulse;
 
-		/** Step 5 **/
+		/** Step 4 **/
 		VelocityChange = WorldImpulse * m_RigidBody2->m_InverseMass;
-		ImpulsiveTorque = glm::cross(WorldImpulse, m_ContactPoint - m_RigidBody2->m_Position);
+		ImpulsiveTorque = glm::cross(m_RelativeContactPosition2, WorldImpulse);
 		RotationChange = m_RigidBody2->m_InverseTensorWorld * ImpulsiveTorque;
 
 		m_RigidBody2->m_Velocity += VelocityChange;
 		m_RigidBody2->m_AngularVelocity += RotationChange;
+	}
+}
+
+
+
+void BodyContact::ResolveInterpenetration()
+{
+	if (m_Penetration <= 0)
+	{
+		// There isn't any penetration
+		return;
+	}
+
+	// The movement of each object is backed on their inverse mass
+	float TotalInverseMass = GetTotalInverseMass();
+
+	// Find the amount of penetration resolution per unit of inverse mass
+	glm::vec3 MovePerIMass = m_ContactNormal * (m_Penetration / TotalInverseMass);
+
+	// Apply displacement
+	vec3 RigidBodyDisplacement = MovePerIMass * m_RigidBody1->m_InverseMass;
+	m_RigidBody1->AddPosition(RigidBodyDisplacement);
+	if (m_RigidBody2)
+	{
+		RigidBodyDisplacement = -MovePerIMass * m_RigidBody2->m_InverseMass;
+		m_RigidBody2->AddPosition(RigidBodyDisplacement);
 	}
 }
