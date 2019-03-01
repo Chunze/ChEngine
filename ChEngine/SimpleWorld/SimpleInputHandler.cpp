@@ -114,12 +114,7 @@ void SimpleInputHandler::ProcessInput(GLFWwindow* contextWindow)
 	{
 		if (KEY_B_WasPressed)
 		{
-			KEY_B_WasPressed = false;
-			World* world = m_gameContext->m_world;
-			GameObject* gameobject = world->GetGameObjects()[0];
-			PrimitiveComponent* comp = dynamic_cast<PrimitiveComponent *>(gameobject->GetRootComponent());
-			auto body = comp->GetPhsicsBody();
-			body->AddForceAtBodyPoint(vec3(-300.0f, 100.0f, 0.0f), vec3(0.5f, 0.0f, 0.2f));
+
 		}
 	}
 
@@ -138,12 +133,7 @@ void SimpleInputHandler::ProcessInput(GLFWwindow* contextWindow)
 
 	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_PRESS)
 	{
-		KEY_V_WasPressed = true;
-		World* world = m_gameContext->m_world;
-		GameObject* gameobject = world->GetGameObjects()[0];
-		PrimitiveComponent* comp = dynamic_cast<PrimitiveComponent *>(gameobject->GetRootComponent());
-		auto body = comp->GetPhsicsBody();
-		body->AddForce(vec3(0.0, 100.f, 0.0f));
+
 	}
 	if (glfwGetKey(contextWindow, GLFW_KEY_V) == GLFW_RELEASE)
 	{

@@ -1,5 +1,7 @@
 #include "World.h"
 #include "GameObject.h"
+#include "IPhysicsProxy.h"
+#include "IRenderableObject.h"
 #include "SceneObject.h"
 
 World::World(GameContext* gameContext)
@@ -9,9 +11,9 @@ World::World(GameContext* gameContext)
 
 void World::Update(float Delta)
 {
-	for (SceneObject* sceneObject : m_SceneObjects)
+	for (Component_sp Component : m_Components)
 	{
-		sceneObject->Update(Delta);
+		Component->Update(Delta);
 	}
 	for (GameObject* gameObject : m_GameObjects)
 	{
@@ -21,18 +23,63 @@ void World::Update(float Delta)
 
 void World::PostPhysicsUpdate()
 {
-	for (SceneObject* sceneObject : m_SceneObjects)
+	for (Component_sp component : m_Components)
 	{
-		sceneObject->PostPhysicsUpdate();
+		// Check if the component is IPhysicsProxy, call post physics update if yes.
+		IPhysicsProxy* Proxy = dynamic_cast<IPhysicsProxy*>(component.get());
+		if (Proxy)
+		{
+			Proxy->PostPhysicsUpdate();
+		}
+	}
+
+	for (GameObject* gameObject : m_GameObjects)
+	{
+		gameObject->PostPhysicsUpdate();
 	}
 }
 
-void World::RenderWorld()
+void World::RegisterComponent(Component_sp Component)
 {
-	for (GameObject* gameObject : m_GameObjects)
+	for (auto c : m_Components)
 	{
-		gameObject->RenderObject();
+		if (c == Component)
+		{
+			return;
+		}
 	}
+
+	m_Components.push_back(Component);
+}
+
+PhysicsProxies World::GetPhysicsProxies()
+{
+	PhysicsProxies Proxies;
+	for (Component_sp component : m_Components)
+	{
+		IPhysicsProxy* Proxy = dynamic_cast<IPhysicsProxy*>(component.get());
+		if (Proxy)
+		{
+			Proxies.push_back(Proxy);
+		}
+	}
+
+	return Proxies;
+}
+
+RenderableObjects World::GetRenderableObjects()
+{
+	RenderableObjects Objects;
+	for (Component_sp component : m_Components)
+	{
+		IRenderableObject* Proxy = dynamic_cast<IRenderableObject*>(component.get());
+		if (Proxy)
+		{
+			Objects.push_back(Proxy);
+		}
+	}
+
+	return Objects;
 }
 
 void World::Init()

@@ -93,26 +93,25 @@ void SimpleWorld::SetupWorld()
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
 	Model* newModel = new Model(m_gameContext, crate_path);
 	Model* BallModel = new Model(m_gameContext, ball_path);
-	StaticMeshComponent* staticMeshComp = new StaticMeshComponent(m_gameContext, this);
+	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 
 	staticMeshComp->SetRigidBody(std::make_shared<RigidBox>(vec3(1.0f)));
-	m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp->GetPhsicsBody());
-	staticMeshComp->GetPhsicsBody()->AddCollisionPrimitive(std::make_shared<BoxPrimitive>(vec3(1.0f)));
+	// m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp->GetPhsicsBody());
+	staticMeshComp->GetRigidBody()->AddCollisionPrimitive(std::make_shared<BoxPrimitive>(vec3(1.0f)));
 
 	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(newModel);
 	
-	staticMeshComp->GetPhsicsBody()->SetVelocity(vec3(0.0f, 0.0f, 0.0f));
+	staticMeshComp->GetRigidBody()->SetVelocity(vec3(0.0f, 0.0f, 0.0f));
 
 	m_GameObjects.push_back(gameObject);
-	m_SceneObjects.push_back(staticMeshComp);
 
 	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(0.0f, 1.1f, 0.0));
-	StaticMeshComponent* staticMeshComp_1 = new StaticMeshComponent(m_gameContext, this);
+	auto staticMeshComp_1 = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 
 	staticMeshComp_1->SetRigidBody(std::make_shared<RigidSphere>(1.0f));
-	m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp_1->GetPhsicsBody());
-	staticMeshComp_1->GetPhsicsBody()->AddCollisionPrimitive(std::make_shared<SpherePrimitive>(1.0f));
+	//m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp_1->GetPhsicsBody());
+	staticMeshComp_1->GetRigidBody()->AddCollisionPrimitive(std::make_shared<SpherePrimitive>(1.0f));
 
 	staticMeshComp_1->SetMesh(BallModel);
 	gameObject_1->SetRootComponent(staticMeshComp_1);
@@ -120,10 +119,9 @@ void SimpleWorld::SetupWorld()
 	
 
 	m_GameObjects.push_back(gameObject_1);
-	m_SceneObjects.push_back(staticMeshComp_1);
 
 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), 0.0f));
-// 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 1.0f, 0.0f), -3.0f));
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 1.0f, 0.0f), -3.0f));
 // 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(1.0f, 1.0f, 0.0f), -3.0f));
 // 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, -1.0f), -3.0f));
 // 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 1.0f), -3.0f));

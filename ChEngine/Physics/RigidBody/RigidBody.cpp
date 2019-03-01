@@ -143,7 +143,7 @@ void RigidBody::AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd, cons
 	PrimitiveToAdd->SetBody(shared_from_this(), Offset);
 	m_CollisionPrimitive = PrimitiveToAdd;
 
-	m_PhysicsManager->RegisterCollisionPrimitive(PrimitiveToAdd);
+	//m_PhysicsManager->RegisterCollisionPrimitive(PrimitiveToAdd);
 }
 
 void RigidBody::ClearAccumulators()

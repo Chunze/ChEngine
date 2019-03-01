@@ -166,6 +166,9 @@
     <ClCompile Include="Physics\Collision\CollisionInfo.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="General\Components\ShapeComponent.cpp">
+      <Filter>General\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -369,6 +372,21 @@
     <ClInclude Include="Physics\Resolution\CollisionResolution.h">
       <Filter>Physics\Resolution</Filter>
     </ClInclude>
+    <ClInclude Include="General\GeneralTypedef.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\GeneralStatics.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\IPhysicsProxy.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="General\Components\ShapeComponent.h">
+      <Filter>General\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\IRenderableObject.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
@@ -418,6 +436,9 @@
     </Filter>
     <Filter Include="Physics\Resolution">
       <UniqueIdentifier>{2e55b33e-4100-4858-88db-f12c34b03988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="General\Components">
+      <UniqueIdentifier>{5d9a43a4-72cb-4e57-bc2c-870ccfd4528a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

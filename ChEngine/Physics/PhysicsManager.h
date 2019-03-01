@@ -11,7 +11,6 @@
 #include "glm.h"
 
 class ForceGenerator;
-class World;
 class ParticleContact;
 class ParticleContactResolver;
 class ParticleContactGenerator;
@@ -41,6 +40,8 @@ public:
 
 	// updating forces for one frame, new contact forces will be generated next frame
 	void UpdateContactForces(float Delta);
+
+	void ConstructPhysicsScene(PhysicsProxies Proxies);
 
 	void GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping);
 

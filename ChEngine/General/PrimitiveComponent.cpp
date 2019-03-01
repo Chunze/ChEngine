@@ -8,11 +8,6 @@ PrimitiveComponent::PrimitiveComponent(GameContext* gameContext, World* world)
 {
 }
 
-void PrimitiveComponent::AddDrawListElement()
-{
-}
-
-
 void PrimitiveComponent::PostPhysicsUpdate()
 {
 	if (m_RigidBody != nullptr)
@@ -26,8 +21,6 @@ void PrimitiveComponent::PostPhysicsUpdate()
 			SetRelativeTransform(m_RigidBody->GetTransform());
 		}
 	}
-
-	Super::PostPhysicsUpdate();
 }
 
 void PrimitiveComponent::SetWorldTransform(mat4 worldTransform)

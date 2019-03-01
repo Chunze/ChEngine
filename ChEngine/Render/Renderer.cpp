@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Game.h"
+#include "IRenderableObject.h"
 #include "Light.h"
 #include "../stb_image.h"
 
@@ -118,6 +119,15 @@ void Renderer::Update(float deltaTime)
 
 	Draw();
 
+}
+
+void Renderer::GetherDrawCalls(RenderableObjects Objects)
+{
+	DrawList* List = m_gameContext->GetDrawList();
+	for (IRenderableObject* Object : Objects)
+	{
+		Object->GetherDrawCall(List);
+	}
 }
 
 void Renderer::Draw()

@@ -10,6 +10,8 @@
 
 class GameObject;
 class SceneObject;
+class IPhysicsProxy;
+
 
 class World : public BaseClass
 {
@@ -24,15 +26,19 @@ public:
 	virtual bool LoadWorld(const char* fileName) { return false; }
 	virtual void Update(float Delta);
 	virtual void PostPhysicsUpdate();
-	virtual void RenderWorld();
 
 	std::vector<GameObject*> GetGameObjects() { return m_GameObjects; }
+
+	void RegisterComponent(Component_sp Component);
+
+	PhysicsProxies GetPhysicsProxies();
+	RenderableObjects GetRenderableObjects();
 
 	float m_customDelta = -1.0f;
 
 protected:
 	std::vector<GameObject*> m_GameObjects;
-	std::vector<SceneObject*> m_SceneObjects;
+	Components m_Components;
 
 	Camera* m_Camera;
 	virtual void InitCamera() = 0;

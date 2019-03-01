@@ -21,70 +21,13 @@ SceneObject::SceneObject(GameContext* gameContext, World* world, glm::vec3 locat
 
 void SceneObject::Update(float Delta)
 {
-	for (SceneObject *sceneObject : m_Children)
-	{
-		sceneObject->Update(Delta);
-	}
 
 	bPostPhysicsUpdated = false;
 }
 
 void SceneObject::UpdateTransform()
 {
-	if (bPostPhysicsUpdated)
-	{
-		return;
-	}
 
-	SetRelativeLocation(m_Particle->GetPosition());
-	if (m_Owner != nullptr)
-	{
-		if (!m_Owner->HasPostPhysicsUpdated())
-		{
-			m_Owner->UpdateTransform();
-		}
-		m_WorldTransform = m_Owner->GetWorldTransform() * m_RelativeTransform;
-	}
-	else
-	{
-		m_WorldTransform = m_RelativeTransform;
-	}
-}
-
-void SceneObject::PostPhysicsUpdate()
-{
-	if (bPostPhysicsUpdated)
-	{
-		return;
-	}
-
-	if (m_Particle != nullptr)
-	{
-		if (bIsRoot)
-		{
-			SetWorldLocation(m_Particle->GetPosition());
-			return;
-		}
-		else
-		{
-			SetRelativeLocation(m_Particle->GetPosition());
-		}
-	}
-
-	if (m_Owner != nullptr)
-	{
-		if (!m_Owner->HasPostPhysicsUpdated())
-		{
-			m_Owner->PostPhysicsUpdate();
-		}
-		m_WorldTransform = m_Owner->GetWorldTransform() * m_RelativeTransform;
-	}
-	else
-	{
-		m_WorldTransform = m_RelativeTransform;
-	}
-
-	bPostPhysicsUpdated = true;
 }
 
 void SceneObject::SetWorldTransform(glm::mat4 worldTransform)
@@ -103,18 +46,7 @@ void SceneObject::SetWorldTransform(const vec3 &location, const quat &orientatio
 
 void SceneObject::SetRelativeTransform(mat4 relativeTransform)
 {
-
-}
-
-void SceneObject::RemoveChild(SceneObject* child)
-{
-// 	for (size_t index = 0; index < m_Children.size(); index++)
-// 	{
-// 		if (m_Children[index] == child)
-// 		{
-// 			m_Children.erase(m_Children.begin() + index);
-// 		}
-// 	}
+	m_RelativeTransform = relativeTransform;
 }
 
 void SceneObject::SetWorldLocation(glm::vec3 location)
@@ -123,14 +55,6 @@ void SceneObject::SetWorldLocation(glm::vec3 location)
 	if (m_Particle != nullptr)
 	{
 		m_Particle->SetPosition(location);
-	}
-}
-
-void SceneObject::SetOwner(SceneObject* owner)
-{
-	if (m_Owner == nullptr)
-	{
-		m_Owner = owner;
 	}
 }
 

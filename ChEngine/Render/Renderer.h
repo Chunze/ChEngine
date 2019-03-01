@@ -39,6 +39,8 @@ public:
 
 	void Update(float deltaTime);
 
+	void GetherDrawCalls(RenderableObjects Objects);
+
 	void Draw();
 	void SetBackgroundColor(float r, float g, float b);
 

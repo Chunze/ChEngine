@@ -14,6 +14,28 @@ Component::Component(GameContext* gameContext, World* world)
 
 }
 
+void Component::RemoveChild(Component_sp child)
+{
+
+}
+
+void Component::SetOwner(GameObject* owner)
+{
+	if (m_Owner == nullptr)
+	{
+		m_Owner = owner;
+	}
+}
+
+void Component::Update(float Delta)
+{
+
+}
+
+void Component::UpdateTransform()
+{
+}
+
 Component::~Component()
 {
 }

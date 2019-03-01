@@ -1,3 +1,5 @@
+#ifndef DRAW_LIST_H
+#define DRAW_LIST_H
 #pragma once
 #include <vector>
 #include <queue>
@@ -114,3 +116,5 @@ protected:
 
 	bool bHasNewData;
 };
+
+#endif

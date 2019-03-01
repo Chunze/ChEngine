@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #define PHYSICS_TIME_STEP 0.001f
+#define FPS_RENDER_TIME_STEP 0.1f
 
 struct GLFWwindow;
 class InputHandler;
@@ -44,6 +45,7 @@ private:
 	// for physics to run in smaller steps
 	float PhysicsTimeAccumulator = 0.0f;
 
+	float TimeSinceFPSRender = 0.0f;
 
 	bool KEY_B_WasPressed = false;
 	bool KEY_H_WasPressed = false;

@@ -9,11 +9,6 @@ TailSkel::TailSkel(GameContext* gameContext, World* world, int NumofBones/* = 1*
 	InitDrawElement();
 }
 
-void TailSkel::CreateAndAddDrawListElement(int Mode)
-{
-
-}
-
 void TailSkel::Update(float Delta)
 {
 	UpdateVertexBuffer();

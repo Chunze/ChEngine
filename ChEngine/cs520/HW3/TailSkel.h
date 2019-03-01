@@ -11,7 +11,6 @@ class TailSkel : public GameObject
 public:
 	TailSkel(GameContext* gameContext, World* world, int NumofBones = 1);
 
-	virtual void CreateAndAddDrawListElement(int Mode = 0) override;
 	virtual void Update(float Delta) override;
 
 	void InitBones(int NumOfBones = 1);

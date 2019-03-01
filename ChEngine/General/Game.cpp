@@ -84,69 +84,15 @@ void Game::InitGame()
 		m_gameContext->m_physicsManager = physicsManager;
 	}
 	{
-		//std::cout << "This is homework 3: 2D IK - enter number of bones...\n";
-		std::string Homework = "0";
-		//std::cin >> Homework;
-
-
-
-		if (Homework == "1")
-		{
-			m_gameContext->m_renderer->SetBackgroundColor(0.2f, 0.3f, 0.3f);
-
-			World* world = new JelloWorld(m_gameContext);
-			std::cout << "Enter Jello World file path (cs520/...)...\n";
-			std::string WorldFile;
-			std::cin >> WorldFile;
-			
-			while (!world->LoadWorld(WorldFile.c_str()))
-			{
-				std::cout << "Invalid input... Enter Jello World file path (cs520/...)...\n";
-				std::cin >> WorldFile;
-			}
-
-			std::cout << "Loading world...\n";
-			m_gameContext->m_world = world;
-		}
-		else if (Homework == "2")
-		{
-			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
-			std::cout << "Enter number of particles...\n";
-			int ParticleNum;
-			std::cin >> ParticleNum;
-
-			World* world = new ParticleWorld(m_gameContext, ParticleNum);
-			m_gameContext->m_world = world;
-
-			bPaused = false;
-
-			static_cast<ParticleWorld*>(world)->UpdateDynamicAttractor(WindowWidth, WindowHeight);
-		}
-		else if (Homework == "3")
-		{
-			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
-
-			World* world = new IKWorld(m_gameContext);
-
-			int NumOfBones;
-
-			std::cin >> NumOfBones;
-
-			static_cast<IKWorld*>(world)->InitBones(NumOfBones);
-
-			m_gameContext->m_world = world;
-			bPaused = false;
-		}
-		else if (Homework == "0")
-		{
+		
 			m_gameContext->m_renderer->SetBackgroundColor(0.0f, 0.0f, 0.0f);
 			World* world = new SimpleWorld(m_gameContext);
-
 			bPaused = true;
-
 			m_gameContext->m_world = world;
-		}
 	}
+
+	// Construct physics scene
+	m_gameContext->GetPhysicsManager()->ConstructPhysicsScene(m_gameContext->GetWorld()->GetPhysicsProxies());
 }
 
 void Game::GameLoop()
@@ -157,12 +103,20 @@ void Game::GameLoop()
 		float currentTime = (float)glfwGetTime();
 		deltaTime = currentTime - lastFrameTime;
 
-		if (ShowFPS)
+		if (true)
 		{
-			FPS = 1 / deltaTime;
+			std::string fps;
 			char buf[10];
+
+			TimeSinceFPSRender += deltaTime;
+			if (TimeSinceFPSRender >= FPS_RENDER_TIME_STEP)
+			{
+				FPS = 1 / deltaTime;
+				TimeSinceFPSRender -= FPS_RENDER_TIME_STEP;
+			}
+
 			sprintf(buf, "%.2f", FPS);
-			std::string fps = std::string(buf);
+			fps = std::string(buf);
 
 			m_gameContext->GetDrawList()->AddOnScreenText("FPS: " + fps, 25.0f, 25.0f, 1.0f, glm::vec3(0.9, 0.9, 0.9));
 		}
@@ -218,7 +172,8 @@ void Game::GameLoop()
 			PhysicsTimeAccumulator -= PHYSICS_TIME_STEP;
 		}
 		m_gameContext->GetWorld()->PostPhysicsUpdate();
-		m_gameContext->GetWorld()->RenderWorld();
+		//m_gameContext->GetWorld()->RenderWorld();
+		m_gameContext->m_renderer->GetherDrawCalls(m_gameContext->GetWorld()->GetRenderableObjects());
 		m_gameContext->m_renderer->Update(deltaTime);
 		
 		glfwSwapBuffers(m_gameContext->GetWindow());

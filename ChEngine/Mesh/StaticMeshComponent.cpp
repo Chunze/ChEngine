@@ -9,8 +9,7 @@ StaticMeshComponent::StaticMeshComponent(GameContext* gameObject, World* world)
 	InitPhysicsBody();
 }
 
-
-void StaticMeshComponent::AddDrawListElement()
+void StaticMeshComponent::GetherDrawCall(DrawList* drawList) const
 {
 	if (m_Model != nullptr)
 	{
@@ -18,7 +17,7 @@ void StaticMeshComponent::AddDrawListElement()
 		for (auto& element : DrawElements)
 		{
 			element.worldTransform = m_WorldTransform;
-			m_gameContext->GetDrawList()->AddToDrawQ(element);
+			drawList->AddToDrawQ(element);
 		}
 	}
 }

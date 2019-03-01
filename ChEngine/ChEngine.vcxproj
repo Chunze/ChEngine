@@ -33,6 +33,7 @@
     <ClCompile Include="cs520\JelloWorldInputHandler.cpp" />
     <ClCompile Include="General\Camera.cpp" />
     <ClCompile Include="General\Component.cpp" />
+    <ClCompile Include="General\Components\ShapeComponent.cpp" />
     <ClCompile Include="General\DrawList.cpp" />
     <ClCompile Include="General\Game.cpp" />
     <ClCompile Include="General\GameContext.cpp" />
@@ -94,10 +95,13 @@
     <ClInclude Include="General\BaseClass.h" />
     <ClInclude Include="General\Camera.h" />
     <ClInclude Include="General\Component.h" />
+    <ClInclude Include="General\Components\ShapeComponent.h" />
     <ClInclude Include="General\DrawList.h" />
     <ClInclude Include="General\Game.h" />
     <ClInclude Include="General\GameContext.h" />
     <ClInclude Include="General\GameObject.h" />
+    <ClInclude Include="General\GeneralStatics.h" />
+    <ClInclude Include="General\GeneralTypedef.h" />
     <ClInclude Include="General\glm.h" />
     <ClInclude Include="General\InputHandler.h" />
     <ClInclude Include="General\main.h" />
@@ -123,11 +127,13 @@
     <ClInclude Include="Physics\Contacts.h" />
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h" />
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h" />
+    <ClInclude Include="Physics\IPhysicsProxy.h" />
     <ClInclude Include="Physics\PhysicsTypes.h" />
     <ClInclude Include="Physics\Resolution\CollisionResolution.h" />
     <ClInclude Include="Physics\RigidBody\RigidBox.h" />
     <ClInclude Include="Physics\RigidBody\RigidBody.h" />
     <ClInclude Include="Physics\RigidBody\RigidSphere.h" />
+    <ClInclude Include="Render\IRenderableObject.h" />
     <ClInclude Include="Render\Light.h" />
     <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="General\FileManager.h" />
@@ -214,7 +220,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Physics\ForceGenerators;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine;$(SolutionDir)ChEngine\Physics\ContactGenerators;$(SolutionDir)ChEngine\Physics\RigidBody;$(SolutionDir)ChEngine\Physics\Collision;$(SolutionDir)ChEngine\Physics\Resolution</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(SolutionDir)ChEngine\General;$(SolutionDir)ChEngine\cs520;$(SolutionDir)ChEngine\Physics;$(SolutionDir)ChEngine\Physics\ForceGenerators;$(SolutionDir)ChEngine\Render;$(SolutionDir)ChEngine\cs520\HW2;$(SolutionDir)ChEngine\ParticleSystem;$(IncludePath);$(SolutionDir)ChEngine\Math;$(SolutionDir)ChEngine\SimpleWorld;$(SolutionDir)\ChEngine\Mesh;$(SolutionDir)ChEngine;$(SolutionDir)ChEngine\Physics\ContactGenerators;$(SolutionDir)ChEngine\Physics\RigidBody;$(SolutionDir)ChEngine\Physics\Collision;$(SolutionDir)ChEngine\Physics\Resolution;$(SolutionDir)ChEngine\General\Components</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

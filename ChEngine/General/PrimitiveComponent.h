@@ -1,20 +1,21 @@
 #pragma once
 #include "Component.h"
 #include "DrawList.h"
+#include "IPhysicsProxy.h"
 
-class PrimitiveComponent : public Component
+class PrimitiveComponent : public Component, public IPhysicsProxy
 {
 	typedef Component Super;
 public:
 	PrimitiveComponent(GameContext* gameContext, World* world);
 
-	void AddDrawListElement() override;
-
-	void PostPhysicsUpdate() override;
-
 	void SetRigidBody(RigidBody_sp RigidBody) { m_RigidBody = RigidBody; }
 
-	RigidBody_sp GetPhsicsBody() { return m_RigidBody; }
+	/** IPhysicsProxy functions **/
+	virtual RigidBody_sp GetRigidBody() const { return m_RigidBody; }
+	virtual CollisionPrimitive_sp GetCollisionPrimitive() const { return nullptr; }
+	virtual void PostPhysicsUpdate();
+	/** IPhysicsProxy functions **/
 
 	void SetWorldTransform(mat4 worldTransform) override;
 	void SetWorldLocation(vec3 location) override;

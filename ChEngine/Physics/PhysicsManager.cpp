@@ -2,6 +2,7 @@
 #include "JelloWorld.h"
 #include "Contacts.h"
 #include "ForceGenerators/CollisionSpringFG.h"
+#include "IPhysicsProxy.h"
 #include "ParticleContactGenerator.h"
 #include "RigidBody.h"
 
@@ -57,6 +58,24 @@ void PhysicsManager::UpdateContactForces(float Delta)
 	m_contactForceRegistry.UpdateForces(Delta);
 
 	m_contactForceRegistry.Clear();
+}
+
+void PhysicsManager::ConstructPhysicsScene(PhysicsProxies Proxies)
+{
+	for (IPhysicsProxy* Proxy : Proxies)
+	{
+		auto rigidBody = Proxy->GetRigidBody();
+		if (rigidBody)
+		{
+			RegisterPhysicsBody(rigidBody);
+		}
+
+		auto collisionPrimitive = Proxy->GetCollisionPrimitive();
+		if (collisionPrimitive)
+		{
+			RegisterCollisionPrimitive(collisionPrimitive);
+		}
+	}
 }
 
 void PhysicsManager::GenerateCollisionInfo(Particle* particle, Particle* Anchor, glm::vec3 OutwardDirection, float _springConstant, float _damping)

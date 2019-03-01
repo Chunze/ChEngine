@@ -6,6 +6,7 @@
 #include <queue>
 
 class CollisionPrimitive;
+class IPhysicsProxy;
 class Particle;
 class ParticleContact;
 class RigidBody;
@@ -25,6 +26,7 @@ typedef std::vector<CollisionPrimitive_sp> CollisionPrimitives;
 typedef std::vector<Particle_sp> Particles;
 typedef std::vector<ParticleContact_sp> ParticleContacts;
 typedef std::vector<RigidBody_sp> RigidBodies;
+typedef std::vector<IPhysicsProxy*> PhysicsProxies;
 
 typedef std::queue<PotentialContact_sp> PotentialContacts;
 typedef std::queue<CollisionInfo> CollisionInfos;

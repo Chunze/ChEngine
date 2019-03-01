@@ -1,14 +1,17 @@
+#ifndef STATIC_MESH_COMPONENT_H
+#define STATIC_MESH_COMPONENT_H
 #pragma once
-#include "PrimitiveComponent.h"
 #include "Model.h"
+#include "IRenderableObject.h"
+#include "PrimitiveComponent.h"
 
-class StaticMeshComponent : public PrimitiveComponent
+class StaticMeshComponent : public PrimitiveComponent, public IRenderableObject
 {
 	typedef PrimitiveComponent Super;
 public:
 	StaticMeshComponent(GameContext* gameObject, World* world);
 
-	void AddDrawListElement() override;
+	virtual void GetherDrawCall(DrawList* drawList) const;
 
 	void SetMesh(Model* model) { m_Model = model; }
 	
@@ -23,3 +26,4 @@ private:
 	bool bUseCollision = true;
 };
 
+#endif
