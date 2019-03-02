@@ -9,7 +9,7 @@ StaticMeshComponent::StaticMeshComponent(GameContext* gameObject, World* world)
 	InitPhysicsBody();
 }
 
-void StaticMeshComponent::GetherDrawCall(DrawList* drawList) const
+std::vector<DrawListElement> StaticMeshComponent::GetherDrawCall() const
 {
 	if (m_Model != nullptr)
 	{
@@ -17,9 +17,12 @@ void StaticMeshComponent::GetherDrawCall(DrawList* drawList) const
 		for (auto& element : DrawElements)
 		{
 			element.worldTransform = m_WorldTransform;
-			drawList->AddToDrawQ(element);
 		}
+
+		return DrawElements;
 	}
+
+	return std::vector<DrawListElement>();
 }
 
 StaticMeshComponent::~StaticMeshComponent()

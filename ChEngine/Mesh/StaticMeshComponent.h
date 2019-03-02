@@ -11,7 +11,7 @@ class StaticMeshComponent : public PrimitiveComponent, public IRenderableObject
 public:
 	StaticMeshComponent(GameContext* gameObject, World* world);
 
-	virtual void GetherDrawCall(DrawList* drawList) const;
+	virtual std::vector<DrawListElement> GetherDrawCall() const;
 
 	void SetMesh(Model* model) { m_Model = model; }
 	

@@ -126,7 +126,12 @@ void Renderer::GetherDrawCalls(RenderableObjects Objects)
 	DrawList* List = m_gameContext->GetDrawList();
 	for (IRenderableObject* Object : Objects)
 	{
-		Object->GetherDrawCall(List);
+		auto DrawElements = Object->GetherDrawCall();
+
+		for (auto DrawElement : DrawElements)
+		{
+			List->AddToDrawQ(DrawElement);
+		}
 	}
 }
 
