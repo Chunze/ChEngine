@@ -27,6 +27,8 @@ public:
 	RigidBody_sp GetBody() { return m_RigidBody; }
 	mat4 GetOffset() { return m_Offset; }
 	mat4 GetWorldTransform();
+	mat4 GetInverseWorldTransform();
+	vec3 GetAxis(int index);
 
 protected:
 	RigidBody_sp m_RigidBody = nullptr;

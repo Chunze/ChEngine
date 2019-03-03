@@ -17,3 +17,18 @@ mat4 CollisionPrimitive::GetWorldTransform()
 	return m_RigidBody->GetTransform() * m_Offset;
 }
 
+mat4 CollisionPrimitive::GetInverseWorldTransform()
+{
+	return glm::inverse(GetWorldTransform());
+}
+
+vec3 CollisionPrimitive::GetAxis(int index)
+{
+	if (index < 0 || index > 3)
+	{
+		return vec3();
+	}
+
+	return vec3(GetWorldTransform()[index]);
+}
+

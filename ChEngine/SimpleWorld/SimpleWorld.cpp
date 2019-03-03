@@ -87,7 +87,7 @@ void SimpleWorld::InitDebugElement()
 
 void SimpleWorld::SetupWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.5f, 10.0f, 0.0f), quat(0.0f, 1.5f, 2.0f, 1.0f));
+	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(-1.5f, 6.0f, 0.0f), quat(0.0f, 1.5f, 2.0f, 1.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
@@ -109,11 +109,11 @@ void SimpleWorld::SetupWorld()
 	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(0.0f, 1.1f, 0.0));
 	auto staticMeshComp_1 = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 
-	staticMeshComp_1->SetRigidBody(std::make_shared<RigidSphere>(1.0f));
+	staticMeshComp_1->SetRigidBody(std::make_shared<RigidBox>(vec3(1.0f)));
 	//m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp_1->GetPhsicsBody());
-	staticMeshComp_1->GetRigidBody()->AddCollisionPrimitive(std::make_shared<SpherePrimitive>(1.0f));
+	staticMeshComp_1->GetRigidBody()->AddCollisionPrimitive(std::make_shared<BoxPrimitive>(vec3(1.0f)));
 
-	staticMeshComp_1->SetMesh(BallModel);
+	staticMeshComp_1->SetMesh(newModel);
 	gameObject_1->SetRootComponent(staticMeshComp_1);
 
 	
@@ -121,7 +121,7 @@ void SimpleWorld::SetupWorld()
 	m_GameObjects.push_back(gameObject_1);
 
 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), 0.0f));
-	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 1.0f, 0.0f), -3.0f));
+//	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 1.0f, 0.0f), -3.0f));
 // 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(1.0f, 1.0f, 0.0f), -3.0f));
 // 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, -1.0f), -3.0f));
 // 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 1.0f), -3.0f));

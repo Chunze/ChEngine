@@ -33,7 +33,14 @@ struct BoxVsBox : public CollisionTest
 };
 
 /// Contains fast tests whether two provided shapes are colliding each other
-namespace IntersectionTests
+namespace IntersectionTestsUtils
 {
-	static bool BoxVsSurface(BoxPrimitive* Box, SurfasePrimitive* Surface);
+	static bool BoxVsSurfaceEarlyOut(BoxPrimitive* Box, SurfasePrimitive* Surface);
+
+	static float TransformBoxToAxis(BoxPrimitive *Box, const vec3 &Axis);
+
+	static float BoxPenetrationOnAxis(BoxPrimitive *Box1, BoxPrimitive *Box2, const vec3 &Axis);
+
+	// Returns mid point of the 2 lines
+	static vec3 GetClosestPointOf2Lines(const vec3 &Axis1, const vec3 &Axis2, const vec3 &PointOnAxis1, const vec3 &PointOnAxis2);
 }

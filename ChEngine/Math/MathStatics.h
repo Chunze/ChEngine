@@ -126,6 +126,11 @@ namespace Math {
 		return Result;
 	}
 
+	static inline vec3 Multiply(const mat4 &mat, const vec3 &vec)
+	{
+		return vec3(mat * vec4(vec, 1.0f));
+	}
+
 } // namespace Math
 
 #endif
