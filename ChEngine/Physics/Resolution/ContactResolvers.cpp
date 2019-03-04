@@ -2,7 +2,8 @@
 #include "RigidBody.h"
 
 
-const float BodyContact::m_Restitution = 0.3f;
+const float BodyContact::m_Restitution = 0.2f;
+const float BodyContact::m_VelocityLimit = 0.25f;
 
 void BodyContact::Resolve(/*float duration*/)
 {
@@ -31,7 +32,9 @@ void BodyContact::Resolve(/*float duration*/)
 		ContactVelocity -= m_WorldToContact * m_RigidBody2->GetLinearVelocity(m_ContactPoint);
 	}
 
-	float DeltaVelocity = -ContactVelocity.x * (1 + m_Restitution);
+	m_TheRestitution = glm::dot(ContactVelocity, ContactVelocity) < m_VelocityLimit * m_VelocityLimit ? 0.0f : m_Restitution;
+
+	float DeltaVelocity = -ContactVelocity.x * (1 + m_TheRestitution);
 
 	/** Step 3: calculate the impulse needed to result the change in step 2 **/
 

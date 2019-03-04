@@ -72,7 +72,7 @@ void Camera::Fly(float deltaTime)
 		return;
 	}
 
-	m_position += deltaTime * flySpeed * glm::normalize(m_flyDirection);
+	m_position += 0.015f * flySpeed * glm::normalize(m_flyDirection);
 }
 
 void Camera::Rotate(float deltaPitch, float deltaYaw)

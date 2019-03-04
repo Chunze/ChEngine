@@ -284,6 +284,13 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 			else if (glm::dot(Box2->GetAxis(i), Axis) > 0) PointOnEdge2[i] = -PointOnEdge2[i];
 		}
 
+		// Contact normal should point from box2 to box1
+		vec3 ToCenter = Box1->GetPosition() - Box2->GetPosition();
+		if (glm::dot(ToCenter, Axis) < 0)
+		{
+			Axis *= -1.0f;
+		}
+
 		// Convert to world space
 		PointOnEdge1 = Math::Multiply(Box1->GetWorldTransform(), PointOnEdge1);
 		PointOnEdge2 = Math::Multiply(Box2->GetWorldTransform(), PointOnEdge2);
@@ -319,19 +326,10 @@ bool IntersectionTestsUtils::BoxVsSurfaceEarlyOut(BoxPrimitive* Box, SurfasePrim
 float IntersectionTestsUtils::TransformBoxToAxis(BoxPrimitive *Box, const vec3 &Axis)
 {
 	vec3 NormaliedAxis = glm::normalize(Axis);
-	mat3 BoxToWorld = mat3(Box->GetWorldTransform());
-
-	float Max = FLT_MIN;
-	float Min = FLT_MAX;
-	for (size_t i = 0; i < 8; i++)
-	{
-		vec3 VertexPosition = BoxToWorld * (vec3(mults[i][0], mults[i][1], mults[i][2]) * Box->m_HalfSize);
-		float Distance = glm::dot(VertexPosition, NormaliedAxis);
-		Max = Distance > Max ? Distance : Max;
-		Min = Distance < Min ? Distance : Min;
-	}
-
-	return Max - Min;
+	
+	return Box->m_HalfSize.x * abs(glm::dot(NormaliedAxis, Box->GetAxis(0))) +
+		Box->m_HalfSize.y * abs(glm::dot(NormaliedAxis, Box->GetAxis(1))) +
+		Box->m_HalfSize.z * abs(glm::dot(NormaliedAxis, Box->GetAxis(2)));
 }
 
 float IntersectionTestsUtils::BoxPenetrationOnAxis(BoxPrimitive *Box1, BoxPrimitive *Box2, const vec3 &Axis)
@@ -340,8 +338,8 @@ float IntersectionTestsUtils::BoxPenetrationOnAxis(BoxPrimitive *Box1, BoxPrimit
 	vec3 ToCenter = Box2->GetPosition() - Box1->GetPosition();
 	float Distance = abs(glm::dot(ToCenter, NormalizedAxis));
 
-	float ProjectOne = 0.5f * TransformBoxToAxis(Box1, Axis);
-	float ProjectTwo = 0.5f * TransformBoxToAxis(Box2, Axis);
+	float ProjectOne = TransformBoxToAxis(Box1, Axis);
+	float ProjectTwo = TransformBoxToAxis(Box2, Axis);
 
 	return ProjectOne + ProjectTwo - Distance;
 }

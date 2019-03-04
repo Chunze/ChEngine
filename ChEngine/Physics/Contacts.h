@@ -104,8 +104,10 @@ struct BodyContact
 	vec3 m_ContactNormal;
 
 	float m_Penetration;
+	float m_TheRestitution;
 
 	static const float m_Restitution;
+	static const float m_VelocityLimit;
 
 	mat3 m_ContactToWorld;
 	mat3 m_WorldToContact;
