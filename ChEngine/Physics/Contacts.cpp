@@ -201,10 +201,10 @@ bool BodyContact::ConstructContactToWorld()
 void BodyContact::SetContactPoint(vec3 ContactPoint)
 {
 	m_ContactPoint = ContactPoint;
-	m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody1->GetPosition();
-	if (m_RigidBody2)
+	m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody[0]->GetPosition();
+	if (m_RigidBody[1])
 	{
-		m_RelativeContactPosition2 = m_ContactPoint - m_RigidBody2->GetPosition();
+		m_RelativeContactPosition2 = m_ContactPoint - m_RigidBody[1]->GetPosition();
 	}
 }
 
@@ -220,8 +220,8 @@ void BodyContact::SetContactPenetration(float Penetration)
 
 float BodyContact::GetTotalInverseMass()
 {
-	float TotalInverseMass = m_RigidBody1->m_InverseMass;
-	TotalInverseMass += m_RigidBody2 ? m_RigidBody2->m_InverseMass : 0;
+	float TotalInverseMass = m_RigidBody[0]->m_InverseMass;
+	TotalInverseMass += m_RigidBody[1] ? m_RigidBody[1]->m_InverseMass : 0;
 
 	return TotalInverseMass;
 }

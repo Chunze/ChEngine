@@ -12,6 +12,10 @@ public:
 protected:
 
 	PhysicsManager *m_PhysicsManager;
+
+	void ResolvePenetrations();
+
+	void ResolveVelocities();
 };
 
 #endif // !COLLISION_RESOLUTION_H

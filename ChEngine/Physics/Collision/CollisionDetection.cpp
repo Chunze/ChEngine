@@ -20,7 +20,7 @@ void CollisionDetection::ReportCollision(CollisionInfo &Collision) const
 {
 	if (m_PhysicsManager)
 	{
-		m_PhysicsManager->Collisions.push(Collision);
+		m_PhysicsManager->Collisions.push_back(Collision);
 	}
 }
 

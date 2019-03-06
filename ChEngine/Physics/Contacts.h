@@ -92,8 +92,7 @@ struct PotentialBodyVsPrimiveContact : public PotentialContact
 /// This is the output of the narrow phase of the collision detection
 struct BodyContact
 {
-	RigidBody_sp m_RigidBody1;
-	RigidBody_sp m_RigidBody2;
+	RigidBody_sp m_RigidBody[2];
 
 	// vectors points from origin of rigid body to contact point
 	vec3 m_RelativeContactPosition1;
@@ -117,29 +116,29 @@ struct BodyContact
 	void SetContactNormal(vec3 ContactNormal);
 	void SetContactPenetration(float Penetration);
 
-	void Resolve(/*float duration*/);
-	void ResolveInterpenetration();
+	void ResolveVelocity(/*float duration*/);
+	void ResolveInterpenetration(vec3 &BodyMovement1, vec3 &BodyMovement2);
 	float GetTotalInverseMass();
 
 	void SetBodies(RigidBody_sp Body_1, RigidBody_sp Body_2)
 	{
 		// if bodies are already set, make sure that input bodies are the same ones
-		if (m_RigidBody1)
+		if (m_RigidBody[0])
 		{
-			assert(m_RigidBody1 == Body_1);
+			assert(m_RigidBody[0] == Body_1);
 		}
 		else
 		{
-			m_RigidBody1 = Body_1;
+			m_RigidBody[0] = Body_1;
 		}
 
-		if (m_RigidBody2)
+		if (m_RigidBody[1])
 		{
-			assert(m_RigidBody2 == Body_2);
+			assert(m_RigidBody[1] == Body_2);
 		}
 		else
 		{
-			m_RigidBody2 = Body_2;
+			m_RigidBody[1] = Body_2;
 		}
 	}
 

@@ -29,6 +29,6 @@ typedef std::vector<RigidBody_sp> RigidBodies;
 typedef std::vector<IPhysicsProxy*> PhysicsProxies;
 
 typedef std::queue<PotentialContact_sp> PotentialContacts;
-typedef std::queue<CollisionInfo> CollisionInfos;
+typedef std::vector<CollisionInfo> CollisionInfos;
 
 #endif // !PHYSICS_TYPES_H
