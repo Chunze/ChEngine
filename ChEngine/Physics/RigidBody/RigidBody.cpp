@@ -52,6 +52,18 @@ void RigidBody::AddForceAtBodyPoint(const vec3 &force, const vec3 &point)
 	AddForceAtPoint(force, WorldPoint);
 }
 
+void RigidBody::AddPosition(const vec3 &Displacement)
+{
+	m_Position += Displacement;
+	bDerivedDataReady = false;
+}
+
+void RigidBody::AddRotation(const vec3 &Rotation)
+{
+	m_Orientation = Math::Rotate(m_Orientation, Rotation, 1.0f);
+	bDerivedDataReady = false;
+}
+
 void RigidBody::Integrate(float duration)
 {
 	// calculate linear acceleration
@@ -86,7 +98,6 @@ void RigidBody::Integrate(float duration)
 	// adjust position and rotation
 	m_Position += m_Velocity * duration;
 	m_Orientation = Math::Rotate(m_Orientation, m_AngularVelocity, duration);
-	m_Orientation = glm::normalize(m_Orientation);
 
 	// update derived data
 	CalculateDerivedData();

@@ -201,10 +201,10 @@ bool BodyContact::ConstructContactToWorld()
 void BodyContact::SetContactPoint(vec3 ContactPoint)
 {
 	m_ContactPoint = ContactPoint;
-	m_RelativeContactPosition1 = m_ContactPoint - m_RigidBody[0]->GetPosition();
+	m_RelativeContactPosition[0] = m_ContactPoint - m_RigidBody[0]->GetPosition();
 	if (m_RigidBody[1])
 	{
-		m_RelativeContactPosition2 = m_ContactPoint - m_RigidBody[1]->GetPosition();
+		m_RelativeContactPosition[1] = m_ContactPoint - m_RigidBody[1]->GetPosition();
 	}
 }
 

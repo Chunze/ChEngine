@@ -51,7 +51,8 @@ public:
 	/// The force is in world space, and the point is in body space.
 	void AddForceAtBodyPoint(const vec3 &force, const vec3 &point);
 
-	void AddPosition(const vec3 &Displacement) { m_Position += Displacement; }
+	void AddPosition(const vec3 &Displacement);
+	void AddRotation(const vec3 &Rotation);
 
 	void Integrate(float duration);
 

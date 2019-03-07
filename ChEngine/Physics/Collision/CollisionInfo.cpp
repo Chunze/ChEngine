@@ -44,9 +44,9 @@ void CollisionInfo::CombineContacts()
 	m_IsValid = true;
 }
 
-void CollisionInfo::ResolveInterPenetration(vec3 &BodyMovement1, vec3 &BodyMovement2)
+void CollisionInfo::ResolveInterPenetration(vec3 LinearChange[2], vec3 AngularChange[2])
 {
-	m_FinalContact.ResolveInterpenetration(BodyMovement1, BodyMovement2);
+	m_FinalContact.ResolveInterpenetration(LinearChange, AngularChange);
 }
 
 void CollisionInfo::ResolveVelocity()

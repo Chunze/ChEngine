@@ -95,7 +95,7 @@ namespace Math {
 
 		Result = QuatToRotate + duration * 0.5f * q * QuatToRotate;
 
-		return Result;
+		return glm::normalize(Result);
 	}
 
 	static float LengthSq(const vec3 &V)

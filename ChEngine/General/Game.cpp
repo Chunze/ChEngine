@@ -165,12 +165,13 @@ void Game::GameLoop()
 		/****     Update(deltaTime)    ****/
 		m_gameContext->GetWorld()->Update(deltaTime);
 
-		PhysicsTimeAccumulator += deltaTime;
-		while (PhysicsTimeAccumulator >= PHYSICS_TIME_STEP)
-		{
-			m_gameContext->GetPhysicsManager()->Update(PHYSICS_TIME_STEP);
-			PhysicsTimeAccumulator -= PHYSICS_TIME_STEP;
-		}
+// 		PhysicsTimeAccumulator += deltaTime;
+// 		while (PhysicsTimeAccumulator >= PHYSICS_TIME_STEP)
+// 		{
+// 			m_gameContext->GetPhysicsManager()->Update(PHYSICS_TIME_STEP);
+// 			PhysicsTimeAccumulator -= PHYSICS_TIME_STEP;
+// 		}
+		m_gameContext->GetPhysicsManager()->Update(deltaTime);
 		m_gameContext->GetWorld()->PostPhysicsUpdate();
 		//m_gameContext->GetWorld()->RenderWorld();
 		m_gameContext->m_renderer->GetherDrawCalls(m_gameContext->GetWorld()->GetRenderableObjects());

@@ -37,7 +37,7 @@ struct CollisionInfo
 
 	bool m_IsValid = false;
 
-	void ResolveInterPenetration(vec3 &BodyMovement1, vec3 &BodyMovement2);
+	void ResolveInterPenetration(vec3 LinearChange[2], vec3 AngularChange[2]);
 	void ResolveVelocity();
 
 };

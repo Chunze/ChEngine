@@ -7,7 +7,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-#define SMALL_NUMBER	1e-6f
+#define SMALL_NUMBER	1e-4f
 #define PI				3.14159265359f
 
 typedef glm::vec3 vec3;
