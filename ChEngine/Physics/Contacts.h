@@ -115,13 +115,18 @@ struct BodyContact
 	/** intermediate values **/
 	float m_AngularInertia[2];
 
+	// This closing velocity is in contact space, so component X is the speed.
+	vec3 m_ClosingVelocity;
+
 	bool ConstructContactToWorld();
 	void SetContactPoint(vec3 ContactPoint);
 	void SetContactNormal(vec3 ContactNormal);
 	void SetContactPenetration(float Penetration);
 	void CalculateAngularInertia();
+	void CalculateClosingVelocity();
+	void CalculateClosingVelocity(vec3 DeltaClosingVelocity);
 
-	void ResolveVelocity(/*float duration*/);
+	void ResolveVelocity(vec3 LinearChange[2], vec3 AngularChange[2], float Delta);
 	void ResolveInterpenetration(vec3 LinearChange[2], vec3 AngularChange[2]);
 	float GetTotalInverseMass();
 

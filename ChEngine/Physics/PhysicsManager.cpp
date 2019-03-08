@@ -31,7 +31,7 @@ void PhysicsManager::Update(float Delta)
 	m_CollisionDetection.RunCollisionDetection();
 	RunCollisionDetection();
 
-	m_CollisionResolution.RunCollisionResolution();
+	m_CollisionResolution.RunCollisionResolution(Delta);
 	RunCollisionResolution(Delta);
 }
 

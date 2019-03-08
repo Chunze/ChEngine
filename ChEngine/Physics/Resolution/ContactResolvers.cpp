@@ -2,21 +2,12 @@
 #include "RigidBody.h"
 
 
-const float BodyContact::m_Restitution = 0.4f;
+const float BodyContact::m_Restitution = 0.15f;
 const float BodyContact::m_VelocityLimit = 0.05f;
 const float BodyContact::m_AngularLimit = 0.2f;
-const float BodyContact::m_EnergyLoss = 0.7f;
 
-void BodyContact::ResolveVelocity(/*float duration*/)
+void BodyContact::ResolveVelocity(vec3 LinearChange[2], vec3 AngularChange[2], float Delta)
 {
-	//ResolveInterpenetration();
-
-	/** Step 1: construct the contact coordinate axis **/
-
-	ConstructContactToWorld();
-
-	/** Step 2: calculate change in velocity of the contact point on each object per unit of impulse. **/
-
 	// Linear velocity change caused by angular velocity change per unit of impulse
 	// this was calculated when resolving penetration
 	float DeltaVelocity_PerUnitImpulse = m_AngularInertia[0];
@@ -24,60 +15,48 @@ void BodyContact::ResolveVelocity(/*float duration*/)
 	// Add the linear component of velocity change
 	DeltaVelocity_PerUnitImpulse += m_RigidBody[0]->m_InverseMass;
 
-	/** Step 2: calculate closing velocity in contact space **/
-
-	vec3 ContactVelocity = m_WorldToContact * m_RigidBody[0]->GetLinearVelocity(m_ContactPoint);
-	if (m_RigidBody[1])
-	{
-		ContactVelocity -= m_WorldToContact * m_RigidBody[1]->GetLinearVelocity(m_ContactPoint);
-	}
-
 	// Check if the two points are closing on each other
-	if (ContactVelocity.x > 0)
+	if (m_ClosingVelocity.x > 0)
 	{
 		return;
 	}
 
-	m_TheRestitution = glm::dot(ContactVelocity, ContactVelocity) < m_VelocityLimit * m_VelocityLimit ? 0.0f : m_Restitution;
+	m_TheRestitution = glm::dot(m_ClosingVelocity, m_ClosingVelocity) < m_VelocityLimit * m_VelocityLimit ? 0.0f : m_Restitution;
 
-	float DeltaVelocity = -ContactVelocity.x * (1 + m_TheRestitution) * m_EnergyLoss;
+	float DeltaVelocity = -m_ClosingVelocity.x * (1 + m_TheRestitution);
 
-	/** Step 3: calculate the impulse needed to result the change in step 2 **/
+	// calculate the impulse needed to result the change in step 2
 
 	vec3 ContactImpulse, WorldImpulse;
 	ContactImpulse.x = DeltaVelocity / DeltaVelocity_PerUnitImpulse;
 	WorldImpulse = m_ContactToWorld * ContactImpulse;
 
-	/** step 4: split the impulse into linear and angular components **/
+	// split the impulse into linear and angular components
 
 	// Linear velocity change
-	vec3 VelocityChange = WorldImpulse * m_RigidBody[0]->m_InverseMass;
+	LinearChange[0] = WorldImpulse * m_RigidBody[0]->m_InverseMass;
 	// Angular velocity change
 	vec3 ImpulsiveTorque = glm::cross(m_RelativeContactPosition[0], WorldImpulse);
-	vec3 RotationChange = m_RigidBody[0]->m_InverseTensorWorld * ImpulsiveTorque;
+	AngularChange[0] = m_RigidBody[0]->m_InverseTensorWorld * ImpulsiveTorque;
 
-	m_RigidBody[0]->m_Velocity += VelocityChange;
-	m_RigidBody[0]->m_AngularVelocity += RotationChange;
+	m_RigidBody[0]->m_Velocity += LinearChange[0];
+	m_RigidBody[0]->m_AngularVelocity += AngularChange[0];
 
 	
 	if (m_RigidBody[1])
 	{
-		/** Step 2 **/
 		DeltaVelocity_PerUnitImpulse = m_AngularInertia[1];
-		// Add the linear component of velocity change
 		DeltaVelocity_PerUnitImpulse += m_RigidBody[1]->m_InverseMass;
 
-		/** Step 3 **/
 		ContactImpulse.x = DeltaVelocity / DeltaVelocity_PerUnitImpulse;
 		WorldImpulse = - m_ContactToWorld * ContactImpulse;
 
-		/** Step 4 **/
-		VelocityChange = WorldImpulse * m_RigidBody[1]->m_InverseMass;
+		LinearChange[1] = WorldImpulse * m_RigidBody[1]->m_InverseMass;
 		ImpulsiveTorque = glm::cross(m_RelativeContactPosition[1], WorldImpulse);
-		RotationChange = m_RigidBody[1]->m_InverseTensorWorld * ImpulsiveTorque;
+		AngularChange[1] = m_RigidBody[1]->m_InverseTensorWorld * ImpulsiveTorque;
 
-		m_RigidBody[1]->m_Velocity += VelocityChange;
-		m_RigidBody[1]->m_AngularVelocity += RotationChange;
+		m_RigidBody[1]->m_Velocity += LinearChange[1];
+		m_RigidBody[1]->m_AngularVelocity += AngularChange[1];
 	}
 }
 
@@ -170,4 +149,18 @@ void BodyContact::CalculateAngularInertia()
 		// Change in velocity in contact space
 		m_AngularInertia[i] = glm::dot(LinearVelChange, m_ContactNormal);
 	}
+}
+
+void BodyContact::CalculateClosingVelocity()
+{
+	m_ClosingVelocity = m_WorldToContact * m_RigidBody[0]->GetLinearVelocity(m_ContactPoint);
+	if (m_RigidBody[1])
+	{
+		m_ClosingVelocity -= m_WorldToContact * m_RigidBody[1]->GetLinearVelocity(m_ContactPoint);
+	}
+}
+
+void BodyContact::CalculateClosingVelocity(vec3 DeltaClosingVelocity)
+{
+	m_ClosingVelocity += m_WorldToContact * DeltaClosingVelocity;
 }

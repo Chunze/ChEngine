@@ -7,15 +7,21 @@ class CollisionResolution
 {
 public:
 	CollisionResolution(PhysicsManager *physicsManager);
-	void RunCollisionResolution();
+	void RunCollisionResolution(float duration);
 
 protected:
 
 	PhysicsManager *m_PhysicsManager;
+	size_t m_NumberContacts;
+	unsigned m_MaxIteration = 0;
+
+	void PrepareContacts();
 
 	void ResolvePenetrations();
 
-	void ResolveVelocities();
+	void ResolveVelocities(float duration);
+
+	void SetMaxIteration(size_t ContactNum, unsigned Multiplier);
 };
 
 #endif // !COLLISION_RESOLUTION_H

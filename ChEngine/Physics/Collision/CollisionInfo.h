@@ -36,8 +36,4 @@ struct CollisionInfo
 	void CombineContacts();
 
 	bool m_IsValid = false;
-
-	void ResolveInterPenetration(vec3 LinearChange[2], vec3 AngularChange[2]);
-	void ResolveVelocity();
-
 };

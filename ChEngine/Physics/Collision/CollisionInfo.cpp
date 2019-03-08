@@ -43,16 +43,3 @@ void CollisionInfo::CombineContacts()
 
 	m_IsValid = true;
 }
-
-void CollisionInfo::ResolveInterPenetration(vec3 LinearChange[2], vec3 AngularChange[2])
-{
-	m_FinalContact.ResolveInterpenetration(LinearChange, AngularChange);
-}
-
-void CollisionInfo::ResolveVelocity()
-{
-	if (m_IsValid)
-	{
-		m_FinalContact.ResolveVelocity();
-	}
-}
