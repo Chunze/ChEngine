@@ -15,14 +15,14 @@ static inline void CalculateInertiaTensor(mat3& iitWorld, const mat3 &iitBody, c
 	iitWorld = rotMatrix * iitBody * InverseRotMatrix;
 }
 
-
-RigidBody::RigidBody()
+RigidBody::RigidBody(PhysicsManager* Manager)
+	:m_PhysicsManager(Manager)
 {
 	m_InverseMass = 1.0f;
 
 	m_bUseGravity = true;
-}
 
+}
 
 RigidBody::~RigidBody()
 {
@@ -72,6 +72,11 @@ void RigidBody::Integrate(float duration)
 	if (m_bUseGravity)
 	{
 		m_Acceleration += m_PhysicsManager->GetGravity();
+		m_LastFrameAcceleration = m_PhysicsManager->GetGravity();
+	}
+	else
+	{
+		m_LastFrameAcceleration = vec3(0.0f);
 	}
 
 	// calculate angular acceleration
@@ -92,8 +97,8 @@ void RigidBody::Integrate(float duration)
 		m_AngularDamping = m_PhysicsManager->GetAngularDamping();
 	}
 
-	//m_Velocity *= m_LinearDamping;
-	//m_AngularVelocity *= m_AngularDamping;
+	m_Velocity *= m_LinearDamping;
+	m_AngularVelocity *= m_AngularDamping;
 
 	// adjust position and rotation
 	m_Position += m_Velocity * duration;
@@ -155,6 +160,11 @@ void RigidBody::AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd, cons
 	m_CollisionPrimitive = PrimitiveToAdd;
 
 	//m_PhysicsManager->RegisterCollisionPrimitive(PrimitiveToAdd);
+}
+
+void RigidBody::RegisterDefaultCollision()
+{
+	AddCollisionPrimitive(m_CollisionPrimitive);
 }
 
 void RigidBody::ClearAccumulators()

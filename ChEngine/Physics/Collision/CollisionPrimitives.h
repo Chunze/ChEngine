@@ -25,7 +25,7 @@ public:
 	PrimitiveType GetType() { return m_Type; }
 	vec3 GetPosition();
 	RigidBody_sp GetBody() { return m_RigidBody; }
-	mat4 GetOffset() { return m_Offset; }
+	mat4 GetOffset() { return m_OffsetTransform; }
 	mat4 GetWorldTransform();
 	mat4 GetInverseWorldTransform();
 	vec3 GetAxis(int index);
@@ -33,7 +33,7 @@ public:
 protected:
 	RigidBody_sp m_RigidBody = nullptr;
 	mat4 m_WorldTransform;
-	mat4 m_Offset;
+	mat4 m_OffsetTransform;
 	PrimitiveType m_Type;
 	
 };

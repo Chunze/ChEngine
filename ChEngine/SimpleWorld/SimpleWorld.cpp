@@ -13,7 +13,9 @@
 #include "AnchoredSpringFG.h"
 #include "FakeSprintFG.h"
 #include "PhysicsManager.h"
+#include "PhysicsStatics.h"
 
+using namespace ChEngine;
 
 SimpleWorld::SimpleWorld(GameContext* gameContext)
 	: Super(gameContext)
@@ -85,61 +87,45 @@ void SimpleWorld::InitDebugElement()
 	DebugDrawElement.LineWidth = 3;
 }
 
+void SimpleWorld::CreateObject()
+{
+	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, vec3(2.0f, 5.0, 0.5f));
+	char* ball_path = "SimpleWorld/ball/Ball.obj";
+	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
+	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidSphere(m_gameContext->GetPhysicsManager(), 0.5f));
+	gameObject->SetRootComponent(staticMeshComp);
+	staticMeshComp->SetMesh(BallModel);
+	staticMeshComp->GetRigidBody()->SetVelocity(vec3(-3.0f, 0.0f, 4.0f));
+}
+
 void SimpleWorld::SetupWorld()
 {
-	GameObject* gameObject = new GameObject(m_gameContext, this, glm::vec3(0.5f, 6.0f, 1.0f), quat(0.0f, 0.5f, 2.0f, 1.0f));
 	char* nanosuit_path = "SimpleWorld/nanosuit/nanosuit.obj";
 	char* crate_path = "SimpleWorld/crate/Crate1.obj";
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
 	Model* newModel = new Model(m_gameContext, crate_path);
-	Model* BallModel = new Model(m_gameContext, ball_path);
+	BallModel = new Model(m_gameContext, ball_path);
+
+	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.5f, 6.0f, 1.0f), quat(0.0f, 0.5f, 2.0f, 1.0f));
 	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
-
-	staticMeshComp->SetRigidBody(std::make_shared<RigidBox>(vec3(1.0f)));
-	// m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp->GetPhsicsBody());
-	staticMeshComp->GetRigidBody()->AddCollisionPrimitive(std::make_shared<BoxPrimitive>(vec3(1.0f)));
-
+	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidBox(m_gameContext->GetPhysicsManager(), vec3(1.0f)));
 	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(newModel);
-	
-	staticMeshComp->GetRigidBody()->SetVelocity(vec3(0.0f, 0.0f, 0.0f));
+	staticMeshComp->GetRigidBody()->SetVelocity(vec3(3.0f, 0.0f, 0.0f));
 
-	m_GameObjects.push_back(gameObject);
 
-	GameObject* gameObject_1 = new GameObject(m_gameContext, this, glm::vec3(0.0f, 1.1f, 0.0));
+	auto gameObject_1 = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 1.1f, 0.0));
 	auto staticMeshComp_1 = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
-
-	staticMeshComp_1->SetRigidBody(std::make_shared<RigidBox>(vec3(1.0f)));
-	//m_gameContext->GetPhysicsManager()->RegisterPhysicsBody(staticMeshComp_1->GetPhsicsBody());
-	staticMeshComp_1->GetRigidBody()->AddCollisionPrimitive(std::make_shared<BoxPrimitive>(vec3(1.0f)));
-
+	staticMeshComp_1->SetRigidBody(PhysicsStatics::NewRigidBox(m_gameContext->GetPhysicsManager(), vec3(1.0f)));
 	staticMeshComp_1->SetMesh(newModel);
 	gameObject_1->SetRootComponent(staticMeshComp_1);
 
-	
 
-	m_GameObjects.push_back(gameObject_1);
-
-	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), 0.0f));
-//	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 1.0f, 0.0f), -3.0f));
-// 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(1.0f, 1.0f, 0.0f), -3.0f));
-// 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, -1.0f), -3.0f));
-// 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 1.0f), -3.0f));
-
-
-	//gameObject->GetRootComponent()->GetParticle()->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
-
-// 	auto* CableLink = new ParticleRodLink(gameObject->GetRootComponent()->GetParticle(), 
-// 										  gameObject_1->GetRootComponent()->GetParticle(),
-// 										  glm::length(gameObject->GetRootComponent()->GetParticle()->GetPosition()
-// 											  - gameObject_1->GetRootComponent()->GetParticle()->GetPosition()));
-
-	//m_gameContext->GetPhysicsManager()->AddParticleContactGenerator(CableLink);
-
-	//AnchoredSpringFG* FG = new AnchoredSpringFG(gameObject->GetWorldLocation() + glm::vec3(3.0, 5.0f, 0.0f), 10.f, 5.f);
-	//FakeSprintFG* FG = new FakeSprintFG(gameObject->GetWorldLocation() + glm::vec3(3.0f, 3.0f, 0.0f), 15.0f, 0.95f);
-	//m_gameContext->GetPhysicsManager()->registerForce(staticMeshComp->GetParticle(), FG);
-
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), -2.0f));
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 0.0f, 0.0f), -5.0f));
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(1.0f, 0.0f, 0.0f), -5.0f));
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 0.0f, -1.0f), -5.0f));
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 0.0f, 1.0f), -5.0f));
 }
 
 void SimpleWorld::InitInputHandler()

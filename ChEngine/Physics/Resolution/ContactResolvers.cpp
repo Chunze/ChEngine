@@ -3,11 +3,17 @@
 
 
 const float BodyContact::m_Restitution = 0.15f;
-const float BodyContact::m_VelocityLimit = 0.05f;
+const float BodyContact::m_VelocityLimit = 0.25f;
 const float BodyContact::m_AngularLimit = 0.2f;
 
 void BodyContact::ResolveVelocity(vec3 LinearChange[2], vec3 AngularChange[2], float Delta)
 {
+	// Check if the two points are closing on each other
+	if (m_ClosingVelocity.x > 0)
+	{
+		return;
+	}
+
 	// Linear velocity change caused by angular velocity change per unit of impulse
 	// this was calculated when resolving penetration
 	float DeltaVelocity_PerUnitImpulse = m_AngularInertia[0];
@@ -15,15 +21,16 @@ void BodyContact::ResolveVelocity(vec3 LinearChange[2], vec3 AngularChange[2], f
 	// Add the linear component of velocity change
 	DeltaVelocity_PerUnitImpulse += m_RigidBody[0]->m_InverseMass;
 
-	// Check if the two points are closing on each other
-	if (m_ClosingVelocity.x > 0)
+	// remove velocity caused by last frame acceleration
+	float VelocityFromAcc = Delta * glm::dot(m_RigidBody[0]->GetLastFrameAcc(), m_ContactNormal);
+	if (m_RigidBody[1])
 	{
-		return;
+		VelocityFromAcc -= Delta * glm::dot(m_RigidBody[1]->GetLastFrameAcc(), m_ContactNormal);
 	}
 
-	m_TheRestitution = glm::dot(m_ClosingVelocity, m_ClosingVelocity) < m_VelocityLimit * m_VelocityLimit ? 0.0f : m_Restitution;
+	m_TheRestitution = glm::abs(m_ClosingVelocity.x) < m_VelocityLimit ? 0.0f : m_Restitution;
 
-	float DeltaVelocity = -m_ClosingVelocity.x * (1 + m_TheRestitution);
+	float DeltaVelocity = (VelocityFromAcc - m_ClosingVelocity.x) * m_TheRestitution - m_ClosingVelocity.x;
 
 	// calculate the impulse needed to result the change in step 2
 

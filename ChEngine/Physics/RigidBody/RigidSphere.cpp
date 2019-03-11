@@ -1,16 +1,26 @@
+#include "CollisionPrimitives.h"
 #include "RigidSphere.h"
 
-RigidSphere::RigidSphere(float Radius)
-	: m_Radius(Radius)
+RigidSphere::RigidSphere(PhysicsManager* Manager, float Radius)
+	: Super(Manager),
+	m_Radius(Radius)
 {
 	ConstructInertiaTensor();
+	ConstructDefaultCollision();
 }
 
-RigidSphere::RigidSphere()
+RigidSphere::RigidSphere(PhysicsManager* Manager)
+	: Super(Manager)
 {
 	// Default 0.5 radius
 	m_Radius = 0.5f;
 	ConstructInertiaTensor();
+	ConstructDefaultCollision();
+}
+
+void RigidSphere::ConstructDefaultCollision()
+{
+	m_CollisionPrimitive = std::make_shared<SpherePrimitive>(m_Radius);
 }
 
 void RigidSphere::ConstructInertiaTensor()

@@ -5,14 +5,17 @@
 #include <vector>
 #include <queue>
 
+class Component;
+class GameObject;
 class IPhysicsProxy;
 class IRenderableObject;
-class Component;
 
+typedef std::shared_ptr<GameObject> GameObject_sp;
 typedef std::shared_ptr<Component> Component_sp;
 
 typedef std::vector<IPhysicsProxy*> PhysicsProxies;
 typedef std::vector<IRenderableObject*> RenderableObjects;
+typedef std::vector<GameObject_sp> GameObjects;
 typedef std::vector<Component_sp> Components;
 
 #endif

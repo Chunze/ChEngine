@@ -4,7 +4,7 @@
 #include "RigidBody.h"
 #include "GameObject.h"
 #include "PrimitiveComponent.h"
-#include "World.h"
+#include "SimpleWorld.h"
 
 namespace Simple
 {
@@ -127,7 +127,8 @@ void SimpleInputHandler::ProcessInput(GLFWwindow* contextWindow)
 		if (KEY_H_WasPressed)
 		{
 			KEY_H_WasPressed = false;
-			
+			auto world = static_cast<SimpleWorld*>(m_gameContext->GetWorld());
+			world->CreateObject();
 		}
 	}
 

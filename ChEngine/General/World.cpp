@@ -15,7 +15,7 @@ void World::Update(float Delta)
 	{
 		Component->Update(Delta);
 	}
-	for (GameObject* gameObject : m_GameObjects)
+	for (auto gameObject : m_GameObjects)
 	{
 		gameObject->Update(Delta);
 	}
@@ -33,10 +33,23 @@ void World::PostPhysicsUpdate()
 		}
 	}
 
-	for (GameObject* gameObject : m_GameObjects)
+	for (auto gameObject : m_GameObjects)
 	{
 		gameObject->PostPhysicsUpdate();
 	}
+}
+
+void World::RegisterGameObject(GameObject_sp Object)
+{
+	for (auto o : m_GameObjects)
+	{
+		if (o == Object)
+		{
+			return;
+		}
+	}
+
+	m_GameObjects.push_back(Object);
 }
 
 void World::RegisterComponent(Component_sp Component)

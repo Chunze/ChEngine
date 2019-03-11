@@ -1,16 +1,20 @@
 #include "RigidBox.h"
 
-RigidBox::RigidBox(vec3 HalfSize)
-	: m_HalfSize(HalfSize)
+RigidBox::RigidBox(PhysicsManager* Manager, vec3 HalfSize)
+	:Super(Manager),
+	m_HalfSize(HalfSize)
 {
 	ConstructInertiaTensor();
+	ConstructDefaultCollision();
 }
 
-RigidBox::RigidBox()
+RigidBox::RigidBox(PhysicsManager* Manager)
+	: Super(Manager)
 {
 	// Default 1 x 1 x 1 box
 	m_HalfSize = vec3(0.5f);
 	ConstructInertiaTensor();
+	ConstructDefaultCollision();
 }
 
 void RigidBox::ConstructInertiaTensor()
@@ -27,5 +31,10 @@ void RigidBox::ConstructInertiaTensor()
 	InertiaTensor /= 12.0f;
 
 	SetInertirTensor(InertiaTensor);
+}
+
+void RigidBox::ConstructDefaultCollision()
+{
+	m_CollisionPrimitive = std::make_shared<BoxPrimitive>(m_HalfSize);
 }
 

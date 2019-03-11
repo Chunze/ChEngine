@@ -124,7 +124,7 @@ void CollisionResolution::ResolveVelocities(float duration)
 
 	size_t MovedIndex;
 	float MaxClosingVelocity;
-	int IterationUsed = 0;
+	size_t IterationUsed = 0;
 
 	vec3 LinearChange[2];
 	vec3 AngularChange[2];

@@ -27,8 +27,9 @@ public:
 	virtual void Update(float Delta);
 	virtual void PostPhysicsUpdate();
 
-	std::vector<GameObject*> GetGameObjects() { return m_GameObjects; }
+	GameObjects GetAllGameObjects() { return m_GameObjects; }
 
+	void RegisterGameObject(GameObject_sp Object);
 	void RegisterComponent(Component_sp Component);
 
 	PhysicsProxies GetPhysicsProxies();
@@ -37,7 +38,7 @@ public:
 	float m_customDelta = -1.0f;
 
 protected:
-	std::vector<GameObject*> m_GameObjects;
+	GameObjects m_GameObjects;
 	Components m_Components;
 
 	Camera* m_Camera;

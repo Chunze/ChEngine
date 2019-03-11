@@ -28,6 +28,13 @@ void CollisionDetection::RegisterCollisionPrimitive(CollisionPrimitive_sp Primit
 {
 	if (!PrimitiveToAdd->GetBody())
 	{
+		for (auto primitive : m_PrimitiveWithoutBody)
+		{
+			if (primitive == PrimitiveToAdd)
+			{
+				return;
+			}
+		}
 		m_PrimitiveWithoutBody.push_back(PrimitiveToAdd);
 	}
 }

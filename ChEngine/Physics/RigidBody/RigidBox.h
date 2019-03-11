@@ -5,16 +5,19 @@
 
 class RigidBox : public RigidBody
 {
+	typedef RigidBody Super;
 public:
-	RigidBox();
+	RigidBox(PhysicsManager* Manager);
 
-	RigidBox(vec3 extend);
+	RigidBox(PhysicsManager* Manager, vec3 extend);
 
 protected:
 	vec3 m_HalfSize;
+	void ConstructInertiaTensor() override;
+	void ConstructDefaultCollision() override;
 
 private:
-	void ConstructInertiaTensor() override;
+	
 };
 
 #endif // !BOX_COLLIDER_H

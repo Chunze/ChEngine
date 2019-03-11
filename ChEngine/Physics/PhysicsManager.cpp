@@ -1,5 +1,4 @@
 #include "PhysicsManager.h"
-#include "JelloWorld.h"
 #include "Contacts.h"
 #include "ForceGenerators/CollisionSpringFG.h"
 #include "IPhysicsProxy.h"
@@ -65,13 +64,16 @@ void PhysicsManager::ConstructPhysicsScene(PhysicsProxies Proxies)
 	for (IPhysicsProxy* Proxy : Proxies)
 	{
 		auto rigidBody = Proxy->GetRigidBody();
-		if (rigidBody)
+		if (rigidBody != nullptr)
 		{
 			RegisterPhysicsBody(rigidBody);
 		}
+	}
 
+	for (IPhysicsProxy* Proxy : Proxies)
+	{
 		auto collisionPrimitive = Proxy->GetCollisionPrimitive();
-		if (collisionPrimitive)
+		if (collisionPrimitive != nullptr)
 		{
 			RegisterCollisionPrimitive(collisionPrimitive);
 		}
@@ -101,6 +103,13 @@ void PhysicsManager::AddParticleContactGenerator(ParticleContactGenerator* conta
 
 void PhysicsManager::RegisterPhysicsBody(RigidBody_sp BodyToAdd)
 {
+	for (auto body : m_RigidBodies)
+	{
+		if (body == BodyToAdd)
+		{
+			return;
+		}
+	}
 	m_RigidBodies.push_back(BodyToAdd);
 	BodyToAdd->SetPhisicsManager(this);
 }

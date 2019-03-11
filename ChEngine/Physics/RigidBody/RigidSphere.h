@@ -5,16 +5,18 @@
 
 class RigidSphere : public RigidBody
 {
+	typedef RigidBody Super;
 public:
-	RigidSphere();
+	RigidSphere(PhysicsManager* Manager);
 
-	RigidSphere(float Radius);
+	RigidSphere(PhysicsManager* Manager, float Radius);
 
 protected:
 	float m_Radius;
+	void ConstructDefaultCollision() override;
+	void ConstructInertiaTensor() override;
 
 private:
-	void ConstructInertiaTensor() override;
 };
 
 #endif // !RIGID_SPHERE_H

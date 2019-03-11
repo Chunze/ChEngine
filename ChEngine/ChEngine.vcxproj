@@ -128,6 +128,7 @@
     <ClInclude Include="Physics\ForceGenerators\AnchoredSpringFG.h" />
     <ClInclude Include="Physics\ForceGenerators\FakeSprintFG.h" />
     <ClInclude Include="Physics\IPhysicsProxy.h" />
+    <ClInclude Include="Physics\PhysicsStatics.h" />
     <ClInclude Include="Physics\PhysicsTypes.h" />
     <ClInclude Include="Physics\Resolution\CollisionResolution.h" />
     <ClInclude Include="Physics\RigidBody\RigidBox.h" />

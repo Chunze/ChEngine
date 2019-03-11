@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "World.h"
 
+class Model;
+
 class SimpleWorld : public World
 {
 	typedef World Super;
@@ -17,6 +19,8 @@ public:
 	void InitDebugElement();
 
 
+	void CreateObject();
+
 private:
 	void SetupWorld();
 	void InitInputHandler();
@@ -24,5 +28,7 @@ private:
 	DrawListElement DebugDrawElement;
 	Shader* debugShader;
 	Light* m_light;
+
+	Model* BallModel;
 };
 

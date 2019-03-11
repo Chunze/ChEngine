@@ -9,7 +9,7 @@ class PhysicsManager;
 class RigidBody : std::enable_shared_from_this<RigidBody>
 {
 public:
-	RigidBody();
+	RigidBody(PhysicsManager* Manager);
 	~RigidBody();
 
 	float m_InverseMass = 1.0f;
@@ -65,6 +65,7 @@ public:
 	CollisionPrimitive_sp GetCollisionPrimitive() { return m_CollisionPrimitive; }
 	// gets the linear velocity of a point
 	vec3 GetLinearVelocity(vec3 Point);
+	vec3 GetLastFrameAcc() { return m_LastFrameAcceleration; }
 
 	/**    setters    **/
 	void SetTransform(mat4 Transform);
@@ -75,6 +76,7 @@ public:
 	// Currently, I only allow 1 physics primitive.
 	// Multiple primitive on 1 rigid body will be supported.
 	void AddCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd, const mat4 &Offset = mat4());
+	void RegisterDefaultCollision();
 
 protected:
 	PhysicsManager* m_PhysicsManager;
@@ -86,12 +88,15 @@ protected:
 	vec3 m_TorqueAccum;
 	vec3 m_AngularAcceleration;
 
+	vec3 m_LastFrameAcceleration;
+
 	// Collision shape that helps with the collision detection
 	CollisionPrimitive_sp m_CollisionPrimitive;
 
 	bool bDerivedDataReady = false;
 
 	virtual void ConstructInertiaTensor() = 0;
+	virtual void ConstructDefaultCollision() = 0;
 
 	void ClearAccumulators();
 

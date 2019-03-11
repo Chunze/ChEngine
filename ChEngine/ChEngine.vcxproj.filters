@@ -387,6 +387,9 @@
     <ClInclude Include="Render\IRenderableObject.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\PhysicsStatics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="General">
