@@ -27,9 +27,10 @@ void CollisionResolution::RunCollisionResolution(float duration)
 		ResolvePenetrations();
 
 		ResolveVelocities(duration);
+		
+		m_PhysicsManager->Collisions.clear();
 	}
 
-	m_PhysicsManager->Collisions.clear();
 }
 
 void CollisionResolution::PrepareContacts()
@@ -60,7 +61,7 @@ void CollisionResolution::ResolvePenetrations()
 	while (IterationUsed <= m_MaxIteration)
 	{
 		// find contact with largest penetration
-		MaxPenetration = 0.0f;
+		MaxPenetration = SMALL_NUMBER;
 		MovedIndex = m_NumberContacts;
 
 		for (size_t i = 0; i < m_NumberContacts; i++)

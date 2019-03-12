@@ -9,7 +9,7 @@ const float BodyContact::m_AngularLimit = 0.2f;
 void BodyContact::ResolveVelocity(vec3 LinearChange[2], vec3 AngularChange[2], float Delta)
 {
 	// Check if the two points are closing on each other
-	if (m_ClosingVelocity.x > 0)
+	if (m_ClosingVelocity.x >= 0)
 	{
 		return;
 	}

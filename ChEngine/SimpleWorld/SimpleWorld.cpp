@@ -106,22 +106,22 @@ void SimpleWorld::SetupWorld()
 	Model* newModel = new Model(m_gameContext, crate_path);
 	BallModel = new Model(m_gameContext, ball_path);
 
-	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.5f, 6.0f, 1.0f), quat(0.0f, 0.5f, 2.0f, 1.0f));
+	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 3.0f, 0.0f)/*, quat(0.0f, 0.5f, 2.0f, 1.0f)*/);
 	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidBox(m_gameContext->GetPhysicsManager(), vec3(1.0f)));
 	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(newModel);
-	staticMeshComp->GetRigidBody()->SetVelocity(vec3(3.0f, 0.0f, 0.0f));
+	staticMeshComp->GetRigidBody()->SetVelocity(vec3(0.0f, 0.0f, 0.0f));
 
 
-	auto gameObject_1 = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 1.1f, 0.0));
+	auto gameObject_1 = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 1.0f, 0.0));
 	auto staticMeshComp_1 = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 	staticMeshComp_1->SetRigidBody(PhysicsStatics::NewRigidBox(m_gameContext->GetPhysicsManager(), vec3(1.0f)));
 	staticMeshComp_1->SetMesh(newModel);
 	gameObject_1->SetRootComponent(staticMeshComp_1);
 
 
-	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), -2.0f));
+	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(-1.0f, 0.0f, 0.0f), -5.0f));
 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(1.0f, 0.0f, 0.0f), -5.0f));
 	m_gameContext->GetPhysicsManager()->RegisterCollisionPrimitive(std::make_shared<SurfasePrimitive>(vec3(0.0f, 0.0f, -1.0f), -5.0f));

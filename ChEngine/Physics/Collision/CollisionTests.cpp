@@ -155,7 +155,7 @@ bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPr
 		float VertexDistance = glm::dot(VertexPosition, Surface->m_Normal);
 
 		// compare to plane's distance
-		if (VertexDistance <= Surface->m_Offset)
+		if (VertexDistance < Surface->m_Offset)
 		{
 			// Collision!
 			BodyContact Contact;
@@ -167,7 +167,12 @@ bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPr
 		}
 	}
 
-	return true;
+	if (Info.m_Contacts.size() > 0)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2, CollisionInfo& Info)
@@ -207,7 +212,7 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 		Axis = glm::normalize(Axis);
 
 		float Overlap = IntersectionTestsUtils::BoxPenetrationOnAxis(Box1, Box2, Axis);
-		if (Overlap < 0)
+		if (Overlap <= 0)
 		{
 			return false;
 		}
