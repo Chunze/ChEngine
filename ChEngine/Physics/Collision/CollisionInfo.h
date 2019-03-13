@@ -1,6 +1,5 @@
 #include <vector>
-#include "Contacts.h"
-#include "RigidBody.h"
+#include "BodyContactData.h"
 
 struct CollisionInfo
 {

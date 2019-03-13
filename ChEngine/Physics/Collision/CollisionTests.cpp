@@ -136,7 +136,7 @@ bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPr
 
 	bool bHasCollision = false;
 
-	if (!IntersectionTestsUtils::BoxVsSurfaceEarlyOut(Box, Surface))
+	if (!CollisionTestUtils::BoxVsSurfaceEarlyOut(Box, Surface))
 	{
 		return bHasCollision;
 	}
@@ -205,7 +205,7 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 		if (Math::LengthSq(Axis) < SMALL_NUMBER) continue;
 		Axis = glm::normalize(Axis);
 
-		float Overlap = IntersectionTestsUtils::BoxPenetrationOnAxis(Box1, Box2, Axis);
+		float Overlap = CollisionTestUtils::BoxPenetrationOnAxis(Box1, Box2, Axis);
 		if (Overlap <= 0)
 		{
 			return false;
@@ -217,44 +217,30 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 		}
 	}
 
-	// Lambda for constructing BodyContact in face vs vertex case
-	auto FaceVsVertex = [BestOverlap](BoxPrimitive* Box1, BoxPrimitive* Box2, vec3 Axis) -> BodyContact
-	{
-		vec3 ToCenter = Box2->GetPosition() - Box1->GetPosition();
-		if (glm::dot(ToCenter, Axis) > 0)
-		{
-			Axis *= -1.0f;
-		}
-
-		// Find which vertex is in contact (in box2's coordinates)
-		mat3 WorldToBox = mat3(Box2->GetInverseWorldTransform());
-		vec3 Normal = WorldToBox * ToCenter;
-		vec3 Vertex = Box2->m_HalfSize;
-		if (glm::dot(Box2->GetAxis(0), ToCenter) > 0) Vertex.x = -Vertex.x;
-		if (glm::dot(Box2->GetAxis(1), ToCenter) > 0) Vertex.y = -Vertex.y;
-		if (glm::dot(Box2->GetAxis(2), ToCenter) > 0) Vertex.z = -Vertex.z;
-
-		Vertex = Math::Multiply(Box2->GetWorldTransform(), Vertex);
-
-		BodyContact Contact;
-		Contact.SetBodies(Box1->GetBody(), Box2->GetBody());
-		Contact.SetContactNormal(Axis);
-		Contact.SetContactPenetration(BestOverlap);
-		Contact.SetContactPoint(Vertex);
-
-		return Contact;
-	};
-
 	BodyContact Contact;
 	if(BestCase < 3)
 	{
 		// box1's face vs box2's vertex
-		Contact = FaceVsVertex(Box1, Box2, axis[BestCase]);
+		CollisionTestUtils::GetContactInfoFaceVsVertex(Box1, Box2, axis[BestCase], Contact);
+		Contact.m_Penetration = BestOverlap;
+
+		// populate contact features
+		Contact.m_ContactFeature.m_FeatureType = ContactFeatureType::FACE_VS_VERTEX;
+		Contact.m_ContactFeature.m_Primitives[0] = Box1;
+		Contact.m_ContactFeature.m_Primitives[1] = Box2;
+		Contact.m_ContactFeature.m_FeatureID[0] = BestCase;
 	}
 	else if(BestCase < 6)
 	{
 		// box2's face vs box1's vertex
-		Contact = FaceVsVertex(Box2, Box1, axis[BestCase]);
+		CollisionTestUtils::GetContactInfoFaceVsVertex(Box2, Box1, axis[BestCase], Contact);
+		Contact.m_Penetration = BestOverlap;
+
+		// populate contact features
+		Contact.m_ContactFeature.m_FeatureType = ContactFeatureType::FACE_VS_VERTEX;
+		Contact.m_ContactFeature.m_Primitives[0] = Box2;
+		Contact.m_ContactFeature.m_Primitives[1] = Box1;
+		Contact.m_ContactFeature.m_FeatureID[0] = BestCase - 3;
 	}
 	else
 	{
@@ -269,37 +255,16 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 		else if (BestCase == 7 || BestCase == 10 || BestCase == 13) AxisIndex2 = 1;
 		else if (BestCase == 8 || BestCase == 11 || BestCase == 14) AxisIndex2 = 2;
 
-		vec3 PointOnEdge1 = Box1->m_HalfSize;
-		vec3 PointOnEdge2 = Box2->m_HalfSize;
-		vec3 Axis = axis[BestCase];
 
-		// Snap the point to the edges (in local space)
-		for (size_t i = 0; i < 3; i++)
-		{
-			if (i == AxisIndex1) PointOnEdge1[i] = 0;
-			else if (glm::dot(Box1->GetAxis(i), Axis) < 0) PointOnEdge1[i] = -PointOnEdge1[i];
-
-			if (i == AxisIndex2) PointOnEdge2[i] = 0;
-			else if (glm::dot(Box2->GetAxis(i), Axis) > 0) PointOnEdge2[i] = -PointOnEdge2[i];
-		}
-
-		// Contact normal should point from box2 to box1
-		vec3 ToCenter = Box1->GetPosition() - Box2->GetPosition();
-		if (glm::dot(ToCenter, Axis) < 0)
-		{
-			Axis *= -1.0f;
-		}
-
-		// Convert to world space
-		PointOnEdge1 = Math::Multiply(Box1->GetWorldTransform(), PointOnEdge1);
-		PointOnEdge2 = Math::Multiply(Box2->GetWorldTransform(), PointOnEdge2);
-
-		Contact.SetBodies(Box1->GetBody(), Box2->GetBody());
-		Contact.SetContactPoint(IntersectionTestsUtils::GetClosestPointOf2Lines(
-			Box1->GetAxis(AxisIndex1), Box2->GetAxis(AxisIndex2), PointOnEdge1, PointOnEdge2));
-		Contact.SetContactNormal(Axis);
 		Contact.SetContactPenetration(BestOverlap);
-		
+		CollisionTestUtils::GetContactInfoEdgeVsEdge(Box1, Box2, AxisIndex1, AxisIndex2, Contact);
+
+		// populate contact features
+		Contact.m_ContactFeature.m_FeatureID[0] = AxisIndex1;
+		Contact.m_ContactFeature.m_FeatureID[1] = AxisIndex2;
+		Contact.m_ContactFeature.m_FeatureType = ContactFeatureType::EDGE_VS_EDGE;
+		Contact.m_ContactFeature.m_Primitives[0] = Box1;
+		Contact.m_ContactFeature.m_Primitives[1] = Box2;
 	}
 
 	Info->AddContact(Contact);
@@ -308,7 +273,7 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 	return true;
 }
 
-bool IntersectionTestsUtils::BoxVsSurfaceEarlyOut(BoxPrimitive* Box, SurfasePrimitive* Surface)
+bool CollisionTestUtils::BoxVsSurfaceEarlyOut(BoxPrimitive* Box, SurfasePrimitive* Surface)
 {
 	float RadiusSq = glm::dot(Box->m_HalfSize, Box->m_HalfSize);
 	float Distance = glm::dot(Box->GetPosition(), Surface->m_Normal) - Surface->m_Offset;
@@ -322,7 +287,7 @@ bool IntersectionTestsUtils::BoxVsSurfaceEarlyOut(BoxPrimitive* Box, SurfasePrim
 	return false;
 }
 
-float IntersectionTestsUtils::TransformBoxToAxis(BoxPrimitive *Box, const vec3 &Axis)
+float CollisionTestUtils::TransformBoxToAxis(BoxPrimitive *Box, const vec3 &Axis)
 {
 	vec3 NormaliedAxis = glm::normalize(Axis);
 	
@@ -331,7 +296,7 @@ float IntersectionTestsUtils::TransformBoxToAxis(BoxPrimitive *Box, const vec3 &
 		Box->m_HalfSize.z * abs(glm::dot(NormaliedAxis, Box->GetAxis(2)));
 }
 
-float IntersectionTestsUtils::BoxPenetrationOnAxis(BoxPrimitive *Box1, BoxPrimitive *Box2, const vec3 &Axis)
+float CollisionTestUtils::BoxPenetrationOnAxis(BoxPrimitive *Box1, BoxPrimitive *Box2, const vec3 &Axis)
 {
 	vec3 NormalizedAxis = glm::normalize(Axis);
 	vec3 ToCenter = Box2->GetPosition() - Box1->GetPosition();
@@ -343,7 +308,7 @@ float IntersectionTestsUtils::BoxPenetrationOnAxis(BoxPrimitive *Box1, BoxPrimit
 	return ProjectOne + ProjectTwo - Distance;
 }
 
-vec3 IntersectionTestsUtils::GetClosestPointOf2Lines(const vec3 &Axis1, const vec3 &Axis2, const vec3 &PointOnAxis1, const vec3 &PointOnAxis2)
+vec3 CollisionTestUtils::GetClosestPointOf2Lines(const vec3 &Axis1, const vec3 &Axis2, const vec3 &PointOnAxis1, const vec3 &PointOnAxis2)
 {
 	// vector between the test points on each edge
 	vec3 Vec = PointOnAxis1 - PointOnAxis2;
@@ -367,4 +332,62 @@ vec3 IntersectionTestsUtils::GetClosestPointOf2Lines(const vec3 &Axis1, const ve
 	vec3 CloestPt2 = PointOnAxis2 + Move2 * Axis2;
 
 	return 0.5f * (CloestPt1 + CloestPt2);
+}
+
+void CollisionTestUtils::GetContactInfoFaceVsVertex(BoxPrimitive *Box1, BoxPrimitive *Box2, const vec3 &Axis, BodyContact &Contact)
+{
+	vec3 AxisLocal = Axis;
+	vec3 ToCenter = Box2->GetPosition() - Box1->GetPosition();
+	if (glm::dot(ToCenter, AxisLocal) > 0)
+	{
+		AxisLocal *= -1.0f;
+	}
+
+	// Find which vertex is in contact (in box2's coordinates)
+	mat3 WorldToBox = mat3(Box2->GetInverseWorldTransform());
+	vec3 Normal = WorldToBox * ToCenter;
+	vec3 Vertex = Box2->m_HalfSize;
+	if (glm::dot(Box2->GetAxis(0), ToCenter) > 0) Vertex.x = -Vertex.x;
+	if (glm::dot(Box2->GetAxis(1), ToCenter) > 0) Vertex.y = -Vertex.y;
+	if (glm::dot(Box2->GetAxis(2), ToCenter) > 0) Vertex.z = -Vertex.z;
+
+	Vertex = Math::Multiply(Box2->GetWorldTransform(), Vertex);
+
+	Contact.SetBodies(Box1->GetBody(), Box2->GetBody());
+	Contact.SetContactNormal(AxisLocal);
+	Contact.SetContactPoint(Vertex);
+}
+
+void CollisionTestUtils::GetContactInfoEdgeVsEdge(BoxPrimitive *Box1, BoxPrimitive *Box2, int AxisIndex1, int AxisIndex2, BodyContact &Contact)
+{
+	vec3 PointOnEdge1 = Box1->m_HalfSize;
+	vec3 PointOnEdge2 = Box2->m_HalfSize;
+
+	vec3 Axis = glm::cross(Box1->GetAxis(AxisIndex1), Box2->GetAxis(AxisIndex2));
+
+	// Snap the point to the edges (in local space)
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (i == AxisIndex1) PointOnEdge1[i] = 0;
+		else if (glm::dot(Box1->GetAxis(i), Axis) < 0) PointOnEdge1[i] = -PointOnEdge1[i];
+
+		if (i == AxisIndex2) PointOnEdge2[i] = 0;
+		else if (glm::dot(Box2->GetAxis(i), Axis) > 0) PointOnEdge2[i] = -PointOnEdge2[i];
+	}
+
+	// Contact normal should point from box2 to box1
+	vec3 ToCenter = Box1->GetPosition() - Box2->GetPosition();
+	if (glm::dot(ToCenter, Axis) < 0)
+	{
+		Axis *= -1.0f;
+	}
+
+	// Convert to world space
+	PointOnEdge1 = Math::Multiply(Box1->GetWorldTransform(), PointOnEdge1);
+	PointOnEdge2 = Math::Multiply(Box2->GetWorldTransform(), PointOnEdge2);
+
+	Contact.SetBodies(Box1->GetBody(), Box2->GetBody());
+	Contact.SetContactPoint(
+		GetClosestPointOf2Lines(Box1->GetAxis(AxisIndex1), Box2->GetAxis(AxisIndex2), PointOnEdge1, PointOnEdge2));
+	Contact.SetContactNormal(Axis);
 }

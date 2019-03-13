@@ -47,6 +47,7 @@
     <ClCompile Include="Mesh\Model.cpp" />
     <ClCompile Include="Mesh\Mesh.cpp" />
     <ClCompile Include="Mesh\StaticMeshComponent.cpp" />
+    <ClCompile Include="Physics\BodyContactData.cpp" />
     <ClCompile Include="Physics\Collision\BroadPhaseTest.cpp" />
     <ClCompile Include="Physics\Collision\CollisionDetection.cpp" />
     <ClCompile Include="Physics\Collision\CollisionInfo.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Mesh\Model.h" />
     <ClInclude Include="Mesh\Mesh.h" />
     <ClInclude Include="Mesh\StaticMeshComponent.h" />
+    <ClInclude Include="Physics\BodyContactData.h" />
     <ClInclude Include="Physics\Collision\BroadPhaseTest.h" />
     <ClInclude Include="Physics\Collision\CollisionDetection.h" />
     <ClInclude Include="Physics\Collision\CollisionInfo.h" />

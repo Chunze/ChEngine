@@ -169,6 +169,9 @@
     <ClCompile Include="General\Components\ShapeComponent.cpp">
       <Filter>General\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\BodyContactData.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -388,6 +391,9 @@
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PhysicsStatics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\BodyContactData.h">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>

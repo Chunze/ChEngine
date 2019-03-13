@@ -1,6 +1,8 @@
 #include "CollisionInfo.h"
 
 class CollisionPrimitive;
+class BoxPrimitive;
+class SurfasePrimitive;
 
 struct CollisionTest
 {
@@ -33,7 +35,7 @@ struct BoxVsBox : public CollisionTest
 };
 
 /// Contains fast tests whether two provided shapes are colliding each other
-namespace IntersectionTestsUtils
+namespace CollisionTestUtils
 {
 	static bool BoxVsSurfaceEarlyOut(BoxPrimitive* Box, SurfasePrimitive* Surface);
 
@@ -43,4 +45,9 @@ namespace IntersectionTestsUtils
 
 	// Returns mid point of the 2 lines
 	static vec3 GetClosestPointOf2Lines(const vec3 &Axis1, const vec3 &Axis2, const vec3 &PointOnAxis1, const vec3 &PointOnAxis2);
+
+	// populate contact for box vs box, face vs vertex situation (does not populate penetration)
+	static void GetContactInfoFaceVsVertex(BoxPrimitive *Box1, BoxPrimitive *Box2, const vec3 &Axis, BodyContact &Contact);
+
+	static void GetContactInfoEdgeVsEdge(BoxPrimitive *Box1, BoxPrimitive *Box2, int AsixIndex1, int AsixIndex2, BodyContact &Contact);
 }
