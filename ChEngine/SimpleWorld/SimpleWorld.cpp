@@ -92,7 +92,7 @@ void SimpleWorld::CreateObject()
 	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, vec3(2.0f, 5.0, 0.5f));
 	char* ball_path = "SimpleWorld/ball/Ball.obj";
 	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
-	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidSphere(m_gameContext->GetPhysicsManager(), 0.5f));
+	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidSphere(m_gameContext->GetPhysicsManager(), 0.75f));
 	gameObject->SetRootComponent(staticMeshComp);
 	staticMeshComp->SetMesh(BallModel);
 	staticMeshComp->GetRigidBody()->SetVelocity(vec3(-3.0f, 0.0f, 4.0f));
@@ -106,7 +106,7 @@ void SimpleWorld::SetupWorld()
 	Model* newModel = new Model(m_gameContext, crate_path);
 	BallModel = new Model(m_gameContext, ball_path);
 
-	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 3.0f, 0.0f)/*, quat(0.0f, 0.5f, 2.0f, 1.0f)*/);
+	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 4.0f, 0.0f), quat(0.0f, 0.5f, 2.0f, 1.0f));
 	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidBox(m_gameContext->GetPhysicsManager(), vec3(1.0f)));
 	gameObject->SetRootComponent(staticMeshComp);

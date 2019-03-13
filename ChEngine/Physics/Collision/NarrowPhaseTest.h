@@ -10,7 +10,7 @@ public:
 	NarrowPhaseTest(CollisionDetection* collisionDetection);
 
 	CollisionDetection* m_CollisionDetection;
-	virtual void RunTest();
+	virtual void RunTest(CollisionInfo *Data);
 
 protected:
 	/// selects narrow phase collision tests, i.e. SphereVsSphere.

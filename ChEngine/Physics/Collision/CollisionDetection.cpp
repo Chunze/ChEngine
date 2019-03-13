@@ -9,19 +9,11 @@ CollisionDetection::CollisionDetection(PhysicsManager* PhysicsManager)
 	
 }
 
-void CollisionDetection::RunCollisionDetection()
+void CollisionDetection::RunCollisionDetection(CollisionInfo *Data)
 {
 	m_BroadPhaseTest.RunTest();
 
-	m_NarrowPhaseTest.RunTest();
-}
-
-void CollisionDetection::ReportCollision(CollisionInfo &Collision) const
-{
-	if (m_PhysicsManager)
-	{
-		m_PhysicsManager->Collisions.push_back(Collision);
-	}
+	m_NarrowPhaseTest.RunTest(Data);
 }
 
 void CollisionDetection::RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)

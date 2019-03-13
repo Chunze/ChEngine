@@ -75,7 +75,7 @@ protected:
 	Particles m_physicsParticles;
 	RigidBodies m_RigidBodies;
 	ParticleContacts m_ParticleContacts;
-	CollisionInfos Collisions;
+	CollisionInfo m_Collisions;
 	std::vector<ParticleContactGenerator*> m_ContactGenerator;
 	std::unique_ptr<ParticleContactResolver> m_ParticleContactResolver = nullptr;
 

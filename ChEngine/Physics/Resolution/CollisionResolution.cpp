@@ -18,9 +18,9 @@ void CollisionResolution::SetMaxIteration(size_t ContactNum, unsigned Multiplier
 
 void CollisionResolution::RunCollisionResolution(float duration)
 {
-	if (m_PhysicsManager->Collisions.size() > 0)
+	if (m_PhysicsManager->m_Collisions.HasCollision())
 	{
-		SetMaxIteration(m_PhysicsManager->Collisions.size(), ResolutionIterationMultiplier);
+		SetMaxIteration(m_PhysicsManager->m_Collisions.ContactCount(), ResolutionIterationMultiplier);
 
 		PrepareContacts();
 
@@ -28,7 +28,7 @@ void CollisionResolution::RunCollisionResolution(float duration)
 
 		ResolveVelocities(duration);
 		
-		m_PhysicsManager->Collisions.clear();
+		m_PhysicsManager->m_Collisions.clearContacts();
 	}
 
 }
@@ -36,20 +36,16 @@ void CollisionResolution::RunCollisionResolution(float duration)
 void CollisionResolution::PrepareContacts()
 {
 	// ContactInfo may contain more than 1 actual contacts.
-	for (auto &collision : m_PhysicsManager->Collisions)
+	for (auto &collision : m_PhysicsManager->m_Collisions.m_Contacts)
 	{
-		collision.CombineContacts();
-		if (collision.m_IsValid)
-		{
-			collision.m_FinalContact.ConstructContactToWorld();
-			collision.m_FinalContact.CalculateClosingVelocity();
-		}
+		collision.ConstructContactToWorld();
+		collision.CalculateClosingVelocity();
 	}
 }
 
 void CollisionResolution::ResolvePenetrations()
 {
-	auto Collisions = &m_PhysicsManager->Collisions;
+	auto Collisions = &m_PhysicsManager->m_Collisions.m_Contacts;
 
 	size_t MovedIndex;
 	float MaxPenetration;
@@ -66,13 +62,10 @@ void CollisionResolution::ResolvePenetrations()
 
 		for (size_t i = 0; i < m_NumberContacts; i++)
 		{
-			if ((*Collisions)[i].m_IsValid)
+			if ((*Collisions)[i].m_Penetration > MaxPenetration)
 			{
-				if ((*Collisions)[i].m_FinalContact.m_Penetration > MaxPenetration)
-				{
-					MaxPenetration = (*Collisions)[i].m_FinalContact.m_Penetration;
-					MovedIndex = i;
-				}
+				MaxPenetration = (*Collisions)[i].m_Penetration;
+				MovedIndex = i;
 			}
 		}
 
@@ -86,7 +79,7 @@ void CollisionResolution::ResolvePenetrations()
 
 
 		// Resolving penetration for this contact
-		(*Collisions)[MovedIndex].m_FinalContact.ResolveInterpenetration(/* Out */LinearChange, /* Out */AngularChange);
+		(*Collisions)[MovedIndex].ResolveInterpenetration(/* Out */LinearChange, /* Out */AngularChange);
 
 		// This action may have changed the penetration of other contacts contain the same body,
 		// so update the contacts.
@@ -95,20 +88,20 @@ void CollisionResolution::ResolvePenetrations()
 			// check each body in the contact
 			for (unsigned MatchedIndex = 0; MatchedIndex < 2; MatchedIndex++)
 			{
-				if ((*Collisions)[i].m_FinalContact.m_RigidBody[MatchedIndex])
+				if ((*Collisions)[i].m_RigidBody[MatchedIndex])
 				{
 					// Check for a match with each body in the newly resolved contact
 					for (unsigned MovedBodyIndex = 0; MovedBodyIndex < 2; MovedBodyIndex++)
 					{
-						if ((*Collisions)[i].m_FinalContact.m_RigidBody[MatchedIndex] ==
-							(*Collisions)[MovedIndex].m_FinalContact.m_RigidBody[MovedBodyIndex])
+						if ((*Collisions)[i].m_RigidBody[MatchedIndex] ==
+							(*Collisions)[MovedIndex].m_RigidBody[MovedBodyIndex])
 						{
 							float sign = MatchedIndex ? 1.0f : -1.0f;
 							vec3 PositionChange =
 								LinearChange[MovedBodyIndex] + 
-								glm::cross(AngularChange[MovedBodyIndex], (*Collisions)[i].m_FinalContact.m_RelativeContactPosition[MatchedIndex]);
-							float Displacement = glm::dot(PositionChange, (*Collisions)[i].m_FinalContact.m_ContactNormal);
-							(*Collisions)[i].m_FinalContact.m_Penetration += sign * Displacement;
+								glm::cross(AngularChange[MovedBodyIndex], (*Collisions)[i].m_RelativeContactPosition[MatchedIndex]);
+							float Displacement = glm::dot(PositionChange, (*Collisions)[i].m_ContactNormal);
+							(*Collisions)[i].m_Penetration += sign * Displacement;
 						}
 					}
 				}
@@ -121,7 +114,7 @@ void CollisionResolution::ResolvePenetrations()
 
 void CollisionResolution::ResolveVelocities(float duration)
 {
-	auto Collisions = &m_PhysicsManager->Collisions;
+	auto Collisions = &m_PhysicsManager->m_Collisions.m_Contacts;
 
 	size_t MovedIndex;
 	float MaxClosingVelocity;
@@ -138,13 +131,10 @@ void CollisionResolution::ResolveVelocities(float duration)
 
 		for (size_t i = 0; i < m_NumberContacts; i++)
 		{
-			if ((*Collisions)[i].m_IsValid)
+			if ((*Collisions)[i].m_ClosingVelocity.x < MaxClosingVelocity)
 			{
-				if ((*Collisions)[i].m_FinalContact.m_ClosingVelocity.x < MaxClosingVelocity)
-				{
-					MaxClosingVelocity = (*Collisions)[i].m_FinalContact.m_ClosingVelocity.x;
-					MovedIndex = i;
-				}
+				MaxClosingVelocity = (*Collisions)[i].m_ClosingVelocity.x;
+				MovedIndex = i;
 			}
 		}
 
@@ -158,7 +148,7 @@ void CollisionResolution::ResolveVelocities(float duration)
 
 
 		// Resolving velocities for this contact
-		(*Collisions)[MovedIndex].m_FinalContact.ResolveVelocity(/* Out */LinearChange, /* Out */AngularChange, duration);
+		(*Collisions)[MovedIndex].ResolveVelocity(/* Out */LinearChange, /* Out */AngularChange, duration);
 
 		// recalculate the closing velocities of the contacts that have the save bodies
 		for (size_t i = 0; i < m_NumberContacts; i++)
@@ -166,18 +156,18 @@ void CollisionResolution::ResolveVelocities(float duration)
 			// check each body in the contact
 			for (unsigned MatchedIndex = 0; MatchedIndex < 2; MatchedIndex++)
 			{
-				if ((*Collisions)[i].m_FinalContact.m_RigidBody[MatchedIndex])
+				if ((*Collisions)[i].m_RigidBody[MatchedIndex])
 				{
 					// Check for a match with each body in the newly resolved contact
 					for (unsigned MovedBodyIndex = 0; MovedBodyIndex < 2; MovedBodyIndex++)
 					{
-						if ((*Collisions)[i].m_FinalContact.m_RigidBody[MatchedIndex] ==
-							(*Collisions)[MovedIndex].m_FinalContact.m_RigidBody[MovedBodyIndex])
+						if ((*Collisions)[i].m_RigidBody[MatchedIndex] ==
+							(*Collisions)[MovedIndex].m_RigidBody[MovedBodyIndex])
 						{
 							float sign = MatchedIndex ? -1.0f : 1.0f;
 							vec3 VelocityChange = LinearChange[MovedBodyIndex] +
-								glm::cross(AngularChange[MovedBodyIndex], (*Collisions)[i].m_FinalContact.m_RelativeContactPosition[MatchedIndex]);
-							(*Collisions)[i].m_FinalContact.CalculateClosingVelocity(sign * VelocityChange);
+								glm::cross(AngularChange[MovedBodyIndex], (*Collisions)[i].m_RelativeContactPosition[MatchedIndex]);
+							(*Collisions)[i].CalculateClosingVelocity(sign * VelocityChange);
 						}
 					}
 				}

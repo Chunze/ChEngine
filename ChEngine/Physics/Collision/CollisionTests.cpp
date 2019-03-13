@@ -8,7 +8,7 @@
 static float mults[8][3] = { { 1.0f,  1.0f, 1.0f}, {-1.0f, 1.0f,  1.0f}, {1.0f, -1.0f,  1.0f}, { 1.0f,  1.0f, -1.0f},
 							 {-1.0f, -1.0f, 1.0f}, {-1.0f, 1.0f, -1.0f}, {1.0f, -1.0f, -1.0f}, {-1.0f, -1.0f, -1.0f} };
 
-bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2, CollisionInfo& Info)
+bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2, CollisionInfo *Info)
 {
 	assert(Primitive1->GetType() == PrimitiveType::SPHERE);
 	assert(Primitive2->GetType() == PrimitiveType::SPHERE);
@@ -28,19 +28,17 @@ bool SphereVsSphere::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive*
 		return false;
 	}
 
-	BodyContact Contact;
+	BodyContact *Contact = Info->GetNewContact();
 
-	Contact.SetBodies(Sphere_1->GetBody(), Sphere_2->GetBody());
-	Contact.SetContactNormal(DistanceVec);
-	Contact.SetContactPoint(Position_2 + DistanceVec * 0.5f);
-	Contact.SetContactPenetration(Sphere_1->m_Radius + Sphere_2->m_Radius - Distance);
-	
-	Info.AddContact(Contact);
+	Contact->SetBodies(Sphere_1->GetBody(), Sphere_2->GetBody());
+	Contact->SetContactNormal(DistanceVec);
+	Contact->SetContactPoint(Position_2 + DistanceVec * 0.5f);
+	Contact->SetContactPenetration(Sphere_1->m_Radius + Sphere_2->m_Radius - Distance);
 
 	return true;
 }
 
-bool SphereVsBox::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Box */, CollisionInfo& Info)
+bool SphereVsBox::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Box */, CollisionInfo *Info)
 {
 	assert(Primitive1->GetType() == PrimitiveType::SPHERE);
 	assert(Primitive2->GetType() == PrimitiveType::BOX);
@@ -91,17 +89,16 @@ bool SphereVsBox::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, Collision
 	// collision!
 	vec3 ClosestPtWorld = Box->GetWorldTransform() * vec4(ClosestPoint, 1.0f);
 
-	BodyContact Contact;
-	Contact.SetBodies(Sphere->GetBody(), Box->GetBody());
-	Contact.SetContactNormal(Center - ClosestPtWorld);
-	Contact.SetContactPenetration(Sphere->m_Radius - glm::sqrt(Distance));
-	Contact.SetContactPoint(ClosestPtWorld);
-	Info.AddContact(Contact);
+	BodyContact *Contact = Info->GetNewContact();
+	Contact->SetBodies(Sphere->GetBody(), Box->GetBody());
+	Contact->SetContactNormal(Center - ClosestPtWorld);
+	Contact->SetContactPenetration(Sphere->m_Radius - glm::sqrt(Distance));
+	Contact->SetContactPoint(ClosestPtWorld);
 
 	return true;
 }
 
-bool SphereVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo& Info)
+bool SphereVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo *Info)
 {
 	assert(Primitive1->GetType() == PrimitiveType::SPHERE);
 	assert(Primitive2->GetType() == PrimitiveType::SURFACE);
@@ -120,16 +117,16 @@ bool SphereVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Sphere */, Colli
 	}
 
 	// Collision!
-	BodyContact Contact;
-	Contact.SetBodies(Sphere->GetBody(), Surface->GetBody());
-	Contact.SetContactNormal(Surface->m_Normal);
-	Contact.SetContactPenetration(-Distance);
-	Contact.SetContactPoint(Position - Surface->m_Normal * (Sphere->m_Radius - 0.5f * Distance));
-	Info.AddContact(Contact);
+	BodyContact *Contact = Info->GetNewContact();
+	Contact->SetBodies(Sphere->GetBody(), Surface->GetBody());
+	Contact->SetContactNormal(Surface->m_Normal);
+	Contact->SetContactPenetration(-Distance);
+	Contact->SetContactPoint(Position - Surface->m_Normal * (Sphere->m_Radius - 0.5f * Distance));
+
 	return true;
 }
 
-bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo& Info)
+bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPrimitive* Primitive2 /* Surface */, CollisionInfo *Info)
 {
 	assert(Primitive1->GetType() == PrimitiveType::BOX);
 	assert(Primitive2->GetType() == PrimitiveType::SURFACE);
@@ -137,9 +134,11 @@ bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPr
 	BoxPrimitive*	  Box     = static_cast<BoxPrimitive*>(Primitive1);
 	SurfasePrimitive* Surface = static_cast<SurfasePrimitive*>(Primitive2);
 
+	bool bHasCollision = false;
+
 	if (!IntersectionTestsUtils::BoxVsSurfaceEarlyOut(Box, Surface))
 	{
-		return false;
+		return bHasCollision;
 	}
 
 	// we have a collision, check each vertex
@@ -158,24 +157,19 @@ bool BoxVsSurface::RunTest(CollisionPrimitive* Primitive1 /* Box */, CollisionPr
 		if (VertexDistance < Surface->m_Offset)
 		{
 			// Collision!
-			BodyContact Contact;
-			Contact.SetBodies(Box->GetBody(), Surface->GetBody());
-			Contact.SetContactNormal(Surface->m_Normal);
-			Contact.SetContactPenetration(Surface->m_Offset - VertexDistance);
-			Contact.SetContactPoint(VertexPosition + 0.5f * Surface->m_Normal * (Surface->m_Offset - VertexDistance));
-			Info.AddContact(Contact);
+			BodyContact *Contact = Info->GetNewContact();
+			Contact->SetBodies(Box->GetBody(), Surface->GetBody());
+			Contact->SetContactNormal(Surface->m_Normal);
+			Contact->SetContactPenetration(Surface->m_Offset - VertexDistance);
+			Contact->SetContactPoint(VertexPosition + 0.5f * Surface->m_Normal * (Surface->m_Offset - VertexDistance));
+			bHasCollision = true;
 		}
 	}
 
-	if (Info.m_Contacts.size() > 0)
-	{
-		return true;
-	}
-
-	return false;
+	return bHasCollision;
 }
 
-bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2, CollisionInfo& Info)
+bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primitive2, CollisionInfo *Info)
 {
 	assert(Primitive1->GetType() == PrimitiveType::BOX);
 	assert(Primitive2->GetType() == PrimitiveType::BOX);
@@ -208,7 +202,7 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 		vec3 Axis = axis[index];
 
 		// Check for axes that were generated by (almost) parallel vectors;
-		if (Math::LengthSq(Axis) < 0.0001f) continue;
+		if (Math::LengthSq(Axis) < SMALL_NUMBER) continue;
 		Axis = glm::normalize(Axis);
 
 		float Overlap = IntersectionTestsUtils::BoxPenetrationOnAxis(Box1, Box2, Axis);
@@ -308,7 +302,7 @@ bool BoxVsBox::RunTest(CollisionPrimitive* Primitive1, CollisionPrimitive* Primi
 		
 	}
 
-	Info.AddContact(Contact);
+	Info->AddContact(Contact);
 
 
 	return true;

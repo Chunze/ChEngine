@@ -6,34 +6,17 @@ struct CollisionInfo
 {
 	// allows at most 4 contacts for two collision shape
 	std::vector<BodyContact> m_Contacts;
-	BodyContact m_FinalContact;
-
-	static const size_t m_MaxContactCount = 4;
 
 	float m_Friction;
 	float m_Restitution;
 
-	void AddContact(BodyContact Contact)
-	{
-		if (m_Contacts.size() >= m_MaxContactCount)
-		{
-			return;
-		}
+	BodyContact *GetNewContact();
 
-		for (auto &it : m_Contacts)
-		{
-			if (it == Contact)
-			{
-				return;
-			}
-		}
+	void AddContact(BodyContact Contact);
+	void clearContacts();
 
-		m_Contacts.push_back(Contact);
-	}
-
-	/// If there are more than one contacts, combine them into one.
-	/// Picking largest penetration, average the normal and contact point.
-	void CombineContacts();
+	bool HasCollision() { return m_Contacts.size() > 0; }
+	unsigned int ContactCount() { return m_Contacts.size(); }
 
 	bool m_IsValid = false;
 };

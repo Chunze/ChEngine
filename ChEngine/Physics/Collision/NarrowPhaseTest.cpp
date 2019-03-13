@@ -10,7 +10,7 @@ NarrowPhaseTest::NarrowPhaseTest(CollisionDetection* collisionDetection)
 	m_CollisionDetection = collisionDetection;
 }
 
-void NarrowPhaseTest::RunTest()
+void NarrowPhaseTest::RunTest(CollisionInfo *Data)
 {
 	while (!m_CollisionDetection->m_PotentialContacts.empty())
 	{
@@ -46,12 +46,7 @@ void NarrowPhaseTest::RunTest()
 
 		CollisionTest* Test = m_CollisionTestSelector.SelectCollisionTest(Primitive1, Primitive2);
 
-		CollisionInfo Info;
-		bool HasCollision = Test->RunTest(Primitive1, Primitive2, Info);
-		if (HasCollision && m_CollisionDetection)
-		{
-			m_CollisionDetection->ReportCollision(Info);
-		}
+		bool HasCollision = Test->RunTest(Primitive1, Primitive2, Data);
 	}
 }
 

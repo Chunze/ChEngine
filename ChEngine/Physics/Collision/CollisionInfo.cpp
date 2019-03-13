@@ -1,45 +1,18 @@
 #include "CollisionInfo.h"
 
-void CollisionInfo::CombineContacts()
+BodyContact *CollisionInfo::GetNewContact()
 {
-	if (m_IsValid)
-	{
-		return;
-	}
+	BodyContact NewContact;
+	m_Contacts.push_back(NewContact);
+	return &m_Contacts.back();
+}
 
-	if (m_Contacts.size() == 0)
-	{
-		m_IsValid = false;
-		return;
-	}
-	else if (m_Contacts.size() > 1)
-	{
-		m_FinalContact.SetBodies(m_Contacts[0].m_RigidBody[0], m_Contacts[0].m_RigidBody[1]);
+void CollisionInfo::AddContact(BodyContact Contact)
+{
+	m_Contacts.push_back(Contact);
+}
 
-		vec3 NewContactPoint(0.0f);
-		vec3 NewContactNormal(0.0f);
-		float NewPenetration = -1.0f;
-		for (size_t index = 0; index < m_Contacts.size(); index++)
-		{
-			NewContactPoint += m_Contacts[index].m_ContactPoint;
-			NewContactNormal += m_Contacts[index].m_ContactNormal;
-			if (m_Contacts[index].m_Penetration > NewPenetration)
-			{
-				NewPenetration = m_Contacts[index].m_Penetration;
-			}
-		}
-
-		NewContactPoint /= (float)m_Contacts.size();
-		NewContactNormal /= (float)m_Contacts.size();
-
-		m_FinalContact.SetContactPoint(NewContactPoint);
-		m_FinalContact.SetContactNormal(NewContactNormal);
-		m_FinalContact.SetContactPenetration(NewPenetration);
-	}
-	else if (m_Contacts.size() == 1)
-	{
-		m_FinalContact = m_Contacts[0];
-	}
-
-	m_IsValid = true;
+void CollisionInfo::clearContacts()
+{
+	m_Contacts.clear();
 }

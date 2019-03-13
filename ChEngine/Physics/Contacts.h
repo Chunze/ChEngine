@@ -92,7 +92,7 @@ struct PotentialBodyVsPrimiveContact : public PotentialContact
 /// This is the output of the narrow phase of the collision detection
 struct BodyContact
 {
-	RigidBody_sp m_RigidBody[2];
+	RigidBody_sp m_RigidBody[2] = {nullptr, nullptr};
 
 	// vectors points from origin of rigid body to contact point
 	vec3 m_RelativeContactPosition[2];

@@ -15,9 +15,7 @@ class CollisionDetection
 public:
 	CollisionDetection(PhysicsManager* PhysicsManager);
 
-	void RunCollisionDetection();
-
-	void ReportCollision(CollisionInfo &Collision) const;
+	void RunCollisionDetection(CollisionInfo *Data);
 
 	void RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd);
 

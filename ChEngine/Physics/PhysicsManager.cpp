@@ -27,7 +27,7 @@ void PhysicsManager::Update(float Delta)
 
 	Integrate(Delta);
 
-	m_CollisionDetection.RunCollisionDetection();
+	m_CollisionDetection.RunCollisionDetection(&m_Collisions);
 	RunCollisionDetection();
 
 	m_CollisionResolution.RunCollisionResolution(Delta);
