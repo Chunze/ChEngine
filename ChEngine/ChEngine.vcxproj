@@ -53,6 +53,7 @@
     <ClCompile Include="Physics\Collision\CollisionInfo.cpp" />
     <ClCompile Include="Physics\Collision\CollisionPrimitives.cpp" />
     <ClCompile Include="Physics\Collision\CollisionTests.cpp" />
+    <ClCompile Include="Physics\Collision\CollisionTestUtils.cpp" />
     <ClCompile Include="Physics\Collision\NarrowPhaseTest.cpp" />
     <ClCompile Include="Physics\ContactGenerators\ParticleLink.cpp" />
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="Physics\Collision\CollisionPrimitives.h" />
     <ClInclude Include="Physics\Collision\CollisionTests.h" />
     <ClInclude Include="Physics\Collision\CollisionTestSelector.h" />
+    <ClInclude Include="Physics\Collision\CollisionTestUtils.h" />
     <ClInclude Include="Physics\Collision\NarrowPhaseTest.h" />
     <ClInclude Include="Physics\ContactGenerators\ParticleLink.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
@@ -174,7 +176,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5DA6307B-D552-4A9C-9BB7-C2099DF6DC19}</ProjectGuid>
     <RootNamespace>ChEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <ProjectName>ChEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -236,6 +238,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>

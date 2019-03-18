@@ -172,6 +172,9 @@
     <ClCompile Include="Physics\BodyContactData.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\Collision\CollisionTestUtils.cpp">
+      <Filter>Physics\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl" />
@@ -395,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="Physics\BodyContactData.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Collision\CollisionTestUtils.h">
+      <Filter>Physics\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -106,7 +106,7 @@ void SimpleWorld::SetupWorld()
 	Model* newModel = new Model(m_gameContext, crate_path);
 	BallModel = new Model(m_gameContext, ball_path);
 
-	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 4.0f, 0.0f), quat(0.0f, 0.5f, 2.0f, 1.0f));
+	auto gameObject = GeneralStatics::NewGameObject<GameObject>(m_gameContext, this, glm::vec3(0.0f, 4.0f, 0.2f)/*, quat(0.0f, 0.5f, 2.0f, 1.0f)*/);
 	auto staticMeshComp = GeneralStatics::NewComponent<StaticMeshComponent>(m_gameContext, this);
 	staticMeshComp->SetRigidBody(PhysicsStatics::NewRigidBox(m_gameContext->GetPhysicsManager(), vec3(1.0f)));
 	gameObject->SetRootComponent(staticMeshComp);

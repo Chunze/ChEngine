@@ -52,6 +52,56 @@ struct ContactFeature
 	unsigned int m_FramesLived = 0;
 	ContactFeatureType m_FeatureType = ContactFeatureType::NONE;
 	int m_FeatureID[2] = { -1, -1 };
+
+	inline bool IsValid()
+	{
+		return m_FramesLived > 0 && m_FramesLived < 5;
+	}
+
+	bool operator==(const ContactFeature &Other) const
+	{
+		return m_Primitives[0] == Other.m_Primitives[0] &&
+			m_Primitives[1] == Other.m_Primitives[1] &&
+			m_FeatureID[0] == Other.m_FeatureID[0] &&
+			m_FeatureID[1] == Other.m_FeatureID[1];
+	}
+};
+
+struct ContactFeatureList
+{
+	ContactFeatures m_ContactFeatures;
+
+	void UpdateFeatureList(ContactFeature FeatureToAdd)
+	{
+		// check if the contact feature exist
+		for (ContactFeature &Feature : m_ContactFeatures)
+		{
+			if (Feature == FeatureToAdd)
+			{
+				Feature.m_FramesLived = 0;
+				return;
+			}
+		}
+
+		// out of the loop, did not find a match, add the feature to the list
+		m_ContactFeatures.push_back(FeatureToAdd);
+	}
+
+	void CleanupFeatureList()
+	{
+		auto it = m_ContactFeatures.begin();
+		while (it != m_ContactFeatures.end())
+		{
+			if (!it->IsValid())
+			{
+				it = m_ContactFeatures.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+		}
+	}
 };
 
 /// This is the output of the narrow phase of the collision detection

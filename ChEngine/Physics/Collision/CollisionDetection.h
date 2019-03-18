@@ -34,8 +34,7 @@ protected:
 	/// Narrow Phase Test will read from this.
 	PotentialContacts m_PotentialContacts;
 
-	void RunBroadPhase();
-	void RunNarrowPhase();
+	void GenerateCoherenceContact(CollisionInfo *Data);
 };
 
 #endif

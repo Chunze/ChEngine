@@ -79,6 +79,10 @@ void CollisionResolution::ResolvePenetrations()
 
 
 		// Resolving penetration for this contact
+		LinearChange[0] = vec3(0.0f);
+		LinearChange[1] = vec3(0.0f);
+		AngularChange[0] = vec3(0.0f);
+		AngularChange[1] = vec3(0.0f);
 		(*Collisions)[MovedIndex].ResolveInterpenetration(/* Out */LinearChange, /* Out */AngularChange);
 
 		// This action may have changed the penetration of other contacts contain the same body,
@@ -148,6 +152,10 @@ void CollisionResolution::ResolveVelocities(float duration)
 
 
 		// Resolving velocities for this contact
+		LinearChange[0] = vec3(0.0f);
+		LinearChange[1] = vec3(0.0f);
+		AngularChange[0] = vec3(0.0f);
+		AngularChange[1] = vec3(0.0f);
 		(*Collisions)[MovedIndex].ResolveVelocity(/* Out */LinearChange, /* Out */AngularChange, duration);
 
 		// recalculate the closing velocities of the contacts that have the save bodies

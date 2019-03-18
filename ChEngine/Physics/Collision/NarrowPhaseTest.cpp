@@ -1,3 +1,4 @@
+#include "BodyContactData.h"
 #include "CollisionDetection.h"
 #include "CollisionPrimitives.h"
 #include "Contacts.h"

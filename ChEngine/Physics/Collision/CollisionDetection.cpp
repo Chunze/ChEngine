@@ -1,5 +1,8 @@
 #include "CollisionDetection.h"
+#include "CollisionTestUtils.h"
 #include "PhysicsManager.h"
+
+#include <iostream>
 
 CollisionDetection::CollisionDetection(PhysicsManager* PhysicsManager)
 	: m_PhysicsManager(PhysicsManager),
@@ -14,6 +17,8 @@ void CollisionDetection::RunCollisionDetection(CollisionInfo *Data)
 	m_BroadPhaseTest.RunTest();
 
 	m_NarrowPhaseTest.RunTest(Data);
+
+	GenerateCoherenceContact(Data);
 }
 
 void CollisionDetection::RegisterCollisionPrimitive(CollisionPrimitive_sp PrimitiveToAdd)
@@ -31,13 +36,59 @@ void CollisionDetection::RegisterCollisionPrimitive(CollisionPrimitive_sp Primit
 	}
 }
 
-void CollisionDetection::RunBroadPhase()
+
+void CollisionDetection::GenerateCoherenceContact(CollisionInfo *Data)
 {
+	if(Data->m_ContactFeatureList.m_ContactFeatures.size() > 0)
+		std::cout << "Contact Feature size: " << Data->m_ContactFeatureList.m_ContactFeatures.size() << '\n';
 
+	for (ContactFeature &Feature : Data->m_ContactFeatureList.m_ContactFeatures)
+	{
+		if (Feature.IsValid())
+		{
+			// This feature was not added this frame, generate a contact from it
+			BoxPrimitive* Box1 = static_cast<BoxPrimitive*>(Feature.m_Primitives[0]);
+			BoxPrimitive* Box2 = static_cast<BoxPrimitive*>(Feature.m_Primitives[1]);
+			BodyContact Contact;
+
+			if (Feature.m_FeatureType == ContactFeatureType::FACE_VS_VERTEX)
+			{
+				
+				
+				CollisionTestUtils::GetContactInfoFaceVsVertex(
+					Box1, 
+					Box2,
+					Box1->GetAxis(Feature.m_FeatureID[0]),
+					Contact);
+
+				Contact.m_Penetration = CollisionTestUtils::BoxPenetrationOnAxis(
+					Box1, 
+					Box2,
+					Box1->GetAxis(Feature.m_FeatureID[0]));
+
+				Data->AddContact(Contact, false);
+			}
+			else if (Feature.m_FeatureType == ContactFeatureType::EDGE_VS_EDGE)
+			{
+				BodyContact Contact;
+
+				CollisionTestUtils::GetContactInfoEdgeVsEdge(Box1, Box2,
+					Feature.m_FeatureID[0],
+					Feature.m_FeatureID[1],
+					Contact);
+
+				vec3 Axis = glm::cross(Box1->GetAxis(Feature.m_FeatureID[0]), Box2->GetAxis(Feature.m_FeatureID[1]));
+				Contact.m_Penetration = CollisionTestUtils::BoxPenetrationOnAxis(
+					Box1,
+					Box2,
+					Axis);
+
+				Data->AddContact(Contact, false);
+			}
+		}
+
+		Feature.m_FramesLived++;
+	}
+
+	Data->CleanupFeatureList();
 }
-
-void CollisionDetection::RunNarrowPhase()
-{
-
-}
-

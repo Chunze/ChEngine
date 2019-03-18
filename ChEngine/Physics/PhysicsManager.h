@@ -2,13 +2,13 @@
 #define PHYSICS_MANAGER_H
 #include <vector>
 
-#include "PhysicsTypes.h"
-#include "CollisionDetection.h"
-#include "CollisionResolution.h"
-
 #include "BaseClass.h"
-#include "ParticleForceRegistry.h"
+#include "CollisionDetection.h"
+#include "CollisionInfo.h"
+#include "CollisionResolution.h"
 #include "glm.h"
+#include "ParticleForceRegistry.h"
+#include "PhysicsTypes.h"
 
 class ForceGenerator;
 class ParticleContact;
@@ -72,12 +72,16 @@ protected:
 
 	// RK4 step count
 	int RK4_step = 1;
+
+	/** Particle related **/
 	Particles m_physicsParticles;
-	RigidBodies m_RigidBodies;
 	ParticleContacts m_ParticleContacts;
-	CollisionInfo m_Collisions;
 	std::vector<ParticleContactGenerator*> m_ContactGenerator;
 	std::unique_ptr<ParticleContactResolver> m_ParticleContactResolver = nullptr;
+
+	/** Rigid body related **/
+	RigidBodies m_RigidBodies;
+	CollisionInfo m_Collisions;
 
 	// The height of a simple plane for testing (upward normal)
 	float m_PlaneHeight = 0.0f;
