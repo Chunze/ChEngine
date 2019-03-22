@@ -43,7 +43,10 @@ public:
 
 private:
 	// for physics to run in smaller steps
-	float PhysicsTimeAccumulator = 0.0f;
+	float FrameDelay = 1.0f;
+	float FrameDeleyAccu = 0.0f;
+
+	float FixedDelta = 0.016;
 
 	float TimeSinceFPSRender = 0.0f;
 

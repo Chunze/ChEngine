@@ -30,7 +30,7 @@ public:
 	glm::mat4 m_view;
 	glm::mat4 m_perpective;
 
-	float flySpeed = 20.0f;
+	float flySpeed = 5.0f;
 
 	void SetupCamera(glm::vec3 position, glm::vec3 lookat, glm::vec3 up);
 

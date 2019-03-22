@@ -29,6 +29,8 @@ protected:
 
 	CollisionPrimitives m_PrimitiveWithoutBody;
 
+	static float m_CoherencePenetrationLimit;
+
 	/// Potential body contacts.
 	/// Broad Phase Test will write to this.
 	/// Narrow Phase Test will read from this.

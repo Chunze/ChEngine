@@ -56,6 +56,8 @@ void CollisionResolution::ResolvePenetrations()
 
 	while (IterationUsed <= m_MaxIteration)
 	{
+		IterationUsed++;
+
 		// find contact with largest penetration
 		MaxPenetration = SMALL_NUMBER;
 		MovedIndex = m_NumberContacts;
@@ -111,8 +113,6 @@ void CollisionResolution::ResolvePenetrations()
 				}
 			}
 		}
-
-		IterationUsed++;
 	}
 }
 

@@ -155,24 +155,36 @@ void Game::GameLoop()
 			deltaTime *= m_gameContext->GetWorld()->m_customDelta;
 		}
 
+		//deltaTime = 0.016f;
+
 		if (bPaused)
 		{
 			deltaTime = 0.0f;
 			bWasPausedLastFrame = false;
 		}
 
-		//deltaTime = 0.016f;
-		/****     Update(deltaTime)    ****/
-		m_gameContext->GetWorld()->Update(deltaTime);
+		FrameDelay = 0.0f;
 
-// 		PhysicsTimeAccumulator += deltaTime;
-// 		while (PhysicsTimeAccumulator >= PHYSICS_TIME_STEP)
-// 		{
-// 			m_gameContext->GetPhysicsManager()->Update(PHYSICS_TIME_STEP);
-// 			PhysicsTimeAccumulator -= PHYSICS_TIME_STEP;
-// 		}
-		m_gameContext->GetPhysicsManager()->Update(deltaTime);
-		m_gameContext->GetWorld()->PostPhysicsUpdate();
+		if (FrameDeleyAccu > FrameDelay && !bPaused)
+		{
+			FrameDeleyAccu -= FrameDelay;
+			float Delta = FrameDelay > deltaTime ? FixedDelta : deltaTime;
+
+			m_gameContext->GetWorld()->Update(Delta);
+
+			// 		PhysicsTimeAccumulator += deltaTime;
+			// 		while (PhysicsTimeAccumulator >= PHYSICS_TIME_STEP)
+			// 		{
+			// 			m_gameContext->GetPhysicsManager()->Update(PHYSICS_TIME_STEP);
+			// 			PhysicsTimeAccumulator -= PHYSICS_TIME_STEP;
+			// 		}
+			m_gameContext->GetPhysicsManager()->Update(Delta);
+			m_gameContext->GetWorld()->PostPhysicsUpdate();
+		}
+		FrameDeleyAccu += deltaTime;
+		
+		/****     Update(deltaTime)    ****/
+		
 		//m_gameContext->GetWorld()->RenderWorld();
 		m_gameContext->m_renderer->GetherDrawCalls(m_gameContext->GetWorld()->GetRenderableObjects());
 		m_gameContext->m_renderer->Update(deltaTime);

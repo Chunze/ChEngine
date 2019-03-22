@@ -95,22 +95,24 @@ void CollisionTestUtils::GetContactInfoEdgeVsEdge(BoxPrimitive *Box1, BoxPrimiti
 
 	vec3 Axis = glm::cross(Box1->GetAxis(AxisIndex1), Box2->GetAxis(AxisIndex2));
 
-	// Snap the point to the edges (in local space)
-	for (size_t i = 0; i < 3; i++)
-	{
-		if (i == AxisIndex1) PointOnEdge1[i] = 0;
-		else if (glm::dot(Box1->GetAxis(i), Axis) < 0) PointOnEdge1[i] = -PointOnEdge1[i];
-
-		if (i == AxisIndex2) PointOnEdge2[i] = 0;
-		else if (glm::dot(Box2->GetAxis(i), Axis) > 0) PointOnEdge2[i] = -PointOnEdge2[i];
-	}
-
 	// Contact normal should point from box2 to box1
 	vec3 ToCenter = Box1->GetPosition() - Box2->GetPosition();
 	if (glm::dot(ToCenter, Axis) < 0)
 	{
 		Axis *= -1.0f;
 	}
+
+	// Snap the point to the edges (in local space)
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (i == AxisIndex1) PointOnEdge1[i] = 0; 
+		else if (glm::dot(Box1->GetAxis(i), Axis) > 0) PointOnEdge1[i] = -PointOnEdge1[i];
+
+		if (i == AxisIndex2) PointOnEdge2[i] = 0;
+		else if (glm::dot(Box2->GetAxis(i), Axis) < 0) PointOnEdge2[i] = -PointOnEdge2[i];
+	}
+
+	
 
 	// Convert to world space
 	PointOnEdge1 = Math::Multiply(Box1->GetWorldTransform(), PointOnEdge1);

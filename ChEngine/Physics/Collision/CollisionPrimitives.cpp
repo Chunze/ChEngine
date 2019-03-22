@@ -29,6 +29,6 @@ vec3 CollisionPrimitive::GetAxis(int index)
 		return vec3();
 	}
 
-	return vec3(GetWorldTransform()[index]);
+	return glm::normalize(vec3(GetWorldTransform()[index]));
 }
 

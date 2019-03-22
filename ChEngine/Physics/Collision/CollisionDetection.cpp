@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+float CollisionDetection::m_CoherencePenetrationLimit = 0.1f;
+
 CollisionDetection::CollisionDetection(PhysicsManager* PhysicsManager)
 	: m_PhysicsManager(PhysicsManager),
 	  m_BroadPhaseTest(this),
@@ -50,38 +52,40 @@ void CollisionDetection::GenerateCoherenceContact(CollisionInfo *Data)
 			BoxPrimitive* Box1 = static_cast<BoxPrimitive*>(Feature.m_Primitives[0]);
 			BoxPrimitive* Box2 = static_cast<BoxPrimitive*>(Feature.m_Primitives[1]);
 			BodyContact Contact;
+			float Penetration;
+			vec3 Axis = Box1->GetAxis(Feature.m_FeatureID[0]);
 
 			if (Feature.m_FeatureType == ContactFeatureType::FACE_VS_VERTEX)
 			{
-				
-				
-				CollisionTestUtils::GetContactInfoFaceVsVertex(
-					Box1, 
-					Box2,
-					Box1->GetAxis(Feature.m_FeatureID[0]),
-					Contact);
+				Penetration = CollisionTestUtils::BoxPenetrationOnAxis(Box1, Box2, Axis);
 
-				Contact.m_Penetration = CollisionTestUtils::BoxPenetrationOnAxis(
-					Box1, 
-					Box2,
-					Box1->GetAxis(Feature.m_FeatureID[0]));
+				if (Penetration < -m_CoherencePenetrationLimit)
+				{
+					continue;
+				}
+
+				Contact.m_Penetration = Penetration;
+				
+				CollisionTestUtils::GetContactInfoFaceVsVertex(Box1, Box2, Axis, Contact);
 
 				Data->AddContact(Contact, false);
 			}
 			else if (Feature.m_FeatureType == ContactFeatureType::EDGE_VS_EDGE)
 			{
-				BodyContact Contact;
+				vec3 Axis = glm::cross(Box1->GetAxis(Feature.m_FeatureID[0]), Box2->GetAxis(Feature.m_FeatureID[1]));
+				Penetration = CollisionTestUtils::BoxPenetrationOnAxis(Box1, Box2, Axis);
+
+				if (Penetration < -m_CoherencePenetrationLimit)
+				{
+					continue;
+				}
+
+				Contact.m_Penetration = Penetration;
 
 				CollisionTestUtils::GetContactInfoEdgeVsEdge(Box1, Box2,
 					Feature.m_FeatureID[0],
 					Feature.m_FeatureID[1],
 					Contact);
-
-				vec3 Axis = glm::cross(Box1->GetAxis(Feature.m_FeatureID[0]), Box2->GetAxis(Feature.m_FeatureID[1]));
-				Contact.m_Penetration = CollisionTestUtils::BoxPenetrationOnAxis(
-					Box1,
-					Box2,
-					Axis);
 
 				Data->AddContact(Contact, false);
 			}
